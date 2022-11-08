@@ -36,3 +36,9 @@ Above is a draft version of the system architecture.
   binary format to save on bandwidth.
 - The protocol used by the TCP socket API is text-based, as it's used to
   communicate between userspace services on desktop computers.
+- Each node sends a button event to the border router when it's button is
+  pressed.
+- Each node sets it's LED's status upon receiving an LED event.
+- Each node has it's own ID (this is probably going to be it's bluetooth MAC
+  address for simplicity).
+
