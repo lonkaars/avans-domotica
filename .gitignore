@@ -1,0 +1,9 @@
+# blob
+**/*.o
+**/.cache
+**/compile_commands.json
+**/.DS_Store
+
+copyright/
+temp/
+
