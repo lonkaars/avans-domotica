@@ -3,7 +3,7 @@ LD = gcc
 RM = rm -f
 CFLAGS =
 LFLAGS =
-TARGET = bts
+TARGET = confui
 
 SRCS := $(wildcard *.c)
 OBJS := $(patsubst %.c,%.o, $(SRCS))

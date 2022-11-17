@@ -1,0 +1,45 @@
+@media print {
+	@page {
+		size: A4;
+		margin: 1in;
+
+		@bottom-center {
+			content: counter(page);
+		}
+	}
+	html, body {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: visible;
+
+		font-family: "TeX Gyre Schola";
+		font-size: 11pt;
+	}
+
+	pre, code {
+		font-family: "JetBrainsMono Nerd Font";
+		font-size: 9pt;
+	}
+
+	figure {
+		text-align: center;
+	}
+
+	figcaption {
+		text-align: justify;
+		text-justify: auto;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+
+	th, td {
+		padding: 2pt 6pt;
+	}
+
+	th {
+		border-bottom: 1pt solid black;
+	}
+}
