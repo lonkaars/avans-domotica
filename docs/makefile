@@ -17,7 +17,7 @@ gen/paged.polyfill.js:
 gen/start.html: gen/start.m4 gen/style.css
 	$(M4) -I gen $< > $@
 
-%.html: %.md gen/start.html
+%.html: %.md gen/start.html gen/paged.polyfill.js
 	$(PANDOC) $< --to=html | $(CAT) gen/start.html - gen/end.html > $@
 
 %.pdf: %.html
