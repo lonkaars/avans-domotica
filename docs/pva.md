@@ -1,3 +1,5 @@
+[Trello]: https://trello.com/b/LSiYzM8C/casadomotica
+
 # Backgrounds
 
 ## Project
@@ -85,6 +87,6 @@ While the roles in the table above describe a hierarchial system, all planning a
 
 # Schedule
 
-As mentioned before, we're using Trello for managing a scrum-based planning. The user stories are scheduled a week before the sprint assessment by default. For a detailed up-to-date version of the schedule, see [Trello](link missing).
+As mentioned before, we're using Trello for managing a scrum-based planning. The user stories are scheduled a week before the sprint assessment by default. For a detailed up-to-date version of the schedule, see [Trello].
 
 # Project boundaries
