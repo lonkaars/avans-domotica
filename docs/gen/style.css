@@ -45,4 +45,20 @@
 	th {
 		border-bottom: 1pt solid black;
 	}
+
+  .docintro p {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  .docintro .left,
+  .docintro .right {
+    display: block;
+  }
+
+  .docintro .right {
+    text-align: right;
+  }
 }
