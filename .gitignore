@@ -15,4 +15,5 @@ confui/confui
 docs/gen/paged.polyfill.js
 docs/gen/start.html
 docs/*.html
+docs/*.toc
 .obsidian

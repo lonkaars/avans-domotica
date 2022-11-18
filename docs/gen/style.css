@@ -46,19 +46,40 @@
 		border-bottom: 1pt solid black;
 	}
 
-  .docintro p {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0;
-  }
+	.docintro p {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 0;
+	}
 
-  .docintro .left,
-  .docintro .right {
-    display: block;
-  }
+	.docintro .left,
+	.docintro .right {
+		display: block;
+	}
 
-  .docintro .right {
-    text-align: right;
-  }
+	.docintro .right {
+		text-align: right;
+	}
+
+	.pagebr {
+		break-before: page;
+	}
+
+	ol {
+		counter-reset: item;
+	}
+
+	li {
+		display: block;
+		position: relative;
+	}
+
+	li::before {
+		position: absolute;
+		left: 0;
+		content: counters(item, ".") " ";
+		transform: translateX(-100%) translateX(-5pt);
+		counter-increment: item;
+	}
 }
