@@ -14,5 +14,4 @@ confui/confui
 # docs
 docs/gen/paged.polyfill.js
 docs/gen/start.html
-docs/makefile
 docs/*.html
