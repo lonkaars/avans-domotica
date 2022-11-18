@@ -26,7 +26,7 @@
 		text-align: center;
 	}
 
-	figcaption {
+	figcaption, p {
 		text-align: justify;
 		text-justify: auto;
 	}
