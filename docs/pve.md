@@ -15,8 +15,6 @@ SE = self explanatory
 | 10  | Client connection             | Client is connected to both the mesh and internet | Must  |
 | 13  | Node sensor/actuator          | A node contains atleast one sensor or actuator    | Must  |
 | 14  | Node send/receive other nodes | SE                                                | Must  |
-|     |                               |                                                   |       |
-
 
 ## Technical requirements
 | ID  | Name                            | Description                                                           | MoCoW |
@@ -25,8 +23,8 @@ SE = self explanatory
 | 04  | Simulate node                   | The application can at least simulate 1 button and 1 LED              | Must  |
 | 05  | Virtual node                    | The simulated node can interect and be interacted with physical nodes | Must  |
 | 06  | Dynamic node (un)registration   | Nodes can dynamically be registered during runtime                    | Could |
-| 07  | Nodes can register other nodes  |                                                                       | Could |
-| 08  | Smart interface node and client |                                                                       | Could |
+| 07  | Nodes can register other nodes  | Nodes can be provisioned by other nodes                               | Could |
+| 08  | Smart interface node and client | Wireless conection over BLE or J-link                                 | Could |
 | 11  | Monitor and control             | Client can monitor and control mesh network                           | Must  |
 | 12  | Groups                          | Nodes (inputs/outputs) can be bound to groups                         | Must  |
 | 15  | Nodes can sign (in/out)         | (via Client)                                                          | Must  |
@@ -37,8 +35,6 @@ SE = self explanatory
 | 20  | Border router in mesh network   | SE                                                                    | Must  |
 | 21  | Client can connect nodes        | SE                                                                    | Must  |
 | 22  | Dynamically (dis)connect nodes  | Nodes functionality can be (dis)connected during runtime              | Must  |
-|     |                                 |                                                                       |       |
-
 
 ## Boundary conditions
 | ID  | Name         | Description   | MoCoW |
