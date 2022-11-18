@@ -40,13 +40,6 @@ For project casaDomitica are we using scrum as our tool for planning.
 
 There are different steps were taking for this project. The first step is Plan van Aanpak also know as Plan. Then were describing the requirements. After the requirments comes our sprints. there are a total of three sprints were doing this project.
 
-### Plan
-For the planning and our actions see our [Trello] board.
-
-### Requirements
-
-TODO
-
 ### Sprint 1
 
 In this sprint were mostly doing research about different subjects of domitca. Additionally, are we testing the different subjects to further understand domitca. For exaample, researching and testing bluetooth mesh.
