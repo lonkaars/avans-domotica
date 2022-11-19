@@ -16,4 +16,5 @@ docs/gen/paged.polyfill.js
 docs/*.html
 docs/*.toc
 docs/*.con
+docs/*.pdf
 .obsidian
