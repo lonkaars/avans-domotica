@@ -13,7 +13,7 @@ confui/confui
 
 # docs
 docs/gen/paged.polyfill.js
-docs/gen/start.html
 docs/*.html
 docs/*.toc
+docs/*.con
 .obsidian
