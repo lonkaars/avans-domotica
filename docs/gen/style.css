@@ -46,7 +46,7 @@
 		border-bottom: 1pt solid black;
 	}
 
-	.docintro p {
+	.docintro {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -66,16 +66,16 @@
 		break-before: page;
 	}
 
-	ol {
+	#TOC ol {
 		counter-reset: item;
 	}
 
-	li {
+	#TOC li {
 		display: block;
 		position: relative;
 	}
 
-	li::before {
+	#TOC li::before {
 		position: absolute;
 		left: 0;
 		content: counters(item, ".") " ";

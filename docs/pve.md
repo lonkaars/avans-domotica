@@ -1,16 +1,5 @@
-<div class="docintro">
-  <span class="left">
-    Pakket van eisen<br/>
-    Project Domotica
-  </span>
-  <span class="right">
-    Joshua Regnier <b>(2183008)</b><br/>
-    Loek Le Blansch <b>(2180996)</b><br/>
-    Niels Stunnebrink <b>(2184532)</b>
-  </span>
-</div>
-
 # Introduction
+
 node = one node that contains both a button and a LED  
 SE = self explanatory 
 
