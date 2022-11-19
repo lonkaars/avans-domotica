@@ -1,17 +1,5 @@
 [Trello]: https://trello.com/b/LSiYzM8C/casadomotica
 
-<div class="docintro">
-  <span class="left">
-    Plan van aanpak<br/>
-    Project Domotica
-  </span>
-  <span class="right">
-    Joshua Regnier <b>(2183008)</b><br/>
-    Loek Le Blansch <b>(2180996)</b><br/>
-    Niels Stunnebrink <b>(2184532)</b>
-  </span>
-</div>
-
 # Backgrounds
 
 ## Project

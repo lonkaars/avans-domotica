@@ -7,6 +7,7 @@
 			content: counter(page);
 		}
 	}
+
 	html, body {
 		width: 100%;
 		margin: 0;
@@ -15,6 +16,12 @@
 
 		font-family: "TeX Gyre Schola";
 		font-size: 11pt;
+	}
+
+	a {
+		text-decoration: none;
+		color: unset;
+		font-style: italic;
 	}
 
 	pre, code {
@@ -29,6 +36,7 @@
 	figcaption, p {
 		text-align: justify;
 		text-justify: auto;
+		hyphens: auto;
 	}
 
 	table {
@@ -46,19 +54,40 @@
 		border-bottom: 1pt solid black;
 	}
 
-  .docintro p {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0;
-  }
+	.docintro {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 0;
+	}
 
-  .docintro .left,
-  .docintro .right {
-    display: block;
-  }
+	.docintro .left,
+	.docintro .right {
+		display: block;
+	}
 
-  .docintro .right {
-    text-align: right;
-  }
+	.docintro .right {
+		text-align: right;
+	}
+
+	.pagebr {
+		break-before: page;
+	}
+
+	nav ol {
+		counter-reset: item;
+		list-style-type: none;
+	}
+
+	nav li {
+		position: relative;
+		counter-increment: item;
+	}
+
+	nav li::before {
+		position: absolute;
+		transform: translateX(-100%) translateX(-5pt);
+		left: 0;
+		content: attr(heading-num-fix);
+	}
 }
