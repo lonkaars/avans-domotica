@@ -20,3 +20,9 @@ west flash
 west flash --erase
 ```
 
+## debugging
+
+```bash
+west debug
+```
+
