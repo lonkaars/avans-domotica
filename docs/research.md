@@ -43,12 +43,41 @@ Bluetooth mesh concepts is an overview of the operation and capabilities of the 
 
 For a more detailed understanding of concepts look for link number 11.
 
+## Security
+In a bluetooth mesh network are 3 different types of securtity, also know as keys. There is a network key also know as NetKey,  application key also know as AppKey and lastly device key know as Devkey. For more refrence check number 4 in links, but it is a dutch version so below is a translated version.
+
+### NetKey
+All nodes in a mesh network own the network key (NetKey). If a device owns this shared key, it is officially a node and part of a network. The network encryption key and the privacy key are derived from this Netkey. Once in possession of the NetKey, it grants the node access to the network layer. In this network layer it can pass on and perform network functions such as relaying (forwarding packets further in the network). The node cannot yet decrypt application data with the NetKey.
+The network can be divided into subnets and each subnet has its own NetKey, which is owned only by the nodes that are members of that subnet. For example, it can be used to isolate specific physical areas, such as each room in a hotel.
+
+### Appkey
+Application data for a specific application can only be decrypted by nodes that have the correct application key (AppKey). For example, lighting and light switches have the AppKey of the lighting application, but not the AppKey for the heating system, which is only owned by thermostats, taps on radiators and so on.
+AppKeys are used by the upper transport layer to decrypt and authenticate messages before passing them to the access layer. AppKeys are associated with only one NetKey, meaning that specific applications can only run on one specific network.
+
+### DevKey
+The last type of key is the device key (DevKey). This is a special type of application key. Each node has a unique DevKey known to the commissioner and no other. The DevKey is used in the commissioning process and is specifically for securing the communication between the commissioner and the node.
 
 ## Configuration
+For more refrence to configurations the links used are numbers 3, 4, 7 and 12.
 
-## Security
+### Adresses
+Messages must be sent to and from an address. Bluetooth mesh defines three types of addresses.
+#### Unicast adress
+During provisioning, a provisioner assigns a unicast address to each element in a node. Unicast addresses can appear in the source address field of a message, the destination address field of a message, or both. Messages sent to unicast addresses are processed by only one element.
+#### Group adress
+Group addresses are types of multicast addresses that represent multiple elements from one or more nodes. Group addresses can be fixed (allocated by Bluetooth SIG) or dynamically assigned.
+#### Virtual adress
+A virtual address represents a set of destination addresses. Each virtual address logically represents a 128-bit label universally unique identifier (UUID). The Bluetooth nodes can publish or subscribe to these addresses.
+
+### publish and subscribe
+Bluetooth mesh networking implements a publish/subscribe message-oriented communication system. Such an approach ensures that different types of products can coexist in a mesh network without being affected by messages from devices they do not need to listen to. The act of sending a message is known as publishing. Based on the configuration, the mesh nodes select messages sent to specific addresses for processing. This technique is known as subscribing. A publisher node sends messages to those nodes that have subscribed to the publisher. Typically, mesh messages are addressed to group or virtual addresses. For example, look at figure 4.
+![Figure 4](/img/publish_subsribe.PNG.PNG)
+
+### provisining
+Provisioning is the process by which a Bluetooth device (unprovisioned device) joins the mesh network and becomes a Bluetooth mesh node. This process is controlled by a provisioner. A provisioner and the unprovisioned device follow a fixed procedure as defined in the Bluetooth Mesh Profile [4]. A provisioner is typically a smartphone running a provisioning application.
 
 ## Demo
+WIP
 
 # Links
 These are the links used for bluetooth mesh research
@@ -63,3 +92,4 @@ These are the links used for bluetooth mesh research
 9. [repairing dongle:](https://devzone.nordicsemi.com/guides/short-range-guides/b/getting-started/posts/nrf52840-dongle-programming-tutorial)
 10. [repairing dongle:](https://devzone.nordicsemi.com/f/nordic-q-a/40924/how-can-i-restore-the-original-bootloader-of-a-pca10059)
 11. [Mesh concepts](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/ug_bt_mesh_concepts.html#mesh-concepts)
+12. [Mesh networking](https://www.mathworks.com/help/bluetooth/ug/bluetooth-mesh-networking.html)
