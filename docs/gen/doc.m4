@@ -1,6 +1,7 @@
 define(`docname',
 	ifelse(NAME, `pva', `Plan van aanpak',
 	       NAME, `pve', `Pakket van eisen',
+	       NAME, `research', `Research document',
 				 `UNKNOWN???'))dnl
 
 <!DOCTYPE html>
