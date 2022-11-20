@@ -1,4 +1,22 @@
 # nrf528xx subdirectory
 
-- compatible with nrf52833 and nrf52840
-- west for building and flashing
+## building
+
+```bash
+# build for big dev board
+west build -b nrf52833dk_nrf52833
+
+# build for usb dongle
+west build -b nrf52840dongle_nrf52840
+```
+
+## flashing
+
+```bash
+# incremental flash
+west flash
+
+# force erase flash first
+west flash --erase
+```
+

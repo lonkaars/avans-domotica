@@ -111,6 +111,57 @@ Provisioning is the process by which a Bluetooth device (unprovisioned device) j
 
 WIP
 
+# Manual nRF toolchain installation
+
+Installing the nRF toolchain can usually be done through Nordic's [nRF Connect
+for
+Dekstop](https://www.nordicsemi.com/Products/Development-tools/nrf-connect-for-desktop)
+application. This program is shipped as an AppImage file for Linux users, and
+though AppImage files are supposed to be containerized applications that will
+run in any environment, the latest nRF connect application is broken on Arch
+Linux as of November 20th 2022.
+
+Nordic also provides [manual installation
+instructions](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/gs_installing.html)
+for generic Linux distro's, but here is a more specific guide for Arch users
+(assuming [yay](https://github.com/Jguer/yay) is installed):
+
+```bash
+# 1. install the required tools
+yay -S cmake python python-pip dtc
+
+# 2. install west
+pip3 install --user west
+# make sure to add ~/.local/bin to PATH in your shell's startup/environment
+
+# 3. nRF sdk code (change ~/.local/share/ncs if you want to install elsewhere)
+mkdir -p ~/.local/share/ncs
+cd ~/.local/share/ncs
+west init -m https://github.com/nrfconnect/sdk-nrf --mr v2.1.2
+west update
+west zephyr-export
+
+# 4. install other python dependencies (also in ncs folder)
+pip3 install --user -r zephyr/scripts/requirements.txt
+pip3 install --user -r nrf/scripts/requirements.txt
+pip3 install --user -r bootloader/mcuboot/scripts/requirements.txt
+
+# 5. install a toolchain
+yay -S zephyr-sdk
+
+# copy zephyrrc
+cp /usr/share/zephyr-sdk/zephyrrc ~/.zephyrrc
+```
+
+## Additional notes
+
+- The toolchain installation process takes up a lot of space (around 15G on my
+  system, excluding python packages)
+- The examples in `ncs/zephyr/samples/` are for any zephyr-compatible boards,
+  and require extra configuration before they'll compile without errors. To
+  test if you've set up the toolchain correctly, running `west build` in the
+  `ncs/nrf/samples/bluetooth/mesh/light/` sample should work
+
 # Links
 
 These are the links used for Bluetooth mesh research

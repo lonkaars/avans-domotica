@@ -5,8 +5,12 @@
 **/.DS_Store
 **/.$*
 
+# other
 copyright/
 temp/
+
+# build artifacts
+nrf528xx/build
 
 # confui
 confui/confui
