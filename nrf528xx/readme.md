@@ -1,5 +1,7 @@
 # nrf528xx subdirectory
 
+> the makefile in this folder isn't used for building but for auxiliary rules
+
 ## building
 
 ```bash

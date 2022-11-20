@@ -1,0 +1,19 @@
+Checks: '-*,readability-identifier-naming'
+CheckOptions:
+	- { key: readability-identifier-naming.EnumCase, value: lower_case }
+	- { key: readability-identifier-naming.EnumPrefix, value: cd_e_ }
+	- { key: readability-identifier-naming.FunctionCase, value: lower_case }
+	- { key: readability-identifier-naming.FunctionPrefix, value: cd_ }
+	- { key: readability-identifier-naming.GlobalConstantCase, value: UPPER_CASE }
+	- { key: readability-identifier-naming.GlobalConstantIgnoredRegexp, value: _.* }
+	- { key: readability-identifier-naming.GlobalConstantPrefix, value: CD_ }
+	- { key: readability-identifier-naming.GlobalVariableCase, value: lower_case }
+	- { key: readability-identifier-naming.GlobalVariableIgnoredRegexp, value: _.* }
+	- { key: readability-identifier-naming.GlobalVariablePrefix, value: g_cd_ }
+	- { key: readability-identifier-naming.MacroDefinitionCase, value: UPPER_CASE }
+	- { key: readability-identifier-naming.MacroDefinitionIgnoredRegexp, value: _.* }
+	- { key: readability-identifier-naming.MacroDefinitionPrefix, value: CD_ }
+	- { key: readability-identifier-naming.StructCase, value: lower_case }
+	- { key: readability-identifier-naming.StructPrefix, value: cd_s_ }
+
+# vim: ft=yaml

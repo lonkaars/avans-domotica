@@ -1,4 +1,4 @@
-# project domotica
+# casa domotica
 
 still WIP
 
