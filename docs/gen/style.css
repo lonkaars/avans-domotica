@@ -39,6 +39,15 @@
 		hyphens: auto;
 	}
 
+	figcaption {
+		display: inline-block;
+		counter-increment: fig;
+	}
+
+	figcaption::before {
+		content: "Figure " counter(fig) ": ";
+	}
+
 	table {
 		border-collapse: collapse;
 		border-style: solid;
@@ -89,5 +98,11 @@
 		transform: translateX(-100%) translateX(-5pt);
 		left: 0;
 		content: attr(heading-num-fix);
+	}
+
+	img {
+		max-width: 13cm;
+		display: block;
+		margin: 0 auto;
 	}
 }

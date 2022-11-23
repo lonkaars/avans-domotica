@@ -14,7 +14,7 @@ Flooding is used in computer networks routing algorithm in which every incoming 
 
 A device is named "node" when it is added to a network. A node can contain several components that can be controlled independently of each other. For example, a luminaire can contain several lamps that can be switched on/off independently of each other. The different parts of a "single node" are called elements (figure 1).
 
-![Figure 1](img/node_mesh_network.png)
+![Node mesh network diagram](img/node_mesh_network.png)
 
 ### Elements
 
@@ -22,7 +22,7 @@ Some nodes, such as sensors, run off batteries while other nodes, like light fix
 
 Some nodes are more complicated than others and consist of multiple independent parts called elements. Each node has at least one element, known as the primary element, and may have additional elements (Figure 2).
 
-![Figure 2](img/node_composition.png)
+![Node composition](img/node_composition.png)
 
 #### Low power node
 
@@ -54,7 +54,7 @@ There are in total 3 model types a client, server and control type. A server mod
 
 Bluetooth mesh concepts is an overview of the operation and capabilities of the profile, as well as the life cycle of a mesh device. There are two different applications, the first is Bluetooth mesh and the second one  is Bluetooth low energy (Figure 3).
 
-![Figure 3](img/relations_applications.png)
+![Relations and applications](img/relations_applications.png)
 
 For a more detailed understanding of concepts look for link number 11.
 
@@ -101,7 +101,7 @@ A virtual address represents a set of destination addresses. Each virtual addres
 
 Bluetooth mesh networking implements a publish/subscribe message-oriented communication system. Such an approach ensures that different types of products can coexist in a mesh network without being affected by messages from devices they do not need to listen to. The act of sending a message is known as publishing. Based on the configuration, the mesh nodes select messages sent to specific addresses for processing. This technique is known as subscribing. A publisher node sends messages to those nodes that have subscribed to the publisher. Typically, mesh messages are addressed to group or virtual addresses. For example, look at figure 4.
 
-![Figure 4](img/publish_subscribe.png)
+![Publish and subscribe](img/publish_subscribe.png)
 
 ### Provisioning
 
@@ -111,7 +111,7 @@ Provisioning is the process by which a Bluetooth device (unprovisioned device) j
 
 For this demo we are trying to understand the basics behind bluetooth mesh (picture below).
 
-![Figure 5](img/demo.png)
+![Demo set-up](img/demo.png)
 
 ### Difficulties
 
@@ -121,13 +121,13 @@ After accidentally removing the bootloader in the dongle, it wasn't working prop
 
 To make example `nrf/samples/bluetooth/mesh/light` or `switch` work with the dongle a change is needed in the `.conf` file.
 
-![Figure 6](img/bluetooth_dongle_problem.png)
+![Dongle configuration](img/bluetooth_dongle_problem.png)
 
 After removing these two lines from the .conf file it will work exactly as you’d expect. For the development kit, it doesn't need to change.
 
 Lastly to make debugging work with the RTT viewer there needs to be configurations added to the .conf file(see below).
-![Figure 7](img/rtt_viewer_conf.png)
 
+![RTT viewer configuration](img/rtt_viewer_conf.png)
 
 # Manual nRF toolchain installation
 
