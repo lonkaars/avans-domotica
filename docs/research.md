@@ -119,7 +119,7 @@ After accidentally removing the bootloader in the dongle, it wasn't working prop
 
 To make example nrf/samples/bluetooth/mesh/light or switch work with the dongle a change is needed in the .conf file.
 
-![Figure 6](img/bluetoothdongleProblem.png)
+![Figure 6](img/bluetoothdongleProblem.PNG)
 
 After removing these two lines from the .conf file it will work exactly as you’d expect. For the development kit, it doesn't need to change.
 
