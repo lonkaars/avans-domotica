@@ -108,23 +108,25 @@ Bluetooth mesh networking implements a publish/subscribe message-oriented commun
 Provisioning is the process by which a Bluetooth device (unprovisioned device) joins the mesh network and becomes a Bluetooth mesh node. This process is controlled by a provisioner. A provisioner and the unprovisioned device follow a fixed procedure as defined in the Bluetooth Mesh Profile [4]. A provisioner is typically a smartphone running a provisioning application. For a more in-depth look at different aspects of provisioning see links number 13.
 
 ## Demo
-For this demo we are trying too understand the basics behind bluetooth mesh( picture below).
 
-![Figure 5](img/Demo.PNG)
+For this demo we are trying to understand the basics behind bluetooth mesh (picture below).
+
+![Figure 5](img/demo.png)
 
 ### Difficulties
+
 There were three difficulties for this demo: making the dongle work, making Bluetooth work on the dongle, and lastly debugging with RTT. The main problem was making the dongle work.
 
 After accidentally removing the bootloader in the dongle, it wasn't working properly. To solve this, a bootloader hex file is needed to erase and write in the dongle with a segger j-link and the nrf connect for desktop programmer. The bootloader will be referenced in GitHub.
 
-To make example nrf/samples/bluetooth/mesh/light or switch work with the dongle a change is needed in the .conf file.
+To make example `nrf/samples/bluetooth/mesh/light` or `switch` work with the dongle a change is needed in the `.conf` file.
 
-![Figure 6](img/bluetoothdongleProblem.PNG)
+![Figure 6](img/bluetooth_dongle_problem.png)
 
 After removing these two lines from the .conf file it will work exactly as you’d expect. For the development kit, it doesn't need to change.
 
 Lastly to make debugging work with the RTT viewer there needs to be configurations added to the .conf file(see below).
-![Figure 7](img/RTTViewerConf.PNG)
+![Figure 7](img/rtt_viewer_conf.png)
 
 
 # Manual nRF toolchain installation
@@ -194,4 +196,4 @@ These are the links used for Bluetooth mesh research
 10. [Repairing dongle](https://devzone.nordicsemi.com/f/nordic-q-a/40924/how-can-i-restore-the-original-bootloader-of-a-pca10059)
 11. [Mesh concepts](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/ug_bt_mesh_concepts.html#mesh-concepts)
 12. [Mesh networking](https://www.mathworks.com/help/bluetooth/ug/bluetooth-mesh-networking.html)
-13. [provision Mesh network](https://www.bluetooth.com/blog/provisioning-a-bluetooth-mesh-network-part-1/)
+13. [Provision Mesh network](https://www.bluetooth.com/blog/provisioning-a-bluetooth-mesh-network-part-1/)
