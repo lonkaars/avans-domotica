@@ -109,7 +109,8 @@ Provisioning is the process by which a Bluetooth device (unprovisioned device) j
 
 ## Demo
 For this demo we are trying too understand the basics behind bluetooth mesh( picture below).
-![Figure 5](img/Demo.png)
+
+![Figure 5](img/Demo.PNG)
 
 ### Difficulties
 There were three difficulties for this demo: making the dongle work, making Bluetooth work on the dongle, and lastly debugging with RTT. The main problem was making the dongle work.
@@ -117,7 +118,9 @@ There were three difficulties for this demo: making the dongle work, making Blue
 After accidentally removing the bootloader in the dongle, it wasn't working properly. To solve this, a bootloader hex file is needed to erase and write in the dongle with a segger j-link and the nrf connect for desktop programmer. The bootloader will be referenced in GitHub.
 
 To make example nrf/samples/bluetooth/mesh/light or switch work with the dongle a change is needed in the .conf file.
+
 ![Figure 6](img/bluetoothdongleProblem.png)
+
 After removing these two lines from the .conf file it will work exactly as you’d expect. For the development kit, it doesn't need to change.
 
 Lastly to make debugging work with the RTT viewer there needs to be configurations added to the .conf file(see below).
