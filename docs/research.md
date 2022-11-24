@@ -105,7 +105,7 @@ Bluetooth mesh networking implements a publish/subscribe message-oriented commun
 
 ### Provisioning
 
-Provisioning is the process by which a Bluetooth device (unprovisioned device) joins the mesh network and becomes a Bluetooth mesh node. This process is controlled by a provisioner. A provisioner and the unprovisioned device follow a fixed procedure as defined in the Bluetooth Mesh Profile [4]. A provisioner is typically a smartphone running a provisioning application. For a more in-depth look at different aspects of provisioning see links number 13.
+Provisioning is the process by which a Bluetooth device (un-provisioned device) joins the mesh network and becomes a Bluetooth mesh node. This process is controlled by a provisioner. A provisioner and the un-provisioned device follow a fixed procedure as defined in the Bluetooth Mesh Profile [4]. A provisioner is typically a smartphone running a provisioning application. For a more in-depth look at different aspects of provisioning see links number 13.
 
 ## Demo
 
@@ -133,7 +133,7 @@ Lastly to make debugging work with the RTT viewer there needs to be configuratio
 
 Installing the nRF toolchain can usually be done through Nordic's [nRF Connect
 for
-Dekstop](https://www.nordicsemi.com/Products/Development-tools/nrf-connect-for-desktop)
+Desktop](https://www.nordicsemi.com/Products/Development-tools/nrf-connect-for-desktop)
 application. This program is shipped as an AppImage file for Linux users, and
 though AppImage files are supposed to be containerized applications that will
 run in any environment, the latest nRF connect application is broken on Arch
