@@ -180,6 +180,30 @@ cp /usr/share/zephyr-sdk/zephyrrc ~/.zephyrrc
   test if you've set up the toolchain correctly, running `west build` in the
   `ncs/nrf/samples/bluetooth/mesh/light/` sample should work
 
+# Async connection
+This chapter is focused on the communication between the border router node and the client desktop. The main focus lays on a wired connection over UART(USB).
+
+
+## UART 
+
+### libuv
+[libuv Cross-platform asynchronous I/O](https://github.com/libuv/libuv) is a C library that offers support for TCP & UDP sockets and more as listed on the github. This library is mainly focused on communication-protocols, but does not clearly support a general style of async interrupts.
+
+### libasync
+The [libasync](https://github.com/mkschreder/libasync) library offers a way to do asynchronous tasks in C. This library can be useful, but has not been updated for the last 8 years. Furthermore the implementation of UART communication is still required by the user as this library is build for generic tasks and not only communication protocols.
+
+### Qt6
+[Qt](https://qt.io/blog/asynchronous-apis-in-qt-6) offers que-able async tasks, see blog for more details. Further more, [Qt](https://doc.qt.io/qt-6/qserialport.html) also directly supports asynchronous reading of an (UART) port. When also taking into account that in this project we are likely to also produce a client application (with Qt) using this build-in Qt feature seems the most logical.
+
+## Bluetooth
+In the school provided documentation over bluetooth mesh there is a section which describes possible methods of connecting to a border router, one of these is a configuration that allows a wireless connection over bluetooth. This would require a node to be configured to be on the bluetooth network and no longer on bluetooth mesh. In order to make the bluetooth mesh communicate with the 'normal' bluetooth node it requires set to be a proxy node.
+
+### Qt6
+Qt also has support for a cross-platform bluetooth connection, more details about capabilities are stated in the [Qt6 docs](https://doc.qt.io/qt-6/qtbluetooth-index.html).
+
+## Summary
+There are multiple ways to connect to the bluetooth mesh border router, mainly: USB, UART or Bluetooth. For any of these options the best implementation for this project will be via Qt6 due to it being highly likely that this will also be the used for the application
+
 # Links
 
 These are the links used for Bluetooth mesh research
