@@ -22,3 +22,4 @@ docs/*.toc
 docs/*.con
 docs/*.pdf
 .obsidian
+.vscode
