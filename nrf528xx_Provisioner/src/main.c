@@ -1,11 +1,12 @@
 
-
+#include <dk_buttons_and_leds.h>
 #include <zephyr/zephyr.h>
 #include <zephyr/sys/printk.h>
 #include <zephyr/settings/settings.h>
 #include <zephyr/bluetooth/mesh.h>
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/drivers/gpio.h>
+
 
 K_SEM_DEFINE(sem_unprov_beacon, 0, 1);
 K_SEM_DEFINE(sem_node_added, 0, 1);
@@ -15,10 +16,16 @@ static const uint16_t app_idx;
 static uint16_t self_addr = 1, node_addr;
 static const uint8_t dev_uuid[16] = { 0xdd, 0xdd };
 static uint8_t node_uuid[16];
+int test;
+
+
+
+
 
 static struct bt_mesh_cfg_cli cfg_cli ={
 
 };
+
 
 static void health_current_status(struct bt_mesh_health_cli* cli, uint16_t addr,
 								uint8_t test_id, uint16_t cid, uint8_t *faults,
@@ -52,6 +59,7 @@ static struct bt_mesh_model root_models[] = {
 	BT_MESH_MODEL_HEALTH_CLI(&health_cli),
 };
 
+
 static struct bt_mesh_elem elements[] = {
 	BT_MESH_ELEM(0, root_models, BT_MESH_MODEL_NONE),
 };
@@ -60,7 +68,9 @@ static const struct bt_mesh_comp comp = {
 	.cid = BT_COMP_ID_LF,
 	.elem = elements,
 	.elem_count = ARRAY_SIZE(elements),
+	
 };
+
 /** settting up a configuration database*/
 static void setup_cdb(void)
 {
@@ -77,6 +87,23 @@ static void setup_cdb(void)
 	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
 		bt_mesh_cdb_app_key_store(key);
 	}
+}
+
+static void unprovisioned_beacon(uint8_t uuid[16],
+				 bt_mesh_prov_oob_info_t oob_info,
+				 uint32_t *uri_hash)
+{
+	
+	memcpy(node_uuid, uuid, 16);
+	k_sem_give(&sem_unprov_beacon);
+	printk(" device uuid %i, oob_info: %i \n", *uuid, oob_info);
+}
+
+static void node_added(uint16_t net_idx, uint8_t uuid[16], uint16_t addr, uint8_t num_elem)
+{
+	node_addr = addr;
+	k_sem_give(&sem_node_added);
+	printk("net_idx: %u, uuid: %s, addr: %i, num_elem: %d\n",net_idx,uuid,addr,num_elem);
 }
 
 static void configure_self(struct bt_mesh_cdb_node *self)
@@ -126,6 +153,9 @@ static void configure_node(struct bt_mesh_cdb_node *node)
 	struct bt_mesh_comp_p0_elem elem;
 	struct bt_mesh_cdb_app_key *key;
 	struct bt_mesh_comp_p0 comp;
+	struct bt_mesh_cfg_mod_pub pub;
+	
+
 	uint8_t status;
 	int err, elem_addr;
 
@@ -181,7 +211,7 @@ static void configure_node(struct bt_mesh_cdb_node *node)
 				       status);
 			}
 		}
-
+		/*
 		for (int i = 0; i < elem.nvnd; i++) {
 			struct bt_mesh_mod_id_vnd id =
 				bt_mesh_comp_p0_elem_mod_vnd(&elem, i);
@@ -198,7 +228,7 @@ static void configure_node(struct bt_mesh_cdb_node *node)
 				       status);
 			}
 		}
-
+		*/
 		elem_addr++;
 	}
 
@@ -207,33 +237,20 @@ static void configure_node(struct bt_mesh_cdb_node *node)
 	if (IS_ENABLED(CONFIG_BT_SETTINGS)) {
 		bt_mesh_cdb_node_store(node);
 	}
-
 	printk("Configuration complete\n");
-}
 
-static void unprovisioned_beacon(uint8_t uuid[16],
-				 bt_mesh_prov_oob_info_t oob_info,
-				 uint32_t *uri_hash)
-{
-	
-	memcpy(node_uuid, uuid, 16);
-	k_sem_give(&sem_unprov_beacon);
-	printk(" device uuid %i, oob_info: %i \n", *uuid, oob_info);
-}
+	// bt_mesh_cfg_mod_pub_set(net_idx, addr, elem_addr, mod_id, 
+	// 						bt_mesh_cfg_mod_pub &pub, &status)
 
-static void node_added(uint16_t net_idx, uint8_t uuid[16], uint16_t addr, uint8_t num_elem)
-{
-	node_addr = addr;
-	k_sem_give(&sem_node_added);
-	printk("net_idx: %u, uuid: %s, addr: %i, num_elem: %d\n",net_idx,uuid,addr,num_elem);
+
 }
 
 static const struct bt_mesh_prov prov = {
 	.uuid = dev_uuid,
 	.unprovisioned_beacon = unprovisioned_beacon,
 	.node_added = node_added,
+	
 };
-
 
 static int bt_ready(void)
 {
@@ -295,6 +312,18 @@ static uint8_t check_unconfigured(struct bt_mesh_cdb_node *node, void *data)
 	return BT_MESH_CDB_ITER_CONTINUE;
 }
 
+static void button_handler_cb(uint32_t pressed, uint32_t changed)
+{
+	// printf("pressed: %i, changed: %i \n",pressed,changed);
+	if(changed==1 && pressed==1){
+		test=1;
+	}
+	else if(changed==2 && pressed==1){
+		test=0;
+	}
+}
+
+
 void main(void)
 {
 	char uuid_hex_str[32 + 1];
@@ -302,6 +331,9 @@ void main(void)
 
 	printk("Initializing...\n");
 
+	// dk_leds_init();
+	// dk_buttons_init(NULL);
+	
 	/* Initialize the Bluetooth Subsystem */
 	err = bt_enable(NULL);
 	if (err) {
@@ -311,9 +343,17 @@ void main(void)
 
 	printk("Bluetooth initialized\n");
 	bt_ready();
-	
-	while(1)
-	{
+
+	// static struct button_handler button_handler = {
+    //     .cb = button_handler_cb,
+		
+    // };
+
+    // dk_button_handler_add(&button_handler);
+while(1)
+{
+
+
 		k_sem_reset(&sem_unprov_beacon);
 		k_sem_reset(&sem_node_added);
  		bt_mesh_cdb_node_foreach(check_unconfigured, NULL);
@@ -343,12 +383,11 @@ void main(void)
 				}
 				else{
 					printk("added node 0x%04x\n",node_addr);
+
 				}
 			}
 		}
 
 
 	}
-		
-	
 }
