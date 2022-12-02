@@ -2,10 +2,12 @@ QT += core gui widgets
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+		mesh_connector.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+		mesh_connector.h
 
 CONFIG += c++17
 

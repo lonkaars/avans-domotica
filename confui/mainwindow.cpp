@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
+	this->mesh_connector = new CDMeshConnector();
 }
 
-MainWindow::~MainWindow() {
+CDMainWindow::~CDMainWindow() {
+	delete this->mesh_connector;
 }
 

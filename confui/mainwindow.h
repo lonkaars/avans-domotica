@@ -5,14 +5,18 @@
 
 #include <QDebug>
 
+#include "mesh_connector.h"
+
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class CDMainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class CDMainWindow : public QMainWindow {
 	Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = nullptr);
-	~MainWindow();
+	CDMeshConnector *mesh_connector = nullptr;
+	
+	CDMainWindow(QWidget *parent = nullptr);
+	~CDMainWindow();
 };
