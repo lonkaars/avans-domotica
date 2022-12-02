@@ -7,15 +7,16 @@
 
 #include "mesh_connector.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class CDMainWindow; }
-QT_END_NAMESPACE
+class CDAutomationsWidget;
+class CDNodeOverviewWidget;
 
 class CDMainWindow : public QMainWindow {
 	Q_OBJECT
 
 public:
 	CDMeshConnector *mesh_connector = nullptr;
+	CDAutomationsWidget* automations_widget = nullptr;
+	CDNodeOverviewWidget* node_overview_widget = nullptr;
 	
 	CDMainWindow(QWidget *parent = nullptr);
 	~CDMainWindow();
