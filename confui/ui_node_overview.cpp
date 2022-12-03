@@ -16,8 +16,8 @@ CDNodeOverviewWidget::CDNodeOverviewWidget(CDMainWindow* main_window) : QWidget(
 		.address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 },
 		.name_len = strlen(n_name),
 		.name = n_name,
-		.light_on = false,
-		.provisioned = false,
+		.light_on = true,
+		.provisioned = true,
 	};
 
 	CDNodeWidget* nd_w = new CDNodeWidget(&n, this);
