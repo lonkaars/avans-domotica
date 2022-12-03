@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "mesh_connector.h"
 
 CDMeshConnector::CDMeshConnector() {
@@ -56,3 +57,10 @@ void CDMeshConnector::node_remove_network(cd_s_node* node_ptr) {
 	return;
 }
 
+string cd_node_mac_string(cd_mac_addr_t mac) {
+	char* addr = nullptr;
+	asprintf(&addr, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+	string ret = addr;
+	free(addr);
+	return ret;
+}

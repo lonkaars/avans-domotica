@@ -16,8 +16,8 @@ CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 	this->automations_widget = new CDAutomationsWidget(this);
 	this->node_overview_widget = new CDNodeOverviewWidget(this);
 
-	tab_bar_widget->addTab(this->automations_widget, "automations");
 	tab_bar_widget->addTab(this->node_overview_widget, "node overview");
+	tab_bar_widget->addTab(this->automations_widget, "automations");
 
 	setMenuBar(menu_bar);
 	setCentralWidget(tab_bar_widget);

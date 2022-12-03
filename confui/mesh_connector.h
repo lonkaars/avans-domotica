@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <vector>
 #include <map>
+#include <string>
 
 typedef uint32_t cd_link_t;
 typedef uint8_t cd_mac_addr_t[6];
@@ -10,6 +11,7 @@ typedef uint8_t cd_mac_addr_t[6];
 using std::size_t;
 using std::vector;
 using std::map;
+using std::string;
 
 enum cd_e_automation_type {
 	CD_AUTOMATION_TYPE_TOGGLE,
@@ -20,7 +22,7 @@ enum cd_e_automation_type {
 typedef struct {
 	cd_mac_addr_t address;
 	size_t name_len;
-	char* name;
+	const char* name;
 	bool light_on;
 	bool provisioned;
 } cd_s_node;
@@ -49,3 +51,5 @@ public:
 	virtual void node_join_network(cd_s_node* node_ptr);
 	virtual void node_remove_network(cd_s_node* node_ptr);
 };
+
+string cd_node_mac_string(cd_mac_addr_t mac);
