@@ -12,4 +12,5 @@ public:
 	
 	CDNodeOverviewTabWidget(CDMainWindow *main_window = nullptr);
 	virtual ~CDNodeOverviewTabWidget();
+	virtual void update();
 };

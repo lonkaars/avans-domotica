@@ -1,6 +1,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QScrollArea>
 
 #include "ui_tab_node_overview.h"
 #include "ui_node.h"
@@ -27,29 +28,31 @@ CDNodeOverviewTabWidget::CDNodeOverviewTabWidget(CDMainWindow* main_window) : QW
 	this->mainwindow = main_window;
 
 	QVBoxLayout* main_layout = new QVBoxLayout;
+	QScrollArea* scroll_area = new QScrollArea;
+	QWidget* scroll_container = new QWidget;
+	QVBoxLayout* scroll_inner = new QVBoxLayout;
 
-	const char* n_name = "berta";
-	cd_s_node n = {
-		.address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 },
-		.name_len = strlen(n_name),
-		.name = n_name,
-		.light_on = true,
-		.provisioned = true,
-	};
+	scroll_area->setWidgetResizable(true);
+	scroll_area->setFrameShape(QFrame::NoFrame);
+	scroll_area->setBackgroundRole(QPalette::Window);
+	scroll_area->setFrameShadow(QFrame::Plain);
+	scroll_area->setWidget(scroll_container);
+	scroll_area->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-	cd_s_automation a = {
-		.type = CD_AUTOMATION_TYPE_TOGGLE,
-		.button = &n,
-		.light = &n,
-	};
+	scroll_container->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+	scroll_container->setLayout(scroll_inner);
 
-	CDNodeWidget* nd_w = new CDNodeWidget(&n, this);
-	CDAutomationWidget* au_w = new CDAutomationWidget(&a, this);
-	CDAddAutomationWidget* ad_w = new CDAddAutomationWidget(this);
+	vector<cd_s_node*> nodes = this->mainwindow->mesh_connector->get_nodes();
+	CDNodeWidget* nd_w = new CDNodeWidget(nodes[0], this);
 
-	main_layout->addWidget(nd_w);
-	main_layout->addWidget(au_w);
-	main_layout->addWidget(ad_w);
+	scroll_inner->addWidget(nd_w);
 
+	main_layout->addWidget(scroll_area);
+
+	update();
 	setLayout(main_layout);
+}
+
+void CDNodeOverviewTabWidget::update() {
+
 }
