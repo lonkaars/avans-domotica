@@ -4,6 +4,9 @@
 #include <QPushButton>
 
 #include "ui_tab_automations.h"
+#include "ui_automation.h"
+
+using std::pair;
 
 class CDAddAutomationWidget : public QWidget {
 public:
@@ -25,12 +28,23 @@ public:
 CDAutomationsTabWidget::~CDAutomationsTabWidget() { }
 CDAutomationsTabWidget::CDAutomationsTabWidget(CDMainWindow* main_window) : QWidget(main_window) {
 	this->mainwindow = main_window;
+	main_layout = new CDScrollContainerLayout(this);
 
-	QVBoxLayout* main_layout = new QVBoxLayout;
-
-	QLabel* label_test = new QLabel("Automations widget test");
-	main_layout->addWidget(label_test);
-
+	update();
 	setLayout(main_layout);
+}
+
+void CDAutomationsTabWidget::update() {
+	map<cd_link_t, cd_s_automation*> links = this->mainwindow->mesh_connector->get_links();
+	map<cd_link_t, CDAutomationWidget*> widgets;
+
+	for (pair<cd_link_t, cd_s_automation*> link : links) {
+		if (widgets.count(link.first)) { // node is already in list
+			widgets[link.first]->update();
+		} else {
+			widgets[link.first] = new CDAutomationWidget(link.second, this);
+		}
+		main_layout->addWidget(widgets[link.first]);
+	}
 }
 
