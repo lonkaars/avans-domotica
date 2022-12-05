@@ -6,6 +6,8 @@
 #include "ui_tab_node_overview.h"
 #include "ui_node.h"
 
+using std::pair;
+
 CDNodeOverviewTabWidget::~CDNodeOverviewTabWidget() {  }
 CDNodeOverviewTabWidget::CDNodeOverviewTabWidget(CDMainWindow* main_window) : QWidget(main_window) {
 	this->mainwindow = main_window;
@@ -16,17 +18,15 @@ CDNodeOverviewTabWidget::CDNodeOverviewTabWidget(CDMainWindow* main_window) : QW
 }
 
 void CDNodeOverviewTabWidget::update() {
-	vector<cd_s_node*> nodes = this->mainwindow->mesh_connector->get_nodes();
-	map<uint8_t(*)[6], CDNodeWidget*> node_widgets;
+	map<cd_mac_addr_cpp_t, cd_s_node*> nodes = g_cd_mesh_connector->get_nodes(false);
+	map<cd_mac_addr_cpp_t, CDNodeWidget*> node_widgets;
 
-	for (cd_s_node* node : nodes) {
-		// c++ cast from uint8_t[6] to uint8_t* with length 6
-		uint8_t (*addr)[6] = (uint8_t (*)[6]) node->address;
-		if (node_widgets.count(addr)) { // node is already in list
-			node_widgets[addr]->update();
+	for (pair<cd_mac_addr_cpp_t, cd_s_node*> node : nodes) {
+		if (node_widgets.count(node.first)) { // node is already in list
+			node_widgets[node.first]->update();
 		} else {
-			node_widgets[addr] = new CDNodeWidget(node, this);
+			node_widgets[node.first] = new CDNodeWidget(node.second, this);
 		}
-		main_layout->addWidget(node_widgets[addr]);
+		main_layout->addWidget(node_widgets[node.first]);
 	}
 }

@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
+#include <array>
 
 #include "mesh_connector.h"
 
@@ -25,7 +26,7 @@ CDMeshConnector::CDMeshConnector() {
 	cd_mac_addr_t temp_node_berta_address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 };
 	memcpy(temp_node_berta->address, temp_node_berta_address, 6);
 
-	printf("adding dummy node berta...\n");
+	printf("adding dummy node gerrit...\n");
 	char* temp_node_gerrit_name = (char*) malloc(6);
 	memcpy(temp_node_gerrit_name, "gerrit", 6);
 
@@ -34,7 +35,7 @@ CDMeshConnector::CDMeshConnector() {
 	temp_node_gerrit->name_len = 6;
 	temp_node_gerrit->light_on = false;
 	temp_node_gerrit->provisioned = false;
-	cd_mac_addr_t temp_node_gerrit_address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 };
+	cd_mac_addr_t temp_node_gerrit_address = { 0x0e, 0xf9, 0x46, 0x4d, 0xe8, 0x02 };
 	memcpy(temp_node_gerrit->address, temp_node_gerrit_address, 6);
 
 	_nodes.push_back(temp_node_berta);
@@ -48,7 +49,7 @@ CDMeshConnector::CDMeshConnector() {
 
 CDMeshConnector::~CDMeshConnector() {
 	map<cd_link_t, cd_s_automation*> links = get_links();
-	vector<cd_s_node*> nodes = get_nodes();
+	vector<cd_s_node*> nodes = get_raw_nodes();
 
 	// free all automation structs
 	for (pair<cd_link_t, cd_s_automation*> link : links)
@@ -69,8 +70,18 @@ void CDMeshConnector::refresh_nodes_sync() {
 	return;
 }
 
-vector<cd_s_node*> CDMeshConnector::get_nodes() {
+vector<cd_s_node*> CDMeshConnector::get_raw_nodes() {
 	return _nodes;
+}
+
+map<cd_mac_addr_cpp_t, cd_s_node*> CDMeshConnector::get_nodes(bool provisioned) {
+	map<cd_mac_addr_cpp_t, cd_s_node*> nodes;
+	vector<cd_s_node*> raw_nodes = get_raw_nodes();
+	for (cd_s_node* node : raw_nodes) {
+		if (provisioned && (node->provisioned == false)) continue;
+		nodes[cd_mac_to_cpp_arr(node->address)] = node;
+	}
+	return nodes;
 }
 
 map<cd_link_t, cd_s_automation*> CDMeshConnector::get_links() {
@@ -131,10 +142,15 @@ void CDMeshConnector::node_remove_network(cd_s_node* node_ptr) {
 	return;
 }
 
-string cd_node_mac_string(cd_mac_addr_t mac) {
+string cd_mac_to_string(cd_mac_addr_t mac) {
 	char* addr = nullptr;
 	asprintf(&addr, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 	string ret = addr;
 	free(addr);
 	return ret;
 }
+
+cd_mac_addr_cpp_t cd_mac_to_cpp_arr(cd_mac_addr_t mac) {
+	return { mac[0], mac[1], mac[2], mac[3], mac[4], mac[5] };
+}
+

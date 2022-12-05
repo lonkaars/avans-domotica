@@ -6,8 +6,11 @@
 #include "ui_tab_automations.h"
 #include "ui_tab_node_overview.h"
 
+CDMeshConnector* g_cd_mesh_connector = nullptr;
+
 CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
-	this->mesh_connector = new CDMeshConnector();
+	g_cd_mesh_connector = new CDMeshConnector();
+	this->mesh_connector = g_cd_mesh_connector;
 
 	QMenuBar* menu_bar = new QMenuBar(this);
 	menu_bar->addMenu("ayo");

@@ -29,6 +29,14 @@ CDAutomationsTabWidget::~CDAutomationsTabWidget() { }
 CDAutomationsTabWidget::CDAutomationsTabWidget(CDMainWindow* main_window) : QWidget(main_window) {
 	this->mainwindow = main_window;
 	main_layout = new CDScrollContainerLayout(this);
+	automations = new QVBoxLayout;
+	new_automation_button = new CDAddAutomationWidget(this);
+
+	QWidget* automations_widget = new QWidget(this);
+	automations_widget->setLayout(automations);
+
+	main_layout->addWidget(automations_widget);
+	main_layout->addWidget(new_automation_button);
 
 	update();
 	setLayout(main_layout);
@@ -44,7 +52,7 @@ void CDAutomationsTabWidget::update() {
 		} else {
 			widgets[link.first] = new CDAutomationWidget(link.second, this);
 		}
-		main_layout->addWidget(widgets[link.first]);
+		automations->addWidget(widgets[link.first]);
 	}
 }
 

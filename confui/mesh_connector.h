@@ -5,13 +5,15 @@
 #include <map>
 #include <string>
 
-typedef uint32_t cd_link_t;
-typedef uint8_t cd_mac_addr_t[6];
-
 using std::size_t;
 using std::vector;
 using std::map;
 using std::string;
+using std::array;
+
+typedef uint32_t cd_link_t;
+typedef uint8_t cd_mac_addr_t[6];
+typedef array<uint8_t, 6> cd_mac_addr_cpp_t;
 
 enum cd_e_automation_type {
 	CD_AUTOMATION_TYPE_TOGGLE,
@@ -44,8 +46,9 @@ public:
 	virtual ~CDMeshConnector();
 	virtual void refresh_nodes_sync();
 	virtual void refresh_config_sync();
-	virtual vector<cd_s_node*> get_nodes();
 	virtual map<cd_link_t, cd_s_automation*> get_links();
+	virtual map<cd_mac_addr_cpp_t, cd_s_node*> get_nodes(bool provisioned);
+	virtual vector<cd_s_node*> get_raw_nodes();
 	virtual vector<cd_s_automation*> get_config();
 	virtual cd_link_t set_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action);
 	virtual void remove_link(cd_link_t link_handle);
@@ -55,4 +58,8 @@ public:
 	virtual void node_remove_network(cd_s_node* node_ptr);
 };
 
-string cd_node_mac_string(cd_mac_addr_t mac);
+extern CDMeshConnector* g_cd_mesh_connector;
+
+string cd_mac_to_string(cd_mac_addr_t mac);
+cd_mac_addr_cpp_t cd_mac_to_cpp_arr(cd_mac_addr_t mac);
+
