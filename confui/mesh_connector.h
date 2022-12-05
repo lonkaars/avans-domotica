@@ -35,16 +35,19 @@ typedef struct {
 
 class CDMeshConnector {
 private:
-	vector<cd_s_node> _nodes;
-	map<cd_link_t, cd_s_automation> _links;
+	vector<cd_s_node*> _nodes;
+	map<cd_link_t, cd_s_automation*> _links;
+	cd_link_t _fresh_map_id;
+	virtual cd_link_t get_new_map_id();
 public:
 	CDMeshConnector();
 	virtual ~CDMeshConnector();
 	virtual void refresh_nodes_sync();
 	virtual void refresh_config_sync();
-	virtual vector<cd_s_node> get_nodes();
-	virtual vector<cd_s_automation> get_config();
-	virtual cd_link_t set_link(cd_mac_addr_t button, cd_mac_addr_t light);
+	virtual vector<cd_s_node*> get_nodes();
+	virtual map<cd_link_t, cd_s_automation*> get_links();
+	virtual vector<cd_s_automation*> get_config();
+	virtual cd_link_t set_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action);
 	virtual void remove_link(cd_link_t link_handle);
 	virtual cd_s_node* get_node_by_id(cd_mac_addr_t address);
 	virtual void set_node(cd_s_node* node_ptr, bool light_status);
