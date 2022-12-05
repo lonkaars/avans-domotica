@@ -37,7 +37,7 @@ class CDMeshConnector {
 private:
 	vector<cd_s_node*> _nodes;
 	map<cd_link_t, cd_s_automation*> _links;
-	cd_link_t _fresh_map_id;
+	cd_link_t _fresh_map_id = 0;
 	virtual cd_link_t get_new_map_id();
 public:
 	CDMeshConnector();

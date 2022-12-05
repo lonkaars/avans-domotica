@@ -12,10 +12,10 @@ cd_link_t CDMeshConnector::get_new_map_id() {
 }
 
 CDMeshConnector::CDMeshConnector() {
-	printf("adding dummy node and automation...\n");
+	printf("adding dummy node berta...\n");
 
 	char* temp_node_berta_name = (char*) malloc(5);
-	strncpy(temp_node_berta_name, "berta", 5);
+	memcpy(temp_node_berta_name, "berta", 5);
 
 	cd_s_node* temp_node_berta = (cd_s_node*) malloc(sizeof(cd_s_node));
 	temp_node_berta->name = temp_node_berta_name;
@@ -23,10 +23,26 @@ CDMeshConnector::CDMeshConnector() {
 	temp_node_berta->light_on = false;
 	temp_node_berta->provisioned = false;
 	cd_mac_addr_t temp_node_berta_address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 };
-	strncpy((char*)temp_node_berta->address, (char*)&temp_node_berta_address, 6);
+	memcpy(temp_node_berta->address, temp_node_berta_address, 6);
+
+	printf("adding dummy node berta...\n");
+	char* temp_node_gerrit_name = (char*) malloc(6);
+	memcpy(temp_node_gerrit_name, "gerrit", 6);
+
+	cd_s_node* temp_node_gerrit = (cd_s_node*) malloc(sizeof(cd_s_node));
+	temp_node_gerrit->name = temp_node_gerrit_name;
+	temp_node_gerrit->name_len = 6;
+	temp_node_gerrit->light_on = false;
+	temp_node_gerrit->provisioned = false;
+	cd_mac_addr_t temp_node_gerrit_address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 };
+	memcpy(temp_node_gerrit->address, temp_node_gerrit_address, 6);
 
 	_nodes.push_back(temp_node_berta);
+	_nodes.push_back(temp_node_gerrit);
 	set_link(temp_node_berta, temp_node_berta, CD_AUTOMATION_TYPE_TOGGLE);
+	set_link(temp_node_berta, temp_node_gerrit, CD_AUTOMATION_TYPE_TOGGLE);
+	set_link(temp_node_gerrit, temp_node_berta, CD_AUTOMATION_TYPE_TURN_OFF);
+	set_link(temp_node_gerrit, temp_node_gerrit, CD_AUTOMATION_TYPE_TURN_ON);
 	return;
 }
 

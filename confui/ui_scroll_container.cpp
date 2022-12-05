@@ -11,7 +11,8 @@ CDScrollContainerLayout::CDScrollContainerLayout(QWidget *parent) : QVBoxLayout(
 	scroll_area->setBackgroundRole(QPalette::Window);
 	scroll_area->setFrameShadow(QFrame::Plain);
 	scroll_area->setWidget(scroll_container);
-	scroll_area->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	scroll_area->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
+	scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	scroll_container->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 	scroll_container->setLayout(scroll_inner);
