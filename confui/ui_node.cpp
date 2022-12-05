@@ -5,23 +5,16 @@ CDNodeWidget::CDNodeWidget(cd_s_node* node, QWidget *parent) : QWidget(parent) {
 	set_node(node);
 
 	main_layout = new QHBoxLayout;
-	float_left = new QHBoxLayout;
-	float_right = new QHBoxLayout;
 	switch_on_off = new QCheckBox;
 	button_add_remove = new QPushButton;
 	label_node_address = new QLabel;
 	label_node_name = new QLabel;
 
-	float_left->addWidget(label_node_name);
-	float_left->addWidget(label_node_address);
-	float_left->addStretch();
-
-	float_right->addStretch();
-	float_right->addWidget(switch_on_off);
-	float_right->addWidget(button_add_remove);
-
-	main_layout->addLayout(float_left);
-	main_layout->addLayout(float_right);
+	main_layout->addWidget(label_node_name);
+	main_layout->addWidget(label_node_address);
+	main_layout->addStretch();
+	main_layout->addWidget(switch_on_off);
+	main_layout->addWidget(button_add_remove);
 
 	update();
 	setLayout(main_layout);

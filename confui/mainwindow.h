@@ -7,16 +7,16 @@
 
 #include "mesh_connector.h"
 
-class CDAutomationsWidget;
-class CDNodeOverviewWidget;
+class CDAutomationsTabWidget;
+class CDNodeOverviewTabWidget;
 
 class CDMainWindow : public QMainWindow {
 	Q_OBJECT
 
 public:
 	CDMeshConnector *mesh_connector = nullptr;
-	CDAutomationsWidget* automations_widget = nullptr;
-	CDNodeOverviewWidget* node_overview_widget = nullptr;
+	CDAutomationsTabWidget* automations_widget = nullptr;
+	CDNodeOverviewTabWidget* node_overview_widget = nullptr;
 	
 	CDMainWindow(QWidget *parent = nullptr);
 	~CDMainWindow();

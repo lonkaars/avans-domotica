@@ -29,8 +29,8 @@ typedef struct {
 
 typedef struct {
 	cd_e_automation_type type;
-	cd_s_node button;
-	cd_s_node light;
+	cd_s_node* button;
+	cd_s_node* light;
 } cd_s_automation;
 
 class CDMeshConnector {

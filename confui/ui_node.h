@@ -16,8 +16,6 @@ private:
 	cd_s_node* _node;
 
 	QHBoxLayout* main_layout;
-	QHBoxLayout* float_left;
-	QHBoxLayout* float_right;
 	QLabel* label_node_name;
 	QLabel* label_node_address;
 	QCheckBox* switch_on_off;
