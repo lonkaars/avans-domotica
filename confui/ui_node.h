@@ -26,4 +26,6 @@ public:
 	virtual ~CDNodeWidget();
 	virtual void update();
 	virtual void set_node(cd_s_node* node);
+	virtual void toggle_provision();
+	virtual void update_led(bool on);
 };

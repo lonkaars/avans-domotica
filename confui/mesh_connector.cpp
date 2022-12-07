@@ -124,8 +124,7 @@ cd_s_node* CDMeshConnector::get_node_by_id(cd_mac_addr_t address) {
 	return node;
 }
 
-void CDMeshConnector::set_node(cd_s_node* node_ptr, bool light_status) {
-	node_ptr->light_on = light_status;
+void CDMeshConnector::update_node(cd_s_node* node_ptr) {
 	printf("turning %.*s %s\n", (int) node_ptr->name_len, node_ptr->name, node_ptr->light_on ? "on" : "off");
 	return;
 }

@@ -53,7 +53,7 @@ public:
 	virtual cd_link_t set_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action);
 	virtual void remove_link(cd_link_t link_handle);
 	virtual cd_s_node* get_node_by_id(cd_mac_addr_t address);
-	virtual void set_node(cd_s_node* node_ptr, bool light_status);
+	virtual void update_node(cd_s_node* node_ptr);
 	virtual void node_join_network(cd_s_node* node_ptr);
 	virtual void node_remove_network(cd_s_node* node_ptr);
 };

@@ -16,6 +16,9 @@ CDNodeWidget::CDNodeWidget(cd_s_node* node, QWidget *parent) : QWidget(parent) {
 	main_layout->addWidget(switch_on_off);
 	main_layout->addWidget(button_add_remove);
 
+	connect(button_add_remove, &QPushButton::clicked, this, &CDNodeWidget::toggle_provision);
+	connect(switch_on_off, &QCheckBox::toggled, this, &CDNodeWidget::update_led);
+
 	update();
 	setLayout(main_layout);
 }
@@ -40,3 +43,18 @@ void CDNodeWidget::update() {
 
 	button_add_remove->setText(_node->provisioned ? "Remove from network" : "Join network");
 }
+
+void CDNodeWidget::toggle_provision() {
+	if (_node->provisioned) g_cd_mesh_connector->node_remove_network(_node);
+	else g_cd_mesh_connector->node_join_network(_node);
+
+	update();
+}
+
+void CDNodeWidget::update_led(bool on) {
+	_node->light_on = on;
+	g_cd_mesh_connector->update_node(_node);
+
+	update();
+}
+
