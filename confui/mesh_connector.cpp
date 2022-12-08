@@ -40,10 +40,10 @@ CDMeshConnector::CDMeshConnector() {
 
 	_nodes.push_back(temp_node_berta);
 	_nodes.push_back(temp_node_gerrit);
-	set_link(temp_node_berta, temp_node_berta, CD_AUTOMATION_TYPE_TOGGLE);
-	set_link(temp_node_berta, temp_node_gerrit, CD_AUTOMATION_TYPE_TOGGLE);
-	set_link(temp_node_gerrit, temp_node_berta, CD_AUTOMATION_TYPE_TURN_OFF);
-	set_link(temp_node_gerrit, temp_node_gerrit, CD_AUTOMATION_TYPE_TURN_ON);
+	create_link(temp_node_berta, temp_node_berta, CD_AUTOMATION_TYPE_TOGGLE);
+	create_link(temp_node_berta, temp_node_gerrit, CD_AUTOMATION_TYPE_TOGGLE);
+	create_link(temp_node_gerrit, temp_node_berta, CD_AUTOMATION_TYPE_TURN_OFF);
+	create_link(temp_node_gerrit, temp_node_gerrit, CD_AUTOMATION_TYPE_TURN_ON);
 	return;
 }
 
@@ -96,16 +96,21 @@ vector<cd_s_automation*> CDMeshConnector::get_config() {
 	return automations;
 }
 
-cd_link_t CDMeshConnector::set_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action) {
+void CDMeshConnector::set_link(cd_link_t link, cd_s_automation* automation) {
+	_links[link] = automation;
+	printf("link[%d] = %.*s %s %.*s\n", link, (int) automation->button->name_len, automation->button->name, automation->type == CD_AUTOMATION_TYPE_TOGGLE ? "toggles" : automation->type == CD_AUTOMATION_TYPE_TURN_OFF ? "turns off" : "turns on", (int) automation->light->name_len, automation->light->name);
+}
+
+cd_link_t CDMeshConnector::create_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type type) {
 	cd_s_automation* automation = (cd_s_automation*) malloc(sizeof(cd_s_automation));
 	automation->button = button;
 	automation->light = light;
-	automation->type = action;
+	automation->type = type;
 
 	cd_link_t link = get_new_map_id();
-	_links[link] = automation;
+	printf("(new) ");
+	set_link(link, automation);
 
-	printf("new link[%d]: %.*s %s %.*s\n", link, (int) button->name_len, button->name, action == CD_AUTOMATION_TYPE_TOGGLE ? "toggles" : action == CD_AUTOMATION_TYPE_TURN_OFF ? "turns off" : "turns on", (int) light->name_len, light->name);
 	return link;
 }
 

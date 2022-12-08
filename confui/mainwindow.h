@@ -12,12 +12,17 @@ class CDNodeOverviewTabWidget;
 
 class CDMainWindow : public QMainWindow {
 	Q_OBJECT
+private:
+	QMenuBar* menu_bar = nullptr;
+	CDAutomationsTabWidget* automations_widget = nullptr;
+	CDNodeOverviewTabWidget* node_overview_widget = nullptr;
 
 public:
 	CDMeshConnector *mesh_connector = nullptr;
-	CDAutomationsTabWidget* automations_widget = nullptr;
-	CDNodeOverviewTabWidget* node_overview_widget = nullptr;
 	
 	CDMainWindow(QWidget *parent = nullptr);
 	~CDMainWindow();
+	virtual void update();
+	virtual void menu_refresh();
+	virtual void menu_add_automation();
 };

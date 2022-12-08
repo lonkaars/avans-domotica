@@ -50,7 +50,9 @@ void CDAutomationsTabWidget::update() {
 		if (widgets.count(link.first)) { // node is already in list
 			widgets[link.first]->update();
 		} else {
-			widgets[link.first] = new CDAutomationWidget(link.second, this);
+			widgets[link.first] = new CDAutomationWidget(this);
+			widgets[link.first]->set_automation(link.first, link.second);
+			widgets[link.first]->update();
 		}
 		automations->addWidget(widgets[link.first]);
 	}

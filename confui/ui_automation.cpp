@@ -4,9 +4,7 @@
 using std::pair;
 
 CDAutomationWidget::~CDAutomationWidget() { }
-CDAutomationWidget::CDAutomationWidget(cd_s_automation* automation, QWidget* parent) : QWidget(parent) {
-	set_automation(automation);
-
+CDAutomationWidget::CDAutomationWidget(QWidget* parent) : QWidget(parent) {
 	main_layout = new QHBoxLayout;
 
 	dropdown_button = new QComboBox;
@@ -24,7 +22,8 @@ CDAutomationWidget::CDAutomationWidget(cd_s_automation* automation, QWidget* par
 	setLayout(main_layout);
 }
 
-void CDAutomationWidget::set_automation(cd_s_automation* automation) {
+void CDAutomationWidget::set_automation(cd_link_t link, cd_s_automation* automation) {
+	_id = link;
 	_automation = automation;
 }
 
@@ -33,6 +32,8 @@ void CDAutomationWidget::update() {
 
 	map<cd_mac_addr_cpp_t, cd_s_node*> nodes = g_cd_mesh_connector->get_nodes(false);
 
+	dropdown_button->clear();
+	dropdown_light->clear();
 	for (pair<cd_mac_addr_cpp_t, cd_s_node*> node : nodes) {
 		QString label = "";
 		label.append(QString::fromLocal8Bit(node.second->name, node.second->name_len));
@@ -45,6 +46,8 @@ void CDAutomationWidget::update() {
 		dropdown_light->addItem(label, userData);
 	}
 
+	if (_automation == nullptr) return;
+
 	dropdown_button->setCurrentIndex(dropdown_button->findData(QString::fromLocal8Bit((char*) _automation->button->address, 6)));
 
 	dropdown_action->clear();
@@ -54,4 +57,14 @@ void CDAutomationWidget::update() {
 	dropdown_action->setCurrentIndex(dropdown_action->findData(_automation->type));
 
 	dropdown_light->setCurrentIndex(dropdown_light->findData(QString::fromLocal8Bit((char*) _automation->light->address, 6)));
+}
+
+bool CDAutomationWidget::conf_valid() {
+	return true;
+}
+
+void CDAutomationWidget::apply() {
+	if (!conf_valid()) return;
+
+	g_cd_mesh_connector->set_link(_id, _automation);
 }

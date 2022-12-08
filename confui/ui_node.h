@@ -13,7 +13,7 @@ class CDNodeWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	cd_s_node* _node;
+	cd_s_node* _node = nullptr;
 
 	QHBoxLayout* main_layout;
 	QLabel* label_node_name;
@@ -22,7 +22,7 @@ private:
 	QPushButton* button_add_remove;
 
 public:
-	CDNodeWidget(cd_s_node* node, QWidget *parent = nullptr);
+	CDNodeWidget(QWidget *parent = nullptr);
 	virtual ~CDNodeWidget();
 	virtual void update();
 	virtual void set_node(cd_s_node* node);

@@ -25,7 +25,9 @@ void CDNodeOverviewTabWidget::update() {
 		if (node_widgets.count(node.first)) { // node is already in list
 			node_widgets[node.first]->update();
 		} else {
-			node_widgets[node.first] = new CDNodeWidget(node.second, this);
+			node_widgets[node.first] = new CDNodeWidget(this);
+			node_widgets[node.first]->set_node(node.second);
+			node_widgets[node.first]->update();
 		}
 		main_layout->addWidget(node_widgets[node.first]);
 	}

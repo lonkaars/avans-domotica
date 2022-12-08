@@ -1,9 +1,7 @@
 #include "ui_node.h"
 
 CDNodeWidget::~CDNodeWidget() { }
-CDNodeWidget::CDNodeWidget(cd_s_node* node, QWidget *parent) : QWidget(parent) {
-	set_node(node);
-
+CDNodeWidget::CDNodeWidget(QWidget *parent) : QWidget(parent) {
 	main_layout = new QHBoxLayout;
 	switch_on_off = new QCheckBox;
 	button_add_remove = new QPushButton;
@@ -28,6 +26,8 @@ void CDNodeWidget::set_node(cd_s_node* node) {
 }
 
 void CDNodeWidget::update() {
+	if (_node == nullptr) return;
+
 	QString	node_name = QString::fromLocal8Bit(_node->name, _node->name_len);
 	label_node_name->setText(node_name);
 

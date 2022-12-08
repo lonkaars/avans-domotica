@@ -50,7 +50,8 @@ public:
 	virtual map<cd_mac_addr_cpp_t, cd_s_node*> get_nodes(bool provisioned);
 	virtual vector<cd_s_node*> get_raw_nodes();
 	virtual vector<cd_s_automation*> get_config();
-	virtual cd_link_t set_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action);
+	virtual cd_link_t create_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action);
+	virtual void set_link(cd_link_t link, cd_s_automation* automation);
 	virtual void remove_link(cd_link_t link_handle);
 	virtual cd_s_node* get_node_by_id(cd_mac_addr_t address);
 	virtual void update_node(cd_s_node* node_ptr);

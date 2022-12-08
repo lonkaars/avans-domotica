@@ -12,7 +12,8 @@ class CDAutomationWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	cd_s_automation* _automation;
+	cd_s_automation* _automation = nullptr;
+	cd_link_t _id;
 
 	QHBoxLayout* main_layout;
 	QComboBox* dropdown_button;
@@ -21,8 +22,14 @@ private:
 	QPushButton* button_remove;
 
 public:
-	CDAutomationWidget(cd_s_automation* automation, QWidget *parent = nullptr);
+	CDAutomationWidget(QWidget *parent = nullptr);
 	virtual ~CDAutomationWidget();
+	/** @brief redraw ui with new values */
 	virtual void update();
-	virtual void set_automation(cd_s_automation* automation);
+	/** @brief register automation that this widget controls */
+	virtual void set_automation(cd_link_t link, cd_s_automation* automation);
+	/** @brief test if all fields are valid / entered */
+	virtual bool conf_valid();
+	/** @brief apply new automation rule */
+	virtual void apply();
 };
