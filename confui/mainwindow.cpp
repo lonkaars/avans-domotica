@@ -20,11 +20,11 @@ CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 
 	QTabWidget* tab_bar_widget = new QTabWidget(this);
 
-	automations_widget = new CDAutomationsTabWidget(this);
-	node_overview_widget = new CDNodeOverviewTabWidget(this);
+	automations_tab = new CDAutomationsTabWidget(this);
+	node_overview_tab = new CDNodeOverviewTabWidget(this);
 
-	tab_bar_widget->addTab(this->node_overview_widget, "node overview");
-	tab_bar_widget->addTab(this->automations_widget, "automations");
+	tab_bar_widget->addTab(this->node_overview_tab, "node overview");
+	tab_bar_widget->addTab(this->automations_tab, "automations");
 
 	setMenuBar(menu_bar);
 	setCentralWidget(tab_bar_widget);
@@ -32,6 +32,10 @@ CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 }
 
 void CDMainWindow::update() {
+	// update tabs (children widgets)
+	automations_tab->update();
+	node_overview_tab->update();
+
 	setWindowTitle("confui");
 
 	menu_bar->clear();

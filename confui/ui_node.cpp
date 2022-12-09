@@ -31,7 +31,7 @@ void CDNodeWidget::update() {
 	QString	node_name = QString::fromLocal8Bit(_node->name, _node->name_len);
 	label_node_name->setText(node_name);
 
-	QString node_address = QString::fromStdString(cd_mac_to_string(_node->address));
+	QString node_address = QString::fromStdString(CDMeshConnector::cd_mac_to_string(_node->address));
 	node_address.prepend("(");
 	node_address.append(")");
 	label_node_address->setText(node_address);
@@ -45,8 +45,8 @@ void CDNodeWidget::update() {
 }
 
 void CDNodeWidget::toggle_provision() {
-	if (_node->provisioned) g_cd_mesh_connector->node_remove_network(_node);
-	else g_cd_mesh_connector->node_join_network(_node);
+	if (_node->provisioned) g_cd_mesh_connector->network_remove_node(_node);
+	else g_cd_mesh_connector->network_join_node(_node);
 
 	update();
 }

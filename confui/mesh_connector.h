@@ -11,9 +11,9 @@ using std::map;
 using std::string;
 using std::array;
 
+typedef uint32_t cd_uid_t;
 typedef uint32_t cd_link_t;
 typedef uint8_t cd_mac_addr_t[6];
-typedef array<uint8_t, 6> cd_mac_addr_cpp_t;
 
 enum cd_e_automation_type {
 	CD_AUTOMATION_TYPE_TOGGLE,
@@ -22,6 +22,7 @@ enum cd_e_automation_type {
 };
 
 typedef struct {
+	cd_uid_t id;
 	cd_mac_addr_t address;
 	size_t name_len;
 	const char* name;
@@ -30,6 +31,7 @@ typedef struct {
 } cd_s_node;
 
 typedef struct {
+	cd_link_t id;
 	cd_e_automation_type type;
 	cd_s_node* button;
 	cd_s_node* light;
@@ -37,30 +39,42 @@ typedef struct {
 
 class CDMeshConnector {
 private:
-	vector<cd_s_node*> _nodes;
 	map<cd_link_t, cd_s_automation*> _links;
-	cd_link_t _fresh_map_id = 0;
-	virtual cd_link_t get_new_map_id();
+	map<cd_uid_t, cd_s_node*> _nodes;
+
+	virtual cd_link_t get_new_link_id();
+	virtual cd_uid_t get_new_node_id();
+
+	cd_link_t _fresh_link_id = 0;
+	cd_uid_t _fresh_node_id = 0;
+
+	virtual cd_uid_t create_node(cd_s_node node);
+	virtual void remove_node(cd_uid_t node_handle);
+
 public:
 	CDMeshConnector();
 	virtual ~CDMeshConnector();
+
+	// (UNUSED/UNIMPLEMENTED) refresh functions
 	virtual void refresh_nodes_sync();
 	virtual void refresh_config_sync();
+
+	// data fetching functions
 	virtual map<cd_link_t, cd_s_automation*> get_links();
-	virtual map<cd_mac_addr_cpp_t, cd_s_node*> get_nodes(bool provisioned);
-	virtual vector<cd_s_node*> get_raw_nodes();
-	virtual vector<cd_s_automation*> get_config();
-	virtual cd_link_t create_link(cd_s_node* button, cd_s_node* light, enum cd_e_automation_type action);
-	virtual void set_link(cd_link_t link, cd_s_automation* automation);
+	virtual map<cd_uid_t, cd_s_node*> get_nodes(bool provisioned = false);
+
+	// network modification functions
+	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type action);
+	virtual void update_link(cd_link_t link, cd_s_automation* automation);
 	virtual void remove_link(cd_link_t link_handle);
-	virtual cd_s_node* get_node_by_id(cd_mac_addr_t address);
+
 	virtual void update_node(cd_s_node* node_ptr);
-	virtual void node_join_network(cd_s_node* node_ptr);
-	virtual void node_remove_network(cd_s_node* node_ptr);
+	virtual void network_join_node(cd_s_node* node_ptr);
+	virtual void network_remove_node(cd_s_node* node_ptr);
+
+	// conversion functions
+	static string cd_mac_to_string(cd_mac_addr_t mac);
 };
 
 extern CDMeshConnector* g_cd_mesh_connector;
-
-string cd_mac_to_string(cd_mac_addr_t mac);
-cd_mac_addr_cpp_t cd_mac_to_cpp_arr(cd_mac_addr_t mac);
 

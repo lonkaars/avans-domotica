@@ -2,8 +2,9 @@
 
 #include <QMainWindow>
 
-#include "ui_scroll_container.h"
 #include "mainwindow.h"
+#include "ui_automation.h"
+#include "ui_scroll_container.h"
 
 class CDAddAutomationWidget;
 class CDAutomationsTabWidget : public QWidget {
@@ -13,6 +14,7 @@ private:
 	CDScrollContainerLayout* main_layout;
 	QVBoxLayout* automations;
 	CDAddAutomationWidget* new_automation_button;
+	map<cd_link_t, CDAutomationWidget*> automation_widgets;
 
 public:
 	CDMainWindow *mainwindow = nullptr;

@@ -14,8 +14,8 @@ class CDMainWindow : public QMainWindow {
 	Q_OBJECT
 private:
 	QMenuBar* menu_bar = nullptr;
-	CDAutomationsTabWidget* automations_widget = nullptr;
-	CDNodeOverviewTabWidget* node_overview_widget = nullptr;
+	CDAutomationsTabWidget* automations_tab = nullptr;
+	CDNodeOverviewTabWidget* node_overview_tab = nullptr;
 
 public:
 	CDMeshConnector *mesh_connector = nullptr;

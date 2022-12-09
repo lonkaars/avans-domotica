@@ -30,15 +30,15 @@ void CDAutomationWidget::set_automation(cd_link_t link, cd_s_automation* automat
 void CDAutomationWidget::update() {
 	button_remove->setText("Delete");
 
-	map<cd_mac_addr_cpp_t, cd_s_node*> nodes = g_cd_mesh_connector->get_nodes(false);
+	map<cd_uid_t, cd_s_node*> nodes = g_cd_mesh_connector->get_nodes(false);
 
 	dropdown_button->clear();
 	dropdown_light->clear();
-	for (pair<cd_mac_addr_cpp_t, cd_s_node*> node : nodes) {
+	for (pair<cd_uid_t, cd_s_node*> node : nodes) {
 		QString label = "";
 		label.append(QString::fromLocal8Bit(node.second->name, node.second->name_len));
 		label.append(" (");
-		label.append(QString::fromStdString(cd_mac_to_string(node.second->address)));
+		label.append(QString::fromStdString(CDMeshConnector::cd_mac_to_string(node.second->address)));
 		label.append(")");
 
 		QString userData = QString::fromLocal8Bit((char*) node.second->address, 6);
@@ -66,5 +66,5 @@ bool CDAutomationWidget::conf_valid() {
 void CDAutomationWidget::apply() {
 	if (!conf_valid()) return;
 
-	g_cd_mesh_connector->set_link(_id, _automation);
+	g_cd_mesh_connector->update_link(_id, _automation);
 }
