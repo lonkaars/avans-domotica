@@ -44,7 +44,8 @@ void CDMainWindow::update() {
 	QAction* menu_options_refresh = menu_options->addAction("refresh node list");
 	connect(menu_options_refresh, &QAction::triggered, this, &CDMainWindow::menu_refresh);
 
-	menu_options->addAction("add automation");
+	QAction* menu_options_add_automation = menu_options->addAction("add automation");
+	connect(menu_options_add_automation, &QAction::triggered, this, &CDMainWindow::menu_add_automation);
 
 	QMenu* menu_options_serialport = menu_options->addMenu("serial port (FIXME)");
 
@@ -57,6 +58,7 @@ void CDMainWindow::menu_refresh() {
 }
 
 void CDMainWindow::menu_add_automation() {
-
+	g_cd_mesh_connector->create_link();
+	update();
 }
 
