@@ -22,7 +22,7 @@ void CDNodeOverviewTabWidget::update() {
 	for (pair<cd_uid_t, cd_s_node*> node : nodes) {
 		if (node_widgets.count(node.first) == 0) {
 			node_widgets[node.first] = new CDNodeWidget(this); // create new node widget
-			node_widgets[node.first]->set_node(node.second);
+			node_widgets[node.first]->set_node(node.first);
 			node_widgets[node.first]->update();
 			main_layout->addWidget(node_widgets[node.first]);
 		} else if (node.second != nullptr) {

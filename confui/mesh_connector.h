@@ -35,6 +35,7 @@ typedef struct {
 	cd_e_automation_type type;
 	cd_s_node* button;
 	cd_s_node* light;
+	bool valid;
 } cd_s_automation;
 
 class CDMeshConnector {
@@ -60,8 +61,10 @@ public:
 	virtual void refresh_config_sync();
 
 	// data fetching functions
-	virtual map<cd_link_t, cd_s_automation*> get_links();
+	virtual map<cd_link_t, cd_s_automation*> get_links(bool valid = true);
 	virtual map<cd_uid_t, cd_s_node*> get_nodes(bool provisioned = false);
+	virtual cd_s_automation* get_link(cd_link_t id);
+	virtual cd_s_node* get_node(cd_uid_t id);
 
 	// network modification functions
 	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type action);

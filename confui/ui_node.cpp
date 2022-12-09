@@ -21,8 +21,9 @@ CDNodeWidget::CDNodeWidget(QWidget *parent) : QWidget(parent) {
 	setLayout(main_layout);
 }
 
-void CDNodeWidget::set_node(cd_s_node* node) {
-	_node = node;
+void CDNodeWidget::set_node(cd_uid_t id) {
+	_id = id;
+	_node = g_cd_mesh_connector->get_node(id);
 }
 
 void CDNodeWidget::update() {

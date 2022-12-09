@@ -14,6 +14,7 @@ class CDNodeWidget : public QWidget {
 
 private:
 	cd_s_node* _node = nullptr;
+	cd_uid_t _id;
 
 	QHBoxLayout* main_layout;
 	QLabel* label_node_name;
@@ -25,7 +26,7 @@ public:
 	CDNodeWidget(QWidget *parent = nullptr);
 	virtual ~CDNodeWidget();
 	virtual void update();
-	virtual void set_node(cd_s_node* node);
+	virtual void set_node(cd_uid_t id);
 	virtual void toggle_provision();
 	virtual void update_led(bool on);
 };

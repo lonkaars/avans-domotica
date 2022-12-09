@@ -42,12 +42,12 @@ CDAutomationsTabWidget::CDAutomationsTabWidget(CDMainWindow* main_window) : QWid
 }
 
 void CDAutomationsTabWidget::update() {
-	map<cd_link_t, cd_s_automation*> links = this->mainwindow->mesh_connector->get_links();
+	map<cd_link_t, cd_s_automation*> links = this->mainwindow->mesh_connector->get_links(false);
 
 	for (pair<cd_link_t, cd_s_automation*> link : links) {
 		if (automation_widgets.count(link.first) == 0) {
 			automation_widgets[link.first] = new CDAutomationWidget(this); // create new automation
-			automation_widgets[link.first]->set_automation(link.first, link.second);
+			automation_widgets[link.first]->set_automation(link.first);
 			automation_widgets[link.first]->update();
 			automations->addWidget(automation_widgets[link.first]);
 		} else if (link.second != nullptr) {

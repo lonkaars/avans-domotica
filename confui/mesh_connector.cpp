@@ -21,7 +21,6 @@ cd_uid_t CDMeshConnector::get_new_node_id() {
 
 CDMeshConnector::CDMeshConnector() {
 	cd_uid_t berta = create_node({
-		.id = 0, // automatically assigned (satisfy compiler)
 		.address = { 0x00, 0xff, 0x21, 0x69, 0xf2, 0x31 },
 		.name_len = 5,
 		.name = "berta",
@@ -30,7 +29,6 @@ CDMeshConnector::CDMeshConnector() {
 	});
 
 	cd_uid_t gerrit = create_node({
-		.id = 0, // automatically assigned (satisfy compiler)
 		.address = { 0x0e, 0xf9, 0x46, 0x4d, 0xe8, 0x02 },
 		.name_len = 6,
 		.name = "gerrit",
@@ -38,10 +36,20 @@ CDMeshConnector::CDMeshConnector() {
 		.provisioned = false,
 	});
 
-	create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
-	create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
-	create_link(gerrit, berta, CD_AUTOMATION_TYPE_TURN_OFF);
-	create_link(gerrit, gerrit, CD_AUTOMATION_TYPE_TURN_ON);
+	// garbage code below (only for dummy links)
+	cd_link_t temp;
+	temp = create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
+	_links[temp]->valid = true;
+	update_link(temp, _links[temp]);
+	temp = create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
+	_links[temp]->valid = true;
+	update_link(temp, _links[temp]);
+	temp = create_link(gerrit, berta, CD_AUTOMATION_TYPE_TURN_OFF);
+	_links[temp]->valid = true;
+	update_link(temp, _links[temp]);
+	temp = create_link(gerrit, gerrit, CD_AUTOMATION_TYPE_TURN_ON);
+	_links[temp]->valid = true;
+	update_link(temp, _links[temp]);
 	return;
 }
 
@@ -91,8 +99,13 @@ map<cd_uid_t, cd_s_node*> CDMeshConnector::get_nodes(bool provisioned) {
 	return nodes;
 }
 
-map<cd_link_t, cd_s_automation*> CDMeshConnector::get_links() {
-	return _links;
+map<cd_link_t, cd_s_automation*> CDMeshConnector::get_links(bool valid) {
+	map<cd_link_t, cd_s_automation*> links;
+	for (pair<cd_link_t, cd_s_automation*> link : _links) {
+		if (valid && (link.second->valid == false)) continue;
+		links[link.first] = link.second;
+	}
+	return links;
 }
 
 void CDMeshConnector::update_link(cd_link_t link, cd_s_automation* automation) {
@@ -108,6 +121,7 @@ cd_link_t CDMeshConnector::create_link(cd_uid_t button, cd_uid_t light, enum cd_
 	automation->type = type;
 	automation->button = _nodes[button];
 	automation->light = _nodes[light];
+	automation->valid = false;
 
 	printf("(new) ");
 	update_link(id, automation);
@@ -154,5 +168,13 @@ string CDMeshConnector::cd_mac_to_string(cd_mac_addr_t mac) {
 	string ret = addr;
 	free(addr);
 	return ret;
+}
+
+cd_s_automation* CDMeshConnector::get_link(cd_link_t id) {
+	return _links[id];
+}
+
+cd_s_node* CDMeshConnector::get_node(cd_uid_t id) {
+	return _nodes[id];
 }
 
