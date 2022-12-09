@@ -45,14 +45,18 @@ void CDAutomationsTabWidget::update() {
 	map<cd_link_t, cd_s_automation*> links = this->mainwindow->mesh_connector->get_links();
 
 	for (pair<cd_link_t, cd_s_automation*> link : links) {
-		if (automation_widgets.count(link.first)) { // node is already in list
-			automation_widgets[link.first]->update();
-		} else {
-			automation_widgets[link.first] = new CDAutomationWidget(this);
+		if (automation_widgets.count(link.first) == 0) {
+			automation_widgets[link.first] = new CDAutomationWidget(this); // create new automation
 			automation_widgets[link.first]->set_automation(link.first, link.second);
 			automation_widgets[link.first]->update();
+			automations->addWidget(automation_widgets[link.first]);
+		} else if (link.second != nullptr) {
+			automation_widgets[link.first]->update(); // update existing widget
+		} else if (automation_widgets[link.first] != nullptr) {
+			automations->removeWidget(automation_widgets[link.first]); // remove removed automation
+			delete automation_widgets[link.first]; // free automation widget
+			automation_widgets[link.first] = nullptr;
 		}
-		automations->addWidget(automation_widgets[link.first]);
 	}
 }
 

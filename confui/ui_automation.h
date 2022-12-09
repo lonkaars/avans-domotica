@@ -32,4 +32,6 @@ public:
 	virtual bool conf_valid();
 	/** @brief apply new automation rule */
 	virtual void apply();
+	/** @brief remove automation */
+	virtual void remove();
 };

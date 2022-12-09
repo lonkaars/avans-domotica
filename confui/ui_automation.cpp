@@ -18,6 +18,8 @@ CDAutomationWidget::CDAutomationWidget(QWidget* parent) : QWidget(parent) {
 	main_layout->addStretch();
 	main_layout->addWidget(button_remove);
 
+	connect(button_remove, &QPushButton::clicked, this, &CDAutomationWidget::remove);
+
 	update();
 	setLayout(main_layout);
 }
@@ -67,4 +69,8 @@ void CDAutomationWidget::apply() {
 	if (!conf_valid()) return;
 
 	g_cd_mesh_connector->update_link(_id, _automation);
+}
+
+void CDAutomationWidget::remove() {
+	g_cd_mesh_connector->remove_link(_id);
 }

@@ -119,7 +119,7 @@ void CDMeshConnector::remove_link(cd_link_t link_handle) {
 	printf("remove link[%d]\n", link_handle);
 	if (_links[link_handle] != nullptr)
 		free(_links[link_handle]);
-	_links.erase(link_handle);
+	_links[link_handle] = nullptr;
 	return;
 }
 
@@ -127,7 +127,7 @@ void CDMeshConnector::remove_node(cd_uid_t node_handle) {
 	printf("remove node[%d]\n", node_handle);
 	if (_nodes[node_handle] != nullptr)
 		free(_nodes[node_handle]);
-	_nodes.erase(node_handle);
+	_nodes[node_handle] = nullptr;
 	return;
 }
 
