@@ -36,20 +36,10 @@ CDMeshConnector::CDMeshConnector() {
 		.provisioned = false,
 	});
 
-	// garbage code below (only for dummy links)
-	cd_link_t temp;
-	temp = create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
-	_links[temp]->valid = true;
-	update_link(temp, _links[temp]);
-	temp = create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
-	_links[temp]->valid = true;
-	update_link(temp, _links[temp]);
-	temp = create_link(gerrit, berta, CD_AUTOMATION_TYPE_TURN_OFF);
-	_links[temp]->valid = true;
-	update_link(temp, _links[temp]);
-	temp = create_link(gerrit, gerrit, CD_AUTOMATION_TYPE_TURN_ON);
-	_links[temp]->valid = true;
-	update_link(temp, _links[temp]);
+	create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
+	create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
+	create_link(gerrit, berta, CD_AUTOMATION_TYPE_TURN_OFF);
+	create_link(gerrit, gerrit, CD_AUTOMATION_TYPE_TURN_ON);
 	return;
 }
 
@@ -110,7 +100,13 @@ map<cd_link_t, cd_s_automation*> CDMeshConnector::get_links(bool valid) {
 
 void CDMeshConnector::update_link(cd_link_t link, cd_s_automation* automation) {
 	_links[link] = automation;
-	printf("link[%d] = %.*s %s %.*s\n", link, (int) automation->button->name_len, automation->button->name, automation->type == CD_AUTOMATION_TYPE_TOGGLE ? "toggles" : automation->type == CD_AUTOMATION_TYPE_TURN_OFF ? "turns off" : "turns on", (int) automation->light->name_len, automation->light->name);
+	printf("link[%d]", link);
+	if (automation->valid) {
+		printf(" = %.*s %s %.*s", (int) automation->button->name_len, automation->button->name, automation->type == CD_AUTOMATION_TYPE_TOGGLE ? "toggles" : automation->type == CD_AUTOMATION_TYPE_TURN_OFF ? "turns off" : "turns on", (int) automation->light->name_len, automation->light->name);
+	} else {
+		printf(" (invalid)");
+	}
+	printf("\n");
 }
 
 cd_link_t CDMeshConnector::create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type type) {
@@ -121,6 +117,22 @@ cd_link_t CDMeshConnector::create_link(cd_uid_t button, cd_uid_t light, enum cd_
 	automation->type = type;
 	automation->button = _nodes[button];
 	automation->light = _nodes[light];
+	automation->valid = true;
+
+	printf("(new) ");
+	update_link(id, automation);
+
+	return id;
+}
+
+cd_link_t CDMeshConnector::create_link() {
+	cd_link_t id = get_new_link_id();
+
+	cd_s_automation* automation = (cd_s_automation*) malloc(sizeof(cd_s_automation));
+	automation->id = id;
+	automation->type = CD_AUTOMATION_TYPE_TOGGLE;
+	automation->button = nullptr;
+	automation->light = nullptr;
 	automation->valid = false;
 
 	printf("(new) ");

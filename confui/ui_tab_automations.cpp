@@ -8,14 +8,26 @@
 using std::pair;
 
 class CDAddAutomationWidget : public QWidget {
+private:
+	CDAutomationsTabWidget* _parent;
+
 public:
+	void new_automation() {
+		g_cd_mesh_connector->create_link();
+		_parent->update();
+	}
+
 	CDAddAutomationWidget(QWidget* parent) : QWidget(parent) {
+		_parent = (CDAutomationsTabWidget*) parent;
+
 		QHBoxLayout* main_layout = new QHBoxLayout;
 		QPushButton* button_add = new QPushButton("Add automation");
 
 		main_layout->addStretch();
 		main_layout->addWidget(button_add);
 		main_layout->addStretch();
+
+		connect(button_add, &QPushButton::clicked, this, &CDAddAutomationWidget::new_automation);
 
 		setLayout(main_layout);
 	}

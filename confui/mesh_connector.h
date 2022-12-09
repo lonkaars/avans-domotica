@@ -67,6 +67,9 @@ public:
 	virtual cd_s_node* get_node(cd_uid_t id);
 
 	// network modification functions
+	/** @brief create empty automation */
+	virtual cd_link_t create_link();
+	/** @brief create valid automation */
 	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type action);
 	virtual void update_link(cd_link_t link, cd_s_automation* automation);
 	virtual void remove_link(cd_link_t link_handle);
