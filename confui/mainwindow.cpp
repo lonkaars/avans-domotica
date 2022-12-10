@@ -5,14 +5,18 @@
 #include "mainwindow.h"
 #include "ui_tab_automations.h"
 #include "ui_tab_node_overview.h"
+#include "serial.h"
 
 CDMeshConnector *g_cd_mesh_connector = nullptr;
+CDSerialConnector *g_cd_serial = nullptr;
 
 CDMainWindow::~CDMainWindow() { delete this->mesh_connector; }
 
 CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 	g_cd_mesh_connector	 = new CDMeshConnector();
 	this->mesh_connector = g_cd_mesh_connector;
+	g_cd_serial = new CDSerialConnector();
+	this->serial_connector = g_cd_serial;
 
 	menu_bar = new QMenuBar(this);
 
@@ -47,8 +51,9 @@ void CDMainWindow::update() {
 
 	QMenu *menu_options_serialport = menu_options->addMenu("serial port (FIXME)");
 
-	menu_options_serialport->addAction("FIXME A");
-	menu_options_serialport->addAction("FIXME B");
+	vector<string> ports = CDSerialConnector::get_ports();
+	for (string port : ports)
+		menu_options_serialport->addAction(QString::fromStdString(port));
 }
 
 void CDMainWindow::menu_refresh() { update(); }

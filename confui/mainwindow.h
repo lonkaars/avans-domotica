@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include "mesh_connector.h"
+#include "serial.h"
 
 class CDAutomationsTabWidget;
 class CDNodeOverviewTabWidget;
@@ -26,6 +27,7 @@ private:
 
 public:
 	CDMeshConnector *mesh_connector = nullptr;
+	CDSerialConnector *serial_connector = nullptr;
 
 	CDMainWindow(QWidget *parent = nullptr);
 	~CDMainWindow();
