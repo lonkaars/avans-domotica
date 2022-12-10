@@ -1,10 +1,10 @@
 #include "ui_scroll_container.h"
 
-CDScrollContainerLayout::~CDScrollContainerLayout() { }
+CDScrollContainerLayout::~CDScrollContainerLayout() {}
 CDScrollContainerLayout::CDScrollContainerLayout(QWidget *parent) : QVBoxLayout(parent) {
-	scroll_area = new QScrollArea;
+	scroll_area		 = new QScrollArea;
 	scroll_container = new QWidget;
-	scroll_inner = new QVBoxLayout;
+	scroll_inner	 = new QVBoxLayout;
 
 	scroll_area->setWidgetResizable(true);
 	scroll_area->setFrameShape(QFrame::NoFrame);
@@ -20,11 +20,6 @@ CDScrollContainerLayout::CDScrollContainerLayout(QWidget *parent) : QVBoxLayout(
 	QVBoxLayout::addWidget(scroll_area);
 }
 
-void CDScrollContainerLayout::addWidget(QWidget* widget) {
-	scroll_inner->addWidget(widget);
-}
+void CDScrollContainerLayout::addWidget(QWidget *widget) { scroll_inner->addWidget(widget); }
 
-void CDScrollContainerLayout::removeWidget(QWidget* widget) {
-	scroll_inner->removeWidget(widget);
-}
-
+void CDScrollContainerLayout::removeWidget(QWidget *widget) { scroll_inner->removeWidget(widget); }

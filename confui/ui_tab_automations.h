@@ -12,14 +12,14 @@ class CDAutomationsTabWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	CDScrollContainerLayout* main_layout;
-	QVBoxLayout* automations;
-	CDAddAutomationWidget* new_automation_button;
-	map<cd_link_t, CDAutomationWidget*> automation_widgets;
+	CDScrollContainerLayout *main_layout;
+	QVBoxLayout *automations;
+	CDAddAutomationWidget *new_automation_button;
+	map<cd_link_t, CDAutomationWidget *> automation_widgets;
 
 public:
 	CDMainWindow *mainwindow = nullptr;
-	
+
 	CDAutomationsTabWidget(CDMainWindow *main_window = nullptr);
 	virtual ~CDAutomationsTabWidget();
 	/** @brief cascading ui update (add/remove/update automations in scrolling

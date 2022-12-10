@@ -1,18 +1,18 @@
-#include "ui_tab_automations.h"
 #include "ui_automation.h"
 #include "mesh_connector.h"
+#include "ui_tab_automations.h"
 
 using std::pair;
 
-CDAutomationWidget::~CDAutomationWidget() { }
-CDAutomationWidget::CDAutomationWidget(QWidget* parent) : QWidget(parent) {
-	_parent = (CDAutomationsTabWidget*) parent;
+CDAutomationWidget::~CDAutomationWidget() {}
+CDAutomationWidget::CDAutomationWidget(QWidget *parent) : QWidget(parent) {
+	_parent		= (CDAutomationsTabWidget *)parent;
 	main_layout = new QHBoxLayout;
 
 	dropdown_button = new QComboBox;
 	dropdown_action = new QComboBox;
-	dropdown_light = new QComboBox;
-	button_remove = new QPushButton("Delete");
+	dropdown_light	= new QComboBox;
+	button_remove	= new QPushButton("Delete");
 
 	main_layout->addWidget(dropdown_button);
 	main_layout->addWidget(dropdown_action);
@@ -31,16 +31,16 @@ CDAutomationWidget::CDAutomationWidget(QWidget* parent) : QWidget(parent) {
 }
 
 void CDAutomationWidget::set_automation(cd_link_t link) {
-	_id = link;
+	_id			= link;
 	_automation = g_cd_mesh_connector->get_link(link);
 }
 
 void CDAutomationWidget::update() {
-	map<cd_uid_t, cd_s_node*> nodes = g_cd_mesh_connector->get_nodes(false);
+	map<cd_uid_t, cd_s_node *> nodes = g_cd_mesh_connector->get_nodes(false);
 
 	dropdown_button->clear();
 	dropdown_light->clear();
-	for (pair<cd_uid_t, cd_s_node*> node : nodes) {
+	for (pair<cd_uid_t, cd_s_node *> node : nodes) {
 		QString label = "";
 		label.append(QString::fromLocal8Bit(node.second->name, node.second->name_len));
 		label.append(" (");
@@ -74,9 +74,9 @@ void CDAutomationWidget::apply() {
 	if (!conf_valid()) return;
 
 	_automation->button = g_cd_mesh_connector->get_node(dropdown_button->findData(dropdown_button->currentIndex()));
-	_automation->type = (enum cd_e_automation_type) dropdown_action->findData(dropdown_action->currentIndex());
-	_automation->light = g_cd_mesh_connector->get_node(dropdown_light->findData(dropdown_light->currentIndex()));
-	_automation->valid = true;
+	_automation->type	= (enum cd_e_automation_type)dropdown_action->findData(dropdown_action->currentIndex());
+	_automation->light	= g_cd_mesh_connector->get_node(dropdown_light->findData(dropdown_light->currentIndex()));
+	_automation->valid	= true;
 
 	g_cd_mesh_connector->update_link(_automation);
 }

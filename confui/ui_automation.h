@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QWidget>
+#include <QComboBox>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QString>
-#include <QComboBox>
+#include <QWidget>
 
 #include "mesh_connector.h"
 
@@ -14,15 +14,15 @@ class CDAutomationWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	cd_s_automation* _automation = nullptr;
+	cd_s_automation *_automation = nullptr;
 	cd_link_t _id;
-	CDAutomationsTabWidget* _parent = nullptr;
+	CDAutomationsTabWidget *_parent = nullptr;
 
-	QHBoxLayout* main_layout;
-	QComboBox* dropdown_button;
-	QComboBox* dropdown_action;
-	QComboBox* dropdown_light;
-	QPushButton* button_remove;
+	QHBoxLayout *main_layout;
+	QComboBox *dropdown_button;
+	QComboBox *dropdown_action;
+	QComboBox *dropdown_light;
+	QPushButton *button_remove;
 
 public:
 	CDAutomationWidget(QWidget *parent = nullptr);

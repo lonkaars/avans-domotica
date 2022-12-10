@@ -1,12 +1,12 @@
 #include "ui_node.h"
 
-CDNodeWidget::~CDNodeWidget() { }
+CDNodeWidget::~CDNodeWidget() {}
 CDNodeWidget::CDNodeWidget(QWidget *parent) : QWidget(parent) {
-	main_layout = new QHBoxLayout;
-	switch_on_off = new QCheckBox;
-	button_add_remove = new QPushButton;
+	main_layout		   = new QHBoxLayout;
+	switch_on_off	   = new QCheckBox;
+	button_add_remove  = new QPushButton;
 	label_node_address = new QLabel;
-	label_node_name = new QLabel;
+	label_node_name	   = new QLabel;
 
 	main_layout->addWidget(label_node_name);
 	main_layout->addWidget(label_node_address);
@@ -22,14 +22,14 @@ CDNodeWidget::CDNodeWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void CDNodeWidget::set_node(cd_uid_t id) {
-	_id = id;
+	_id	  = id;
 	_node = g_cd_mesh_connector->get_node(id);
 }
 
 void CDNodeWidget::update() {
 	if (_node == nullptr) return;
 
-	QString	node_name = QString::fromLocal8Bit(_node->name, _node->name_len);
+	QString node_name = QString::fromLocal8Bit(_node->name, _node->name_len);
 	label_node_name->setText(node_name);
 
 	QString node_address = QString::fromStdString(CDMeshConnector::cd_mac_to_string(_node->address));
@@ -58,4 +58,3 @@ void CDNodeWidget::update_led(bool on) {
 
 	update();
 }
-

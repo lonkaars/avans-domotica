@@ -1,15 +1,15 @@
 #pragma once
 
-#include <stdint.h>
-#include <vector>
 #include <map>
+#include <stdint.h>
 #include <string>
+#include <vector>
 
-using std::size_t;
-using std::vector;
-using std::map;
-using std::string;
 using std::array;
+using std::map;
+using std::size_t;
+using std::string;
+using std::vector;
 
 /** @brief node id type, GUI only */
 typedef uint32_t cd_uid_t;
@@ -20,33 +20,33 @@ typedef uint8_t cd_mac_addr_t[6];
 
 /** @brief automation types/actions */
 enum cd_e_automation_type {
-	CD_AUTOMATION_TYPE_TOGGLE, /** @brief button toggles light */
-	CD_AUTOMATION_TYPE_TURN_ON, /** @brief button always turns on light (regardless of previous state) */
+	CD_AUTOMATION_TYPE_TOGGLE,	 /** @brief button toggles light */
+	CD_AUTOMATION_TYPE_TURN_ON,	 /** @brief button always turns on light (regardless of previous state) */
 	CD_AUTOMATION_TYPE_TURN_OFF, /** @brief button always turns off light (regardless of previous state) */
 };
 
 /** @brief GUI node representation */
 typedef struct {
-	cd_uid_t id; /** @brief GUI-specific id (used as handle) */
+	cd_uid_t id;		   /** @brief GUI-specific id (used as handle) */
 	cd_mac_addr_t address; /** @brief node bluetooth mac address */
-	size_t name_len; /** @brief name length in bytes */
-	const char* name; /** @brief user-friendly node name */
-	bool light_on; /** @brief state of light on node */
-	bool provisioned; /** @brief whether the node is provisioned into the network */
+	size_t name_len;	   /** @brief name length in bytes */
+	const char *name;	   /** @brief user-friendly node name */
+	bool light_on;		   /** @brief state of light on node */
+	bool provisioned;	   /** @brief whether the node is provisioned into the network */
 } cd_s_node;
 
 /** @brief automation/link struct */
 typedef struct {
-	cd_link_t id; /** @brief automation id (also used as handle) */
+	cd_link_t id;			   /** @brief automation id (also used as handle) */
 	cd_e_automation_type type; /** @brief automation type/action */
-	cd_s_node* button; /** @brief pointer to node with button */
-	cd_s_node* light; /** @brief pointer to node with light */
-	bool valid; /** @brief whether .button and .light are valid pointers (complete automation) */
+	cd_s_node *button;		   /** @brief pointer to node with button */
+	cd_s_node *light;		   /** @brief pointer to node with light */
+	bool valid;				   /** @brief whether .button and .light are valid pointers (complete automation) */
 } cd_s_automation;
 
 /**
  * @brief mesh network connector
- * 
+ *
  * handles communication with the border router over a serial connection and
  * exposes current network state through structured data (as defined above).
  *
@@ -58,12 +58,12 @@ typedef struct {
 class CDMeshConnector {
 private:
 	/** @brief list of links */
-	map<cd_link_t, cd_s_automation*> _links;
+	map<cd_link_t, cd_s_automation *> _links;
 	/** @brief list of nodes */
-	map<cd_uid_t, cd_s_node*> _nodes;
+	map<cd_uid_t, cd_s_node *> _nodes;
 
 	cd_link_t _fresh_link_id = 0;
-	cd_uid_t _fresh_node_id = 0;
+	cd_uid_t _fresh_node_id	 = 0;
 
 	/** @brief get 'fresh' link id and increment */
 	virtual cd_link_t get_new_link_id();
@@ -89,21 +89,19 @@ public:
 	/**
 	 * @brief get map of automations and their respective handles
 	 *
-	 * @param valid  `valid` field of automation needs to match this value.
-	 * `true` by default
+	 * @param valid  `valid` field of automation needs to match this value. `true` by default
 	 */
-	virtual map<cd_link_t, cd_s_automation*> get_links(bool valid = true);
+	virtual map<cd_link_t, cd_s_automation *> get_links(bool valid = true);
 	/**
 	 * @brief get map of nodes and their respective handles
 	 *
-	 * @param provisioned  `provisioned` field of node needs to match this value.
-	 * `false` by default
+	 * @param provisioned  `provisioned` field of node needs to match this value. `false` by default
 	 */
-	virtual map<cd_uid_t, cd_s_node*> get_nodes(bool provisioned = false);
+	virtual map<cd_uid_t, cd_s_node *> get_nodes(bool provisioned = false);
 	/** @brief get automation pointer by automation id */
-	virtual cd_s_automation* get_link(cd_link_t id);
+	virtual cd_s_automation *get_link(cd_link_t id);
 	/** @brief get node pointer by node id */
-	virtual cd_s_node* get_node(cd_uid_t id);
+	virtual cd_s_node *get_node(cd_uid_t id);
 
 	// network modification functions
 	/** @brief create empty automation */
@@ -112,10 +110,8 @@ public:
 	 * @brief create valid automation with filled-in fields and update on
 	 * network.
 	 *
-	 * @param button  node id for node whose button will be used for this
-	 * automation.
-	 * @param light  node id for node whose light will be used for this
-	 * automation.
+	 * @param button  node id for node whose button will be used for this automation.
+	 * @param light  node id for node whose light will be used for this automation.
 	 * @param action  action/automation type (toggle, on, off).
 	 */
 	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type action);
@@ -128,7 +124,7 @@ public:
 	 *
 	 * @param automation  pointer to automation struct (with new/modified values)
 	 */
-	virtual void update_link(cd_s_automation* automation);
+	virtual void update_link(cd_s_automation *automation);
 	/**
 	 * @brief remove automation and update on network.
 	 *
@@ -144,19 +140,19 @@ public:
 	 *
 	 * @param node_ptr  pointer to node struct (with new/modified state)
 	 */
-	virtual void update_node(cd_s_node* node_ptr);
+	virtual void update_node(cd_s_node *node_ptr);
 	/**
 	 * @brief provision node into network
 	 *
 	 * @param node_ptr  pointer to node struct
 	 */
-	virtual void network_join_node(cd_s_node* node_ptr);
+	virtual void network_join_node(cd_s_node *node_ptr);
 	/**
 	 * @brief provision node out of network (remove from network)
 	 *
 	 * @param node_ptr  pointer to node struct
 	 */
-	virtual void network_remove_node(cd_s_node* node_ptr);
+	virtual void network_remove_node(cd_s_node *node_ptr);
 
 	// conversion functions
 	/** @brief convert `cd_mac_addr_t` to `std::string` for printing/GUI */
@@ -164,5 +160,4 @@ public:
 };
 
 /** @brief global pointer to mesh connector, initialized in CDMainWindow */
-extern CDMeshConnector* g_cd_mesh_connector;
-
+extern CDMeshConnector *g_cd_mesh_connector;

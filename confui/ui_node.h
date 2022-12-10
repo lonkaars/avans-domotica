@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QWidget>
-#include <QLabel>
-#include <QHBoxLayout>
 #include <QCheckBox>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 #include <QString>
+#include <QWidget>
 
 #include "mesh_connector.h"
 
@@ -14,14 +14,14 @@ class CDNodeWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	cd_s_node* _node = nullptr;
+	cd_s_node *_node = nullptr;
 	cd_uid_t _id;
 
-	QHBoxLayout* main_layout;
-	QLabel* label_node_name;
-	QLabel* label_node_address;
-	QCheckBox* switch_on_off;
-	QPushButton* button_add_remove;
+	QHBoxLayout *main_layout;
+	QLabel *label_node_name;
+	QLabel *label_node_address;
+	QCheckBox *switch_on_off;
+	QPushButton *button_add_remove;
 
 public:
 	CDNodeWidget(QWidget *parent = nullptr);
