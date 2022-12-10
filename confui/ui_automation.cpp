@@ -78,7 +78,7 @@ void CDAutomationWidget::apply() {
 	_automation->light = g_cd_mesh_connector->get_node(dropdown_light->findData(dropdown_light->currentIndex()));
 	_automation->valid = true;
 
-	g_cd_mesh_connector->update_link(_id, _automation);
+	g_cd_mesh_connector->update_link(_automation);
 }
 
 void CDAutomationWidget::remove() {

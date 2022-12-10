@@ -9,6 +9,7 @@
 
 #include "mesh_connector.h"
 
+/** @brief widget that displays single node */
 class CDNodeWidget : public QWidget {
 	Q_OBJECT
 
@@ -25,8 +26,12 @@ private:
 public:
 	CDNodeWidget(QWidget *parent = nullptr);
 	virtual ~CDNodeWidget();
+	/** @brief update node info in GUI */
 	virtual void update();
+	/** @brief register which node this widget controls */
 	virtual void set_node(cd_uid_t id);
+	/** @brief join/remove from network */
 	virtual void toggle_provision();
+	/** @brief turn led on/off */
 	virtual void update_led(bool on);
 };

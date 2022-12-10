@@ -9,6 +9,7 @@
 #include "mesh_connector.h"
 
 class CDAutomationsTabWidget;
+/** @brief widget that displays single automation */
 class CDAutomationWidget : public QWidget {
 	Q_OBJECT
 

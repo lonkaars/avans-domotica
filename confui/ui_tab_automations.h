@@ -7,6 +7,7 @@
 #include "ui_scroll_container.h"
 
 class CDAddAutomationWidget;
+/** @brief automations tab content widget */
 class CDAutomationsTabWidget : public QWidget {
 	Q_OBJECT
 
@@ -21,5 +22,7 @@ public:
 	
 	CDAutomationsTabWidget(CDMainWindow *main_window = nullptr);
 	virtual ~CDAutomationsTabWidget();
+	/** @brief cascading ui update (add/remove/update automations in scrolling
+	 * view) */
 	virtual void update();
 };

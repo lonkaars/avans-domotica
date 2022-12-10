@@ -81,26 +81,31 @@ CDMeshConnector::~CDMeshConnector() {
 }
 
 map<cd_uid_t, cd_s_node*> CDMeshConnector::get_nodes(bool provisioned) {
+	if (provisioned == false) return _nodes;
+
+	// filter only if provisioned nodes are desired
 	map<cd_uid_t, cd_s_node*> nodes;
 	for (pair<cd_uid_t, cd_s_node*> node : _nodes) {
-		if (provisioned && (node.second->provisioned == false)) continue;
+		if (node.second->provisioned == false) continue;
 		nodes[node.first] = node.second;
 	}
 	return nodes;
 }
 
 map<cd_link_t, cd_s_automation*> CDMeshConnector::get_links(bool valid) {
+	if (valid == false) return _links;
+
+	// filter only if valid links are desired
 	map<cd_link_t, cd_s_automation*> links;
 	for (pair<cd_link_t, cd_s_automation*> link : _links) {
-		if (valid && (link.second->valid == false)) continue;
+		if (link.second->valid == false) continue;
 		links[link.first] = link.second;
 	}
 	return links;
 }
 
-void CDMeshConnector::update_link(cd_link_t link, cd_s_automation* automation) {
-	_links[link] = automation;
-	printf("link[%d]", link);
+void CDMeshConnector::update_link(cd_s_automation* automation) {
+	printf("link[%d]", automation->id);
 	if (automation->valid) {
 		printf(" = %.*s %s %.*s", (int) automation->button->name_len, automation->button->name, automation->type == CD_AUTOMATION_TYPE_TOGGLE ? "toggles" : automation->type == CD_AUTOMATION_TYPE_TURN_OFF ? "turns off" : "turns on", (int) automation->light->name_len, automation->light->name);
 	} else {
@@ -120,7 +125,8 @@ cd_link_t CDMeshConnector::create_link(cd_uid_t button, cd_uid_t light, enum cd_
 	automation->valid = true;
 
 	printf("(new) ");
-	update_link(id, automation);
+	_links[id] = automation;
+	update_link(automation);
 
 	return id;
 }
@@ -136,7 +142,8 @@ cd_link_t CDMeshConnector::create_link() {
 	automation->valid = false;
 
 	printf("(new) ");
-	update_link(id, automation);
+	_links[id] = automation;
+	update_link(automation);
 
 	return id;
 }
