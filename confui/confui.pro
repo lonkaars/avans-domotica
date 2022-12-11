@@ -9,7 +9,10 @@ SOURCES += \
 	ui_node.cpp \
 	ui_automation.cpp \
 	ui_scroll_container.cpp \
-	serial.cpp
+	serial.cpp \
+	../shared/bin.c \
+	../shared/protocol.c \
+	../shared/serial_parse.c
 
 HEADERS += \
 	mainwindow.h \
@@ -19,7 +22,11 @@ HEADERS += \
 	ui_node.h \
 	ui_automation.h \
 	ui_scroll_container.h \
-	serial.h
+	serial.h \
+	../shared/bin.h \
+	../shared/protocol.h \
+	../shared/serial_parse.h \
+	../shared/consts.h
 
 CONFIG += c++17
 CONFIG += force_debug_info

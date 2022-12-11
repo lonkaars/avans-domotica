@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "../shared/protocol.h"
+
 using std::array;
 using std::map;
 using std::size_t;
@@ -15,8 +17,6 @@ using std::vector;
 typedef uint32_t cd_uid_t;
 /** @brief link/automation id type */
 typedef uint32_t cd_link_t;
-/** @brief node mac address type */
-typedef uint8_t cd_mac_addr_t[6];
 
 /** @brief automation types/actions */
 enum cd_e_automation_type {
@@ -157,6 +157,8 @@ public:
 	// conversion functions
 	/** @brief convert `cd_mac_addr_t` to `std::string` for printing/GUI */
 	static string cd_mac_to_string(cd_mac_addr_t mac);
+	/** @brief convert `cd_uuid_t` to `std::string` for printing/GUI */
+	static string cd_uuid_to_string(cd_uuid_t uuid);
 };
 
 /** @brief global pointer to mesh connector, initialized in CDMainWindow */

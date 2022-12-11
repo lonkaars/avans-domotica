@@ -185,6 +185,14 @@ string CDMeshConnector::cd_mac_to_string(cd_mac_addr_t mac) {
 	return ret;
 }
 
+string CDMeshConnector::cd_uuid_to_string(cd_uuid_t uuid) {
+	char *addr = nullptr;
+	asprintf(&addr, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[15], uuid[14], uuid[13], uuid[12], uuid[11], uuid[10], uuid[9], uuid[8], uuid[7], uuid[6], uuid[5], uuid[4], uuid[3], uuid[2], uuid[1], uuid[0]);
+	string ret = addr;
+	free(addr);
+	return ret;
+}
+
 cd_s_automation *CDMeshConnector::get_link(cd_link_t id) { return _links[id]; }
 
 cd_s_node *CDMeshConnector::get_node(cd_uid_t id) { return _nodes[id]; }
