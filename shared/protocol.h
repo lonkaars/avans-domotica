@@ -27,7 +27,7 @@ typedef uint16_t cd_cmd_id_t;
 typedef uint8_t cd_cmd_bool_t;
 
 /** @brief cmd handler function signature */
-typedef void (cd_cmd_handler)(cd_s_bin *data);
+typedef void (cd_cmd_handler_t)(cd_s_bin *data);
 
 #pragma pack(push, 1)
 
@@ -121,12 +121,12 @@ typedef enum {
 	CD_CMD_RESPONSE = 0x05, /** @brief response message */
 } cd_e_scmds;
 
-cd_cmd_handler cd_cmd_ping,
-			   cd_cmd_get_node,
-			   cd_cmd_post_led,
-			   cd_cmd_post_link,
-			   cd_cmd_post_net,
-			   cd_cmd_response;
+cd_cmd_handler_t cd_cmd_ping,
+				 cd_cmd_get_node,
+				 cd_cmd_post_led,
+				 cd_cmd_post_link,
+				 cd_cmd_post_net,
+				 cd_cmd_response;
 
 /** @brief constant message sizes, 0 for dynamic size */
 static const size_t CD_CMD_HANDLERS_SIZE[CD_CMD_COUNT] = {
@@ -149,7 +149,7 @@ static size_t (* const CD_CMD_HANDLERS_SIZEOF[CD_CMD_COUNT])(cd_s_bin*) = {
 };
 
 /** @brief stores message handlers in array with opcode as index */
-static cd_cmd_handler* const CD_CMD_HANDLERS[CD_CMD_COUNT] = {
+static cd_cmd_handler_t* const CD_CMD_HANDLERS[CD_CMD_COUNT] = {
 	[CD_CMD_PING] = &cd_cmd_ping,
 	[CD_CMD_GET_NODE] = &cd_cmd_get_node,
 	[CD_CMD_POST_LED] = &cd_cmd_post_led,

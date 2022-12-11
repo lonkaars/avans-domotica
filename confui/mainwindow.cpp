@@ -49,16 +49,31 @@ void CDMainWindow::update() {
 	QAction *menu_options_add_automation = menu_options->addAction("add automation");
 	connect(menu_options_add_automation, &QAction::triggered, this, &CDMainWindow::menu_add_automation);
 
-	QMenu *menu_options_serialport = menu_options->addMenu("serial port (FIXME)");
+	QString serial_port_menu_label = "serial port";
+	string port_name = g_cd_serial->get_port();
+	if (port_name.size() > 0) {
+		serial_port_menu_label.append(" (");
+		serial_port_menu_label.append(QString::fromStdString(port_name));
+		serial_port_menu_label.append(")");
+	}
+	QMenu *menu_options_serialport = menu_options->addMenu(serial_port_menu_label);
 
 	vector<string> ports = CDSerialConnector::get_ports();
-	for (string port : ports)
-		menu_options_serialport->addAction(QString::fromStdString(port));
+	for (string port : ports) {
+		QAction* menu_port = menu_options_serialport->addAction(QString::fromStdString(port));
+		connect(menu_port, &QAction::triggered, this, [this, port](){ menu_set_serial_port(port); });
+	}
 }
 
 void CDMainWindow::menu_refresh() { update(); }
 
 void CDMainWindow::menu_add_automation() {
 	g_cd_mesh_connector->create_link();
+	update();
+}
+
+void CDMainWindow::menu_set_serial_port(string new_port) {
+	g_cd_serial->disconnect();
+	g_cd_serial->connect(new_port);
 	update();
 }

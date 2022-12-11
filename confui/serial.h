@@ -17,7 +17,7 @@ public:
 	static vector<string> get_ports();
 
 	/** @brief open serial port */
-	virtual void connect();
+	virtual void connect(string port);
 	/** @brief close serial port */
 	virtual void disconnect();
 
@@ -25,6 +25,9 @@ public:
 	virtual void write(QByteArray msg);
 	/** @brief get last message */
 	virtual QByteArray get_data();
+
+	/** @brief get current port name */
+	virtual string get_port();
 
 private:
 	/** @brief executed when new data is received */
