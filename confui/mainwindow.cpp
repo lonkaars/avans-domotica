@@ -13,7 +13,10 @@ CDMeshConnector *g_cd_mesh_connector = nullptr;
 CDSerialConnector *g_cd_serial = nullptr;
 QApplication* g_cd_app = nullptr;
 
-CDMainWindow::~CDMainWindow() { delete this->mesh_connector; }
+CDMainWindow::~CDMainWindow() {
+	delete g_cd_mesh_connector;
+	delete g_cd_serial;
+}
 
 CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 	g_cd_mesh_connector	 = new CDMeshConnector();

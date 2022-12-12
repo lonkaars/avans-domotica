@@ -10,6 +10,7 @@
  */
 
 #include <stdint.h>
+#include <malloc.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +50,21 @@ uint16_t cd_bin_hton16(uint16_t h16);
 uint32_t cd_bin_ntoh32(uint32_t n32);
 /** @brief convert 16-bit value from network (big-endian) to host endian */
 uint16_t cd_bin_ntoh16(uint16_t n16);
+
+/**
+ * @brief convert (8*s)-bit value from network (big-endian) to host endian
+ * (dynamic size)
+ *
+ * @param n  pointer to number
+ * @param s  size of number in bytes
+ * 
+ * @return 32-bit integer regardless of `s`
+ *
+ * this function is exclusively used by the CD_DYN_MEMBER_SIZEOF macro in
+ * shared/protocol.c
+ */
+uint32_t cd_bin_ntohd(uint8_t* n, size_t s);
+uint32_t cd_bin_htond(uint8_t* h, size_t s);
 
 /** @brief replace 32-bit value from host endian to network (big-endian) */
 void cd_bin_repl_hton32(uint32_t *h32);

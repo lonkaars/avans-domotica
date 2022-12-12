@@ -11,7 +11,7 @@ using std::vector;
 class CDSerialConnector {
 public:
 	CDSerialConnector();
-	~CDSerialConnector();
+	virtual ~CDSerialConnector();
 
 	/** @brief get list of available serial ports */
 	static vector<string> get_ports();

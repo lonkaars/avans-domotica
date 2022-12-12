@@ -65,6 +65,14 @@ uint16_t cd_bin_hton16(uint16_t h16) {
 
 uint32_t cd_bin_ntoh32(uint32_t n32) { return cd_bin_hton32(n32); }
 uint16_t cd_bin_ntoh16(uint16_t n16) { return cd_bin_hton16(n16); }
+uint32_t cd_bin_ntohd(uint8_t* n, size_t s) { return cd_bin_htond(n, s); }
+
+uint32_t cd_bin_htond(uint8_t* h, size_t s) {
+	if (s == sizeof(uint8_t)) return *h;
+	else if (s == sizeof(uint16_t)) return cd_bin_hton16(*(uint16_t*) h);
+	else if (s == sizeof(uint32_t)) return cd_bin_hton32(*(uint32_t*) h);
+	else return 0;
+}
 
 cd_s_bin *cd_bin_s_alloc(uint16_t bytes, uint8_t *data) {
 	cd_s_bin *temp = malloc(sizeof(cd_s_bin) + sizeof(uint8_t) * bytes);

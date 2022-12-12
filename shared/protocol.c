@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #include "protocol.h"
 
 #ifdef __cplusplus
@@ -16,13 +18,33 @@ size_t cd_cmd_sizeof(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_leng
 	return length;
 }
 
-#define CD_DYN_MEMBER_SIZEOF(struct_t, length_byte, trailing_type)                                 \
-	sizeof(struct_t) +                                                                             \
-		(data->bytes > length_byte ? (sizeof(trailing_type) * data->data[length_byte]) : 0)
+/**
+ * @brief macro to calculate size of message based on struct with member to
+ * indicate length of dynamic (last) field
+ *
+ * @param data  cd_s_bin pointer to currently received data
+ * @param struct_t  message struct
+ * @param length_field  struct field with dynamic length
+ *
+ * @return size_t with calculated size
+ *
+ * equivalent c code:
+ *
+ * size_t size = sizeof(struct_t);
+ * size_t dyn_member_offset = offsetof(struct_t, length_field);
+ * size_t dyn_member_size = sizeof(((struct_t*)0)->length_field);
+ * if (data->bytes >= (dyn_member_offset + dyn_member_size))
+ *     size += cd_bin_ntohd(&data->data[dyn_member_offset], dyn_member_size);
+ * return size;
+ */
+#define CD_DYN_MEMBER_SIZEOF(data, struct_t, length_field) \
+	sizeof(struct_t) + ( \
+	(data->bytes >= (offsetof(struct_t, length_field) + sizeof(((struct_t*)0)->length_field))) ? \
+		(cd_bin_ntohd(&data->data[offsetof(struct_t, length_field)], sizeof(((struct_t*)0)->length_field))) :\
+		0);
 
 size_t cd_cmd_response_sizeof(cd_s_bin* data) {
-	(void) data; // unused variable TODO: implement this
-	return 0;
+	return CD_DYN_MEMBER_SIZEOF(data, cd_s_cmd_response, response_size);
 }
 
 #ifdef __cplusplus
