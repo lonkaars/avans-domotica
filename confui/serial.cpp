@@ -1,5 +1,6 @@
 #include "serial.h"
 #include "../shared/serial_parse.h"
+#include "../shared/bin.h"
 
 #include <iostream>
 #include <QDebug>
@@ -22,19 +23,14 @@ CDSerialConnector::CDSerialConnector() {
 CDSerialConnector::~CDSerialConnector() { delete this->_serial; }
 
 void CDSerialConnector::action() {
-	// this is called when readyRead();
 	int bytes = _serial->bytesAvailable();
-	if (bytes > 0) {
-		qDebug() << "new Data arived" << _serial->bytesAvailable();
-		_msg = _serial->readAll();
-		qDebug() << _msg;
-	}
+	if (bytes > 0) _msg = _serial->readAll();
 
-	// string std_string = _msg.toStdString();
-	// size_t size = std_string.size();
-	// const char* data = std_string.c_str();
-	// for (size_t i = 0; i < size; i++)
-	// 	cd_serial_parse(data[i]);
+	string std_string = _msg.toStdString();
+	size_t size = std_string.size();
+	const char* data = std_string.c_str();
+	for (size_t i = 0; i < size; i++)
+		cd_serial_parse(data[i]);
 }
 
 void CDSerialConnector::write(QByteArray msg) {
@@ -73,6 +69,22 @@ string CDSerialConnector::get_port() {
 }
 
 extern "C" {
+
+// receive handlers (node only)
+void cd_cmd_get_node(cd_s_bin* data) { (void) data; }
+void cd_cmd_post_led(cd_s_bin* data) { (void) data; }
+void cd_cmd_post_link(cd_s_bin* data) { (void) data; }
+void cd_cmd_post_net(cd_s_bin* data) { (void) data; }
+
+void cd_cmd_ping(cd_s_bin* data) {
+	CD_CAST_BIN(cd_s_cmd_ping, data, cast);
+
+	cd_bin_repl_ntoh16(&cast->id); // fix endianness
+
+	std::cout << "ping with id " << cast->id << " received!" << std::endl;
+	
+	// TODO: send ping back
+}
 
 void cd_cmd_response(cd_s_bin* data) {
 	(void) data;

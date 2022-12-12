@@ -32,3 +32,5 @@ HEADERS += \
 CONFIG += c++17
 CONFIG += force_debug_info
 QMAKE_CXXFLAGS += -Wno-missing-field-initializers
+QMAKE_CFLAGS += -std=c11
+QMAKE_CFLAGS += -Wno-c99-designator

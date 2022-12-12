@@ -62,9 +62,6 @@ typedef struct {
 	cd_cmd_bool_t join; /** @brief `true` to join network, `false` to leave network */
 } cd_s_cmd_post_net;
 
-typedef struct {
-} cd_s_cmd_response_ping;
-
 /** @brief protocol node */
 typedef struct {
 	cd_uuid_t uuid;		   /** @brief node network uuid */
@@ -79,15 +76,6 @@ typedef struct {
 	uint16_t node_count;
 	cd_s_cmd_node nodes[];
 } cd_s_cmd_response_get_node;
-
-typedef struct {
-} cd_s_cmd_response_post_led;
-
-typedef struct {
-} cd_s_cmd_response_post_link;
-
-typedef struct {
-} cd_s_cmd_response_post_net;
 
 typedef struct {
 	cd_cmd_opcode_t opcode; /** @brief cmd opcode */
