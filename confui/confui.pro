@@ -26,7 +26,8 @@ HEADERS += \
 	../shared/bin.h \
 	../shared/protocol.h \
 	../shared/serial_parse.h \
-	../shared/consts.h
+	../shared/consts.h \
+	main.h
 
 CONFIG += c++17
 CONFIG += force_debug_info

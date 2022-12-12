@@ -1,10 +1,9 @@
+#include "main.h"
 #include "mainwindow.h"
 
-#include <QApplication>
-
 int main(int argc, char *argv[]) {
-	QApplication a(argc, argv);
+	g_cd_app = new QApplication(argc, argv);
 	CDMainWindow w;
 	w.show();
-	return a.exec();
+	return g_cd_app->exec();
 }

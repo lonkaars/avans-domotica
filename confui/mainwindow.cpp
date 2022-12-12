@@ -1,14 +1,17 @@
 #include <QGridLayout>
 #include <QMenuBar>
 #include <QTabWidget>
+#include <iostream>
 
 #include "mainwindow.h"
 #include "ui_tab_automations.h"
 #include "ui_tab_node_overview.h"
 #include "serial.h"
+#include "main.h"
 
 CDMeshConnector *g_cd_mesh_connector = nullptr;
 CDSerialConnector *g_cd_serial = nullptr;
+QApplication* g_cd_app = nullptr;
 
 CDMainWindow::~CDMainWindow() { delete this->mesh_connector; }
 
@@ -27,6 +30,10 @@ CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 
 	tab_bar_widget->addTab(this->node_overview_tab, "node overview");
 	tab_bar_widget->addTab(this->automations_tab, "automations");
+
+	// manually connect to serial port
+	if (g_cd_app->arguments().length() > 1  && g_cd_app->arguments().at(1).length() > 0)
+		g_cd_serial->connect(g_cd_app->arguments().at(1).toStdString());
 
 	setMenuBar(menu_bar);
 	setCentralWidget(tab_bar_widget);
