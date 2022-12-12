@@ -12,7 +12,8 @@ SOURCES += \
 	serial.cpp \
 	../shared/bin.c \
 	../shared/protocol.c \
-	../shared/serial_parse.c
+	../shared/serial_parse.c \
+	../shared/pclient.c
 
 HEADERS += \
 	mainwindow.h \
@@ -27,7 +28,8 @@ HEADERS += \
 	../shared/protocol.h \
 	../shared/serial_parse.h \
 	../shared/consts.h \
-	main.h
+	main.h \
+	../shared/pclient.h
 
 CONFIG += c++17
 CONFIG += force_debug_info

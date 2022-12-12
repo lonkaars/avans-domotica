@@ -1,6 +1,7 @@
 #include "serial.h"
 #include "../shared/serial_parse.h"
 #include "../shared/bin.h"
+#include "../shared/pclient.h"
 
 #include <iostream>
 #include <QDebug>
@@ -34,20 +35,17 @@ void CDSerialConnector::action() {
 }
 
 void CDSerialConnector::write(QByteArray msg) {
-	_serial->write(msg);
-	qDebug() << _serial->errorString();
+	if (-1 == _serial->write(msg))
+		qDebug() << _serial->errorString();
 }
 
 void CDSerialConnector::connect(string port) {
 	_serial->setPortName(QString::fromStdString(port));
 
-	//    QIODevice::ReadOnly
-	if (!_serial->open(QIODevice::ReadWrite)) qDebug() << _serial->errorString();
+	if (!_serial->open(QIODevice::ReadWrite))
+		qDebug() << _serial->errorString();
 
-	QObject::connect(_serial, &QSerialPort::readyRead, [&] {
-		// this is called when readyRead();
-		action();
-	});
+	QObject::connect(_serial, &QSerialPort::readyRead, [&] { action(); });
 }
 
 void CDSerialConnector::disconnect() {
@@ -70,6 +68,17 @@ string CDSerialConnector::get_port() {
 
 extern "C" {
 
+void cd_pclient_send(cd_s_bin* data) {
+	QByteArray converted;
+	converted.append("\xff", 1);
+	for (size_t i = 0; i < data->bytes; i++) {
+		size_t byte = data->data[i];
+		byte == 0xff ? converted.append("\xff\xff", 2)
+			: converted.append((char *) &byte, 1);
+	}
+	g_cd_serial->write(converted);
+}
+
 // receive handlers (node only)
 void cd_cmd_get_node(cd_s_bin* data) { (void) data; }
 void cd_cmd_post_led(cd_s_bin* data) { (void) data; }
@@ -81,17 +90,27 @@ void cd_cmd_ping(cd_s_bin* data) {
 
 	cd_bin_repl_ntoh16(&cast->id); // fix endianness
 
-	std::cout << "ping with id " << cast->id << " received!" << std::endl;
+	std::cout << "ping request with id " << cast->id << " received!" << std::endl;
 	
-	// TODO: send ping back
+	cd_s_bin* response = cd_cmd_res_status((cd_e_scmds) cast->opcode, cast->id, false);
+	cd_pclient_send(response);
+	free(response);
+	response = nullptr;
 }
 
 void cd_cmd_response(cd_s_bin* data) {
-	(void) data;
+	CD_CAST_BIN(cd_s_cmd_response, data, cast);
 	
-	std::cout << "received!" << std::endl;
+	cd_bin_repl_ntoh16(&cast->id);
+	cd_bin_repl_ntoh16(&cast->response_id);
 
-	return;
+	switch (cast->response_type) {
+		case CD_CMD_PING: {
+			std::cout << "ping response with id " << cast->response_id << " received!" << std::endl;
+			break;
+		}
+		default: { }
+	}
 }
 
 }

@@ -6,6 +6,8 @@
 extern "C" {
 #endif
 
+cd_cmd_id_t  g_cd_protocol_fresh_message_id = 0;
+
 size_t cd_cmd_sizeof(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
 	cd_cmd_opcode_t opcode = data[0];
 	if (CD_CMD_HANDLERS_SIZE[opcode] > 0) return CD_CMD_HANDLERS_SIZE[opcode];
@@ -45,6 +47,10 @@ size_t cd_cmd_sizeof(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_leng
 
 size_t cd_cmd_response_sizeof(cd_s_bin* data) {
 	return CD_DYN_MEMBER_SIZEOF(data, cd_s_cmd_response, response_size);
+}
+
+cd_cmd_id_t cd_protocol_fresh_message_id() {
+	return g_cd_protocol_fresh_message_id++;
 }
 
 #ifdef __cplusplus

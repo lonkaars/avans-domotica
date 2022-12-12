@@ -29,6 +29,12 @@ typedef uint8_t cd_cmd_bool_t;
 /** @brief cmd handler function signature */
 typedef void (cd_cmd_handler_t)(cd_s_bin *data);
 
+/** @brief used for numbering messages */
+extern cd_cmd_id_t g_cd_protocol_fresh_message_id;
+
+/** @brief get new message id */
+cd_cmd_id_t cd_protocol_fresh_message_id();
+
 #pragma pack(push, 1)
 
 typedef struct {
@@ -50,9 +56,19 @@ typedef struct {
 	cd_uuid_t uuid; /** @brief node uuid to set */
 } cd_s_cmd_post_led;
 
+typedef enum {
+	CD_CMD_LINK_TYPE_TOGGLE = 0x00,
+	CD_CMD_LINK_TYPE_TURN_ON = 0x01,
+	CD_CMD_LINK_TYPE_TURN_OFF = 0x02,
+} cd_e_cmd_link_type;
+
 typedef struct {
 	cd_cmd_opcode_t opcode; /** @brief cmd opcode */
 	cd_cmd_id_t id; /** @brief message id */
+	cd_uuid_t button; /** @brief uuid of button node */
+	cd_uuid_t led; /** @brief uuid of led node */
+	cd_cmd_bool_t add; /** @brief `true` to create/overwrite link, `false` to remove link */
+	cd_e_cmd_link_type type; /** @brief link type */
 } cd_s_cmd_post_link;
 
 typedef struct {
@@ -80,9 +96,9 @@ typedef struct {
 typedef struct {
 	cd_cmd_opcode_t opcode; /** @brief cmd opcode */
 	cd_cmd_id_t id; /** @brief response message id */
-	cd_cmd_bool_t success; /** @brief `true` if some error occurred */
-	cd_cmd_id_t response_id; /** @brief original message id */
+	cd_cmd_bool_t error; /** @brief `true` if some error occurred */
 	cd_cmd_opcode_t response_type; /** @brief response type, used to cast type of `response_info` */
+	cd_cmd_id_t response_id; /** @brief original message id */
 	uint16_t response_size; /** @brief size of remaining response */
 	uint8_t response_info[]; /** @brief (CAST) remaining response struct, not read if `response_size`=`0` */
 } cd_s_cmd_response;
