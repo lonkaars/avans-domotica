@@ -11,7 +11,7 @@
 CDSerialConnector::CDSerialConnector() {
 	this->_serial = new QSerialPort;
 
-	if (!_serial->setBaudRate(QSerialPort::Baud9600)) qDebug() << _serial->errorString();
+	if (!_serial->setBaudRate(QSerialPort::Baud115200)) qDebug() << _serial->errorString();
 	if (!_serial->setDataBits(QSerialPort::Data8)) // data is 8 bits
 		qDebug() << _serial->errorString();
 	if (!_serial->setParity(QSerialPort::NoParity)) qDebug() << _serial->errorString();
