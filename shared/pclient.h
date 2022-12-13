@@ -59,13 +59,22 @@ cd_s_bin* cd_cmd_gen_post_net_rm(cd_uuid_t uuid);
  */
 cd_s_bin* cd_cmd_res_status(cd_e_scmds cmd, cd_cmd_id_t id, bool error);
 /**
- * @brief generate RESPONSE command with GET_NODE response_info
+ * @brief generate RESPONSE command with response_info
  * @param cmd  original command opcode
  * @param id  original command id
- * @param node_count  amount of nodes in `nodes`
- * @param nodes  pointer to array of `cd_s_cmd_node`
+ * @param len  size of `data` in bytes
+ * @param data  pointer to data
  */
-cd_s_bin* cd_cmd_res_get_node(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t node_count, cd_s_cmd_node* nodes);
+cd_s_bin* cd_cmd_res(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t len, uint8_t* data);
+/**
+ * @brief allocate and fill cd_s_cmd_node struct
+ *
+ * @param base  base struct with values that can be initialized using an initialization list
+ * @param name  node name (length is calculated at runtime using strlen())
+ * @param link_count  amount of lights this node controls
+ * @param links  array of light node uuids
+ */
+cd_s_cmd_node* cd_cmd_node_alloc(cd_s_cmd_node base, const char* name, uint16_t link_count, cd_uuid_t* links);
 
 #ifdef __cplusplus
 }

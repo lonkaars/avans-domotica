@@ -19,6 +19,9 @@ typedef uint8_t cd_mac_addr_t[6];
 /** @brief uuid (ffeeddcc-bbaa-9988-7766-554433221100) */
 typedef uint8_t cd_uuid_t[16];
 
+/** @brief pub/sub address type */
+typedef uint32_t cd_mesh_psub_addr;
+
 /** @brief command opcode (identifies message type) */
 typedef uint8_t cd_cmd_opcode_t;
 /** @brief command id (identifies messages uniquely) */
@@ -85,7 +88,19 @@ typedef struct {
 	uint8_t name_len;	   /** @brief name length in bytes */
 	cd_cmd_bool_t light_on;		   /** @brief state of light on node */
 	cd_cmd_bool_t provisioned;	   /** @brief whether the node is provisioned into the network */
-	const char name[];	   /** @brief user-friendly node name */
+	cd_mesh_psub_addr button_pub; /** @brief button publish address */
+	uint16_t link_count; /** @brief amount of addresses to publish button press to */
+	uint16_t size; /** @brief calculated size for convenience */
+	const uint8_t data_remainder[]; /**
+									 * @brief remaining data (name and link array)
+									 *
+									 * this data is stored adjacently in memory
+									 * and is cast when reading/writing this
+									 * struct
+									 * 
+									 * 1. char[] name
+									 * 2. cd_uuid_t[] light_publish_addresses;
+									 */
 } cd_s_cmd_node;
 
 typedef struct {
