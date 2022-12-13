@@ -1,0 +1,10 @@
+00: ff ; start byte
+01: 05 ; response opcode
+02: 00 ; message id (0x0001)
+03: 01 ; ^
+04: 01 ; error (true)
+05: 00 ; response type (0x00 = ping)
+06: 00 ; original message id (0x0000)
+07: 00 ; ^
+08: 00 ; remainder size (0x0000)
+09: 00 ; ^
