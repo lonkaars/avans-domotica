@@ -53,6 +53,7 @@
 		border-style: solid;
 		border-width: 0.7pt 0;
 		border-color: black;
+		margin: 1rem auto;
 	}
 
 	th, td {

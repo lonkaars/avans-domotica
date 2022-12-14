@@ -5,7 +5,7 @@ still WIP
 ## architecture
 
 <div align="center">
-  <img src="assets/fig-architecture.svg"/>
+  <img src="docs/img/fig-architecture.svg"/>
 </div>
 
 Above is a draft version of the system architecture.

@@ -11,7 +11,7 @@ PDF_T = $(SRCS:.md=.pdf)
 
 .PRECIOUS: %.toc %.con
 
-all: $(PDF_T)
+all: $(HTML_T)
 
 gen/paged.polyfill.js:
 	$(CURL) -Ls https://unpkg.com/pagedjs/dist/paged.polyfill.js > $@
