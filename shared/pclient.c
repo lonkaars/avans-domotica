@@ -99,21 +99,40 @@ cd_s_bin* cd_cmd_res_status(cd_e_scmds cmd, cd_cmd_id_t id, bool error) {
 	return bin;
 }
 
-cd_s_bin* cd_cmd_res_get_node(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t node_count, cd_s_cmd_node* nodes) {
-	CD_CREATE_MSG_BIN(cd_s_cmd_response, msg, bin);
+cd_s_bin* cd_cmd_res(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t len, uint8_t* data) {
+	CD_CREATE_MSG_SIZE_BIN(cd_s_cmd_response, sizeof(cd_s_cmd_response) + len, msg, bin);
 
 	msg->opcode = CD_CMD_RESPONSE;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->response_type = cmd;
 	msg->response_id = id;
 	msg->error = false;
-
-	// TODO: test this??
-	msg->response_size = sizeof(cd_s_cmd_response_get_node) + sizeof(cd_s_cmd_node) * node_count;
-	cd_s_cmd_response_get_node* get_node_response_ptr = (cd_s_cmd_response_get_node*) msg->response_info;
-	memcpy(get_node_response_ptr->nodes, nodes, sizeof(cd_s_cmd_node) * node_count);
+	msg->response_size = cd_bin_hton16(len);
+	memcpy(msg->response_info, data, len);
 
 	return bin;
+}
+
+cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t link_count, cd_uuid_t* links) {
+	size_t name_len = strlen(name);
+	size_t links_size = sizeof(cd_uuid_t) * link_count;
+	size_t remaining_size = sizeof(char) * name_len + links_size;
+	cd_s_cmd_node* node = malloc(sizeof(cd_s_cmd_node) + remaining_size);
+	
+	memcpy(&node->uuid, &base.uuid, sizeof(cd_uuid_t));
+	memcpy(&node->address, &base.address, sizeof(cd_mac_addr_t));
+	node->name_len = name_len;
+	node->light_on = base.light_on;
+	node->provisioned = base.provisioned;
+	node->button_pub = cd_bin_hton32(base.button_pub);
+	node->link_count = cd_bin_hton16(link_count);
+	node->remaining_size = cd_bin_hton16(remaining_size);
+	void* cursor = (void*) &node->remaining_data[0];
+	memcpy(cursor, name, name_len); // copy name
+	cursor += name_len;
+	memcpy(cursor, links, links_size); // copy links
+
+	return node;
 }
 
 #ifdef __cplusplus

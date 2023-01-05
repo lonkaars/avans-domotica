@@ -18,7 +18,7 @@ extern "C" {
 
 extern uint8_t g_cd_endianness;
 
-/** cast `in.data` to `type out` */
+/** @brief cast `in.data` to `type out` */
 #define CD_CAST_BIN(type, in, out) type *out = (type *)&in->data;
 #define CD_CREATE_MSG_BIN(type, normal, bin) CD_CREATE_MSG_SIZE_BIN(type, sizeof(type), normal, bin)
 /** @brief  */
