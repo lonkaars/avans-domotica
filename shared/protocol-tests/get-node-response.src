@@ -1,0 +1,76 @@
+00: ff ; start byte
+01: 05 ; opcode (0x05 = response)
+02: 00 ; message id (0x0000)
+03: 00 ; ^
+04: 00 ; error byte (0x00 = false)
+05: 01 ; response type (0x01 = get node)
+06: 8f ; original message id (0x8ff8)
+07: f8 ; ^
+08: 00 ; remaining response size (0x35 = 53 bytes)
+09: 35 ; ^
+-------; |- remaining response (cd_s_cmd_node)
+0a: ff ; | [esc]
+0b: ff ; | uuid (ffffffff-0000-0000-dead-beef00000000)
+0c: ff ; | [esc]
+0d: ff ; | ^
+0e: ff ; | [esc]
+0f: ff ; | ^
+10: ff ; | [esc]
+11: ff ; | ^
+12: 00 ; | ^
+13: 00 ; | ^
+14: 00 ; | ^
+15: 00 ; | ^
+16: de ; | ^
+17: ad ; | ^
+18: be ; | ^
+19: ef ; | ^
+1a: 00 ; | ^
+1b: 00 ; | ^
+1c: 00 ; | ^
+1d: 00 ; | ^
+1e: ff ; | [esc]
+1f: ff ; | mac address (ff:00:ff:00:ff:00)
+20: 00 ; | ^
+21: ff ; | [esc]
+22: ff ; | ^
+23: 00 ; | ^
+24: ff ; | [esc]
+25: ff ; | ^
+26: 00 ; | ^
+27: 04 ; | name length (0x04 = 4)
+28: 00 ; | light on (0x00 = false)
+29: 00 ; | provisioned (0x00 = false)
+2a: de ; | button publish address (0xdeadbeef)
+2b: ad ; | ^
+2c: be ; | ^
+2d: ef ; | ^
+2e: 00 ; | link count (0x0001 = 1)
+2f: 01 ; | ^
+30: 00 ; | remaining size (0x14 = 20 bytes)
+31: 14 ; | ^
+-------; | |- remaining response (char[4], cd_uuid_t[1])
+32: 67 ; | | node name ("gert")
+33: 65 ; | | ^
+34: 72 ; | | ^
+35: 74 ; | | ^
+36: ff ; | | [esc]
+37: ff ; | | link[0] uuid (ffffffff-0000-0000-dead-beef00000000)
+38: ff ; | | [esc]
+39: ff ; | | ^
+3a: ff ; | | [esc]
+3b: ff ; | | ^
+3c: ff ; | | [esc]
+3d: ff ; | | ^
+3e: 00 ; | | ^
+3f: 00 ; | | ^
+40: 00 ; | | ^
+41: 00 ; | | ^
+42: de ; | | ^
+43: ad ; | | ^
+44: be ; | | ^
+45: ef ; | | ^
+46: 00 ; | | ^
+47: 00 ; | | ^
+48: 00 ; | | ^
+49: 00 ; | | ^
