@@ -74,7 +74,9 @@ cd_s_bin* cd_cmd_res(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t len, uint8_t* data
  * @param link_count  amount of lights this node controls
  * @param links  array of light node uuids
  */
-cd_s_cmd_node* cd_cmd_node_alloc(cd_s_cmd_node base, const char* name, uint16_t link_count, cd_uuid_t* links);
+cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t link_count, cd_uuid_t* links);
+
+#define cd_cmd_node_sizeof(node) ((sizeof(cd_s_cmd_node) + cd_bin_ntoh16(node->remaining_size)) /* NOLINT */)
 
 #ifdef __cplusplus
 }

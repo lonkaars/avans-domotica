@@ -107,17 +107,17 @@ cd_s_bin* cd_cmd_res(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t len, uint8_t* data
 	msg->response_type = cmd;
 	msg->response_id = id;
 	msg->error = false;
-	msg->response_size = len;
+	msg->response_size = cd_bin_hton16(len);
 	memcpy(msg->response_info, data, len);
 
 	return bin;
 }
 
-cd_s_cmd_node* cd_cmd_node_alloc(cd_s_cmd_node base, const char* name, uint16_t link_count, cd_uuid_t* links) {
+cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t link_count, cd_uuid_t* links) {
 	size_t name_len = strlen(name);
-	size_t links_len = sizeof(cd_uuid_t) * link_count;
-	size_t size = sizeof(cd_s_cmd_node) + sizeof(char) * name_len + links_len;
-	cd_s_cmd_node* node = malloc(size);
+	size_t links_size = sizeof(cd_uuid_t) * link_count;
+	size_t remaining_size = sizeof(char) * name_len + links_size;
+	cd_s_cmd_node* node = malloc(sizeof(cd_s_cmd_node) + remaining_size);
 	
 	memcpy(&node->uuid, &base.uuid, sizeof(cd_uuid_t));
 	memcpy(&node->address, &base.address, sizeof(cd_mac_addr_t));
@@ -126,9 +126,11 @@ cd_s_cmd_node* cd_cmd_node_alloc(cd_s_cmd_node base, const char* name, uint16_t 
 	node->provisioned = base.provisioned;
 	node->button_pub = cd_bin_hton32(base.button_pub);
 	node->link_count = cd_bin_hton16(link_count);
-	node->size = cd_bin_hton16(size);
-	memcpy((void *)&node->data_remainder, name, name_len); // copy name
-	memcpy((void *)&node->data_remainder + name_len, links, links_len); // copy links
+	node->remaining_size = cd_bin_hton16(remaining_size);
+	void* cursor = (void*) &node->remaining_data[0];
+	memcpy(cursor, name, name_len); // copy name
+	cursor += name_len;
+	memcpy(cursor, links, links_size); // copy links
 
 	return node;
 }

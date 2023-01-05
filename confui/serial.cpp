@@ -100,17 +100,18 @@ void cd_cmd_ping(cd_s_bin* data) {
 	cd_uuid_t light_addrs[] = {
 		{ 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xde, 0xad, 0xbe, 0xef, 0x00, 0x00, 0x00, 0x00 },
 	};
-	cd_s_cmd_node* test = cd_cmd_node_alloc({
+	cd_s_cmd_node* test = cd_cmd_node_alloc("gert", {
 		.uuid = { 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xde, 0xad, 0xbe, 0xef, 0x00, 0x00, 0x00, 0x00 },
 		.address = { 0xff, 0x00, 0xff, 0x00, 0xff, 0x00, },
 		.light_on = false,
 		.provisioned = false,
 		.button_pub = 0xdeadbeef,
-	}, "gert", 1, light_addrs);
-	cd_s_bin* testres = cd_cmd_res(CD_CMD_GET_NODE, 0xf88f, test->size, (uint8_t*) test);
+	}, 1, light_addrs);
+	cd_s_bin* testres = cd_cmd_res(CD_CMD_GET_NODE, 0xf88f, cd_cmd_node_sizeof(test), (uint8_t*) test);
+	free(test);
+
 	cd_pclient_send(testres);
 	free(testres);
-	free(test);
 }
 
 void cd_cmd_response(cd_s_bin* data) {

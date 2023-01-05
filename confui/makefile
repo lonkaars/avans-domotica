@@ -18,3 +18,6 @@ FMT_FILES := $(filter-out %.pro,$(FMT_FILES)) # filter *.pro
 format:
 	clang-format -i $(FMT_FILES)
 	clang-tidy --fix-errors $(FMT_FILES)
+
+compile_commands:
+	compiledb make -Bn

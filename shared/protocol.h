@@ -90,8 +90,8 @@ typedef struct {
 	cd_cmd_bool_t provisioned;	   /** @brief whether the node is provisioned into the network */
 	cd_mesh_psub_addr button_pub; /** @brief button publish address */
 	uint16_t link_count; /** @brief amount of addresses to publish button press to */
-	uint16_t size; /** @brief calculated size for convenience */
-	const uint8_t data_remainder[]; /**
+	uint16_t remaining_size; /** @brief calculated size of remaining_data for convenience */
+	const uint8_t remaining_data[]; /**
 									 * @brief remaining data (name and link array)
 									 *
 									 * this data is stored adjacently in memory
