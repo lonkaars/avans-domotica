@@ -16,26 +16,26 @@ cd_link_t CDMeshConnector::get_new_link_id() { return _fresh_link_id++; }
 cd_uid_t CDMeshConnector::get_new_node_id() { return _fresh_node_id++; }
 
 CDMeshConnector::CDMeshConnector() {
-	cd_uid_t berta = create_node({
-		.address	 = {0x00, 0xff, 0x21, 0x69, 0xf2, 0x31},
-		.name_len	 = 5,
-		.name		 = "berta",
-		.light_on	 = false,
-		.provisioned = false,
-	});
+	// cd_uid_t berta = create_node({
+	// 	.address	 = {0x00, 0xff, 0x21, 0x69, 0xf2, 0x31},
+	// 	.name_len	 = 5,
+	// 	.name		 = "berta",
+	// 	.light_on	 = false,
+	// 	.provisioned = false,
+	// });
 
-	cd_uid_t gerrit = create_node({
-		.address	 = {0x0e, 0xf9, 0x46, 0x4d, 0xe8, 0x02},
-		.name_len	 = 6,
-		.name		 = "gerrit",
-		.light_on	 = false,
-		.provisioned = false,
-	});
+	// cd_uid_t gerrit = create_node({
+	// 	.address	 = {0x0e, 0xf9, 0x46, 0x4d, 0xe8, 0x02},
+	// 	.name_len	 = 6,
+	// 	.name		 = "gerrit",
+	// 	.light_on	 = false,
+	// 	.provisioned = false,
+	// });
 
-	create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
-	create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
-	create_link(gerrit, berta, CD_AUTOMATION_TYPE_TURN_OFF);
-	create_link(gerrit, gerrit, CD_AUTOMATION_TYPE_TURN_ON);
+	// create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
+	// create_link(berta, berta, CD_AUTOMATION_TYPE_TOGGLE);
+	// create_link(gerrit, berta, CD_AUTOMATION_TYPE_TURN_OFF);
+	// create_link(gerrit, gerrit, CD_AUTOMATION_TYPE_TURN_ON);
 	return;
 }
 
