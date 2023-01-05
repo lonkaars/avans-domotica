@@ -104,8 +104,9 @@ typedef struct {
 } cd_s_cmd_node;
 
 typedef struct {
-	uint16_t node_count;
-	cd_s_cmd_node nodes[];
+	uint16_t node_count; /** amount of nodes in nodes[] */
+	uint16_t remaining_size; /** remaining size (for convenience) */
+	cd_s_cmd_node nodes[]; /** nodes adjacent in memory (should be accessed using pointer arithmetic) */
 } cd_s_cmd_response_get_node;
 
 typedef struct {

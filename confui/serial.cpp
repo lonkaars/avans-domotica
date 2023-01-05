@@ -97,21 +97,26 @@ void cd_cmd_ping(cd_s_bin* data) {
 	// free(response);
 	// response = nullptr;
 
-	cd_uuid_t light_addrs[] = {
+	cd_uuid_t test_node_light_addrs[] = {
 		{ 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xde, 0xad, 0xbe, 0xef, 0x00, 0x00, 0x00, 0x00 },
 	};
-	cd_s_cmd_node* test = cd_cmd_node_alloc("gert", {
+	cd_s_cmd_node* test_node = cd_cmd_node_alloc("gert", {
 		.uuid = { 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xde, 0xad, 0xbe, 0xef, 0x00, 0x00, 0x00, 0x00 },
 		.address = { 0xff, 0x00, 0xff, 0x00, 0xff, 0x00, },
 		.light_on = false,
 		.provisioned = false,
 		.button_pub = 0xdeadbeef,
-	}, 1, light_addrs);
-	cd_s_bin* testres = cd_cmd_res(CD_CMD_GET_NODE, 0xf88f, cd_cmd_node_sizeof(test), (uint8_t*) test);
-	free(test);
+	}, 1, test_node_light_addrs);
 
-	cd_pclient_send(testres);
-	free(testres);
+	cd_s_cmd_node* nodes[] = { test_node };
+	cd_s_cmd_response_get_node* response_get_nodes = cd_cmd_get_node_res_from_node_arr(1, nodes);
+	free(test_node);
+
+	cd_s_bin* response = cd_cmd_res(CD_CMD_GET_NODE, 0xf88f, cd_cmd_response_get_node_sizeof(response_get_nodes), (uint8_t*) response_get_nodes);
+	free(response_get_nodes);
+
+	cd_pclient_send(response);
+	free(response);
 }
 
 void cd_cmd_response(cd_s_bin* data) {

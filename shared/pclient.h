@@ -67,6 +67,12 @@ cd_s_bin* cd_cmd_res_status(cd_e_scmds cmd, cd_cmd_id_t id, bool error);
  */
 cd_s_bin* cd_cmd_res(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t len, uint8_t* data);
 /**
+ * @brief generate cd_s_cmd_response_get_node struct from array of cd_s_cmd_node pointers
+ * @param size  length of array
+ * @param arr  array of pointer to cd_s_cmd_node
+ */
+cd_s_cmd_response_get_node* cd_cmd_get_node_res_from_node_arr(uint16_t size, cd_s_cmd_node* arr[]);
+/**
  * @brief allocate and fill cd_s_cmd_node struct
  *
  * @param base  base struct with values that can be initialized using an initialization list
@@ -76,7 +82,9 @@ cd_s_bin* cd_cmd_res(cd_e_scmds cmd, cd_cmd_id_t id, uint16_t len, uint8_t* data
  */
 cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t link_count, cd_uuid_t* links);
 
-#define cd_cmd_node_sizeof(node) ((sizeof(cd_s_cmd_node) + cd_bin_ntoh16(node->remaining_size)) /* NOLINT */)
+#define cd_remaining_sizeof(type, input_struct) ((sizeof(type) + cd_bin_ntoh16(input_struct->remaining_size)) /* NOLINT */)
+#define cd_cmd_node_sizeof(node) (cd_remaining_sizeof(cd_s_cmd_node, node) /* NOLINT */)
+#define cd_cmd_response_get_node_sizeof(res) (cd_remaining_sizeof(cd_s_cmd_response_get_node, res) /* NOLINT */)
 
 #ifdef __cplusplus
 }

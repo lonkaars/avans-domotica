@@ -135,6 +135,27 @@ cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t 
 	return node;
 }
 
+cd_s_cmd_response_get_node* cd_cmd_get_node_res_from_node_arr(uint16_t size, cd_s_cmd_node* arr[]) {
+	size_t remaining_size = 0;
+
+	for (unsigned int i = 0; i < size; i++) {
+		remaining_size += sizeof(cd_s_cmd_node) + cd_bin_ntoh16(arr[i]->remaining_size);
+	}
+
+	cd_s_cmd_response_get_node* response = malloc(sizeof(cd_s_cmd_response_get_node) + remaining_size);
+	response->node_count = cd_bin_hton16(size);
+	response->remaining_size = cd_bin_hton16(remaining_size);
+
+	void* cursor = response->nodes;
+	for (unsigned int i = 0; i < size; i++) {
+		size_t size = sizeof(cd_s_cmd_node) + cd_bin_ntoh16(arr[i]->remaining_size);
+		memcpy(cursor, arr[i], size);
+		cursor += size;
+	}
+
+	return response;
+}
+
 #ifdef __cplusplus
 }
 #endif
