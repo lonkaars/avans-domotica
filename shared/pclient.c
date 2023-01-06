@@ -45,8 +45,8 @@ cd_s_bin* cd_cmd_gen_post_link_add(cd_uuid_t button, cd_uuid_t light, cd_e_cmd_l
 	msg->opcode = CD_CMD_POST_LINK;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->add = true;
-	memcpy(&msg->button, &button, sizeof(cd_uuid_t));
-	memcpy(&msg->led, &light, sizeof(cd_uuid_t));
+	memcpy(msg->button, button, sizeof(cd_uuid_t));
+	memcpy(msg->led, light, sizeof(cd_uuid_t));
 	msg->type = type;
 
 	return bin;
@@ -58,8 +58,9 @@ cd_s_bin* cd_cmd_gen_post_link_rm(cd_uuid_t button, cd_uuid_t light) {
 	msg->opcode = CD_CMD_POST_LINK;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->add = false;
-	memcpy(&msg->button, &button, sizeof(cd_uuid_t));
-	memcpy(&msg->led, &light, sizeof(cd_uuid_t));
+	memcpy(msg->button, button, sizeof(cd_uuid_t));
+	memcpy(msg->led, light, sizeof(cd_uuid_t));
+	msg->type = 0;
 
 	return bin;
 }

@@ -18,12 +18,10 @@ typedef uint32_t cd_uid_t;
 /** @brief link/automation id type */
 typedef uint32_t cd_link_t;
 
-/** @brief automation types/actions */
-enum cd_e_automation_type {
-	CD_AUTOMATION_TYPE_TOGGLE,	 /** @brief button toggles light */
-	CD_AUTOMATION_TYPE_TURN_ON,	 /** @brief button always turns on light (regardless of previous state) */
-	CD_AUTOMATION_TYPE_TURN_OFF, /** @brief button always turns off light (regardless of previous state) */
-};
+typedef cd_e_cmd_link_type cd_e_automation_type;
+#define CD_AUTOMATION_TYPE_TOGGLE CD_CMD_LINK_TYPE_TOGGLE
+#define CD_AUTOMATION_TYPE_TURN_ON CD_CMD_LINK_TYPE_TURN_ON
+#define CD_AUTOMATION_TYPE_TURN_OFF CD_CMD_LINK_TYPE_TURN_OFF
 
 /** @brief GUI node representation */
 typedef struct {
@@ -117,7 +115,7 @@ public:
 	 * @param light  node id for node whose light will be used for this automation.
 	 * @param action  action/automation type (toggle, on, off).
 	 */
-	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type action);
+	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, cd_e_automation_type action);
 	/**
 	 * @brief overwrite link id with new automation and update on network.
 	 *
@@ -126,14 +124,16 @@ public:
 	 * properties.
 	 *
 	 * @param automation  pointer to automation struct (with new/modified values)
+	 * @param publish  `true` to send POST_LINK command
 	 */
-	virtual void update_link(cd_s_automation *automation);
+	virtual void update_link(cd_s_automation *automation, bool publish = false);
 	/**
 	 * @brief remove automation and update on network.
 	 *
 	 * @param link_handle  automation id
+	 * @param publish  `true` to send POST_LINK command
 	 */
-	virtual void remove_link(cd_link_t link_handle);
+	virtual void remove_link(cd_link_t link_handle, bool publish = false);
 
 	/**
 	 * @brief overwrite node id with new node and update on network.
@@ -142,8 +142,9 @@ public:
 	 * allocated using malloc()). used to update existing node properties.
 	 *
 	 * @param node_ptr  pointer to node struct (with new/modified state)
+	 * @param publish  `true` to send POST_LED command
 	 */
-	virtual void update_node(cd_s_node *node_ptr);
+	virtual void update_node(cd_s_node *node_ptr, bool publish = false);
 	/**
 	 * @brief provision node into network
 	 *

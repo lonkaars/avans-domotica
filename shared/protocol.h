@@ -60,9 +60,9 @@ typedef struct {
 } cd_s_cmd_post_led;
 
 typedef enum {
-	CD_CMD_LINK_TYPE_TOGGLE = 0x00,
-	CD_CMD_LINK_TYPE_TURN_ON = 0x01,
-	CD_CMD_LINK_TYPE_TURN_OFF = 0x02,
+	CD_CMD_LINK_TYPE_TOGGLE = 0x00, /** @brief button toggles light */
+	CD_CMD_LINK_TYPE_TURN_ON = 0x01, /** @brief button always turns on light (regardless of previous state) */
+	CD_CMD_LINK_TYPE_TURN_OFF = 0x02, /** @brief button always turns off light (regardless of previous state) */
 } cd_e_cmd_link_type;
 
 typedef struct {
@@ -71,7 +71,7 @@ typedef struct {
 	cd_uuid_t button; /** @brief uuid of button node */
 	cd_uuid_t led; /** @brief uuid of led node */
 	cd_cmd_bool_t add; /** @brief `true` to create/overwrite link, `false` to remove link */
-	cd_e_cmd_link_type type; /** @brief link type */
+	uint8_t type; /** @brief link type cd_e_cmd_link_type */
 } cd_s_cmd_post_link;
 
 typedef struct {

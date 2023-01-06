@@ -4,6 +4,7 @@
 #include <cstring>
 #include <stdio.h>
 
+#include "../shared/pclient.h"
 #include "mesh_connector.h"
 
 using std::pair;
@@ -99,7 +100,7 @@ map<cd_link_t, cd_s_automation *> CDMeshConnector::get_links(bool valid) {
 	return links;
 }
 
-void CDMeshConnector::update_link(cd_s_automation *automation) {
+void CDMeshConnector::update_link(cd_s_automation *automation, bool publish) {
 	printf("link[%d]", automation->id);
 	if (automation->valid) {
 		printf(" = %.*s %s %.*s", (int)automation->button->name_len, automation->button->name,
@@ -111,9 +112,16 @@ void CDMeshConnector::update_link(cd_s_automation *automation) {
 		printf(" (invalid)");
 	}
 	printf("\n");
+
+	if (!publish) return;
+	if (!automation->valid) return;
+
+	cd_s_bin* msg = cd_cmd_gen_post_link_add(automation->button->uuid, automation->light->uuid, automation->type);
+	cd_pclient_send(msg);
+	free(msg);
 }
 
-cd_link_t CDMeshConnector::create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type type) {
+cd_link_t CDMeshConnector::create_link(cd_uid_t button, cd_uid_t light, cd_e_automation_type type) {
 	cd_link_t id = get_new_link_id();
 
 	cd_s_automation *automation = (cd_s_automation *)malloc(sizeof(cd_s_automation));
@@ -147,11 +155,17 @@ cd_link_t CDMeshConnector::create_link() {
 	return id;
 }
 
-void CDMeshConnector::remove_link(cd_link_t link_handle) {
+void CDMeshConnector::remove_link(cd_link_t link_handle, bool publish) {
 	printf("remove link[%d]\n", link_handle);
-	if (_links[link_handle] != nullptr) free(_links[link_handle]);
+	if (_links.count(link_handle) == 0) return; // invalid handle
+	if (_links[link_handle] == nullptr) return; // already removed link
+
+	cd_s_bin* msg = cd_cmd_gen_post_link_rm(_links[link_handle]->button->uuid, _links[link_handle]->light->uuid);
+	cd_pclient_send(msg);
+	free(msg);
+
+	free(_links[link_handle]);
 	_links[link_handle] = nullptr;
-	return;
 }
 
 void CDMeshConnector::remove_node(cd_uid_t node_handle) {
@@ -161,7 +175,7 @@ void CDMeshConnector::remove_node(cd_uid_t node_handle) {
 	return;
 }
 
-void CDMeshConnector::update_node(cd_s_node *node_ptr) {
+void CDMeshConnector::update_node(cd_s_node *node_ptr, bool publish) {
 	printf("turning %.*s %s\n", (int)node_ptr->name_len, node_ptr->name, node_ptr->light_on ? "on" : "off");
 	return;
 }

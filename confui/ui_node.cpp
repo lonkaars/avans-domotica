@@ -54,7 +54,7 @@ void CDNodeWidget::toggle_provision() {
 
 void CDNodeWidget::update_led(bool on) {
 	_node->light_on = on;
-	g_cd_mesh_connector->update_node(_node);
+	g_cd_mesh_connector->update_node(_node, true);
 
 	update();
 }
