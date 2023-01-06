@@ -2,6 +2,8 @@
 #include "../shared/serial_parse.h"
 #include "../shared/bin.h"
 #include "../shared/pclient.h"
+#include "mainwindow.h"
+#include "mesh_connector.h"
 
 #include <iostream>
 #include <QDebug>
@@ -122,11 +124,21 @@ void cd_cmd_ping(cd_s_bin* data) {
 void cd_cmd_response_get_node_parse_node(cd_s_cmd_node* node) {
 	printf("yes i am node with name '%.*s'\n", node->name_len, node->remaining_data);
 	printf("my light is %s and i am%s provisioned\n", node->light_on ? "on" : "off", node->provisioned ? "" : " not");
-	// WIP
-	// cd_gui_node_id_t id = get_or_create_id(node->uuid);
-	// node* gui_node = g_cd_mesh_connector->get_node(id);
-	// (fill gui_node)
-	// (refresh gui)
+
+	cd_uid_t node_id = g_cd_mesh_connector->get_or_create_node_by_uuid(node->uuid);
+	cd_s_node* gui_node = g_cd_mesh_connector->get_node(node_id);
+
+	memcpy(gui_node->address, node->address, sizeof(cd_mac_addr_t));
+	memcpy(gui_node->uuid, node->uuid, sizeof(cd_uuid_t));
+	gui_node->name_len = node->name_len;
+	if (gui_node->name != nullptr) free((char*) gui_node->name); // TODO: set name to non-const pointer
+	char* name = (char*) malloc(node->name_len);
+	memcpy(name, node->remaining_data, node->name_len);
+	gui_node->name = name;
+	gui_node->light_on = !!node->light_on;
+	gui_node->provisioned = !!node->provisioned;
+
+	g_cd_main_window->update();
 }
 
 void cd_cmd_response_get_node(cd_s_bin* data) {

@@ -29,6 +29,7 @@ enum cd_e_automation_type {
 typedef struct {
 	cd_uid_t id;		   /** @brief GUI-specific id (used as handle) */
 	cd_mac_addr_t address; /** @brief node bluetooth mac address */
+	cd_uuid_t uuid;		   /** @brief node uuid */
 	size_t name_len;	   /** @brief name length in bytes */
 	const char *name;	   /** @brief user-friendly node name */
 	bool light_on;		   /** @brief state of light on node */
@@ -102,6 +103,7 @@ public:
 	virtual cd_s_automation *get_link(cd_link_t id);
 	/** @brief get node pointer by node id */
 	virtual cd_s_node *get_node(cd_uid_t id);
+	virtual cd_uid_t get_or_create_node_by_uuid(cd_uuid_t uuid);
 
 	// network modification functions
 	/** @brief create empty automation */
@@ -159,6 +161,7 @@ public:
 	static string cd_mac_to_string(cd_mac_addr_t mac);
 	/** @brief convert `cd_uuid_t` to `std::string` for printing/GUI */
 	static string cd_uuid_to_string(cd_uuid_t uuid);
+
 };
 
 /** @brief global pointer to mesh connector, initialized in CDMainWindow */

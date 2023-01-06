@@ -10,6 +10,9 @@
 
 class CDAutomationsTabWidget;
 class CDNodeOverviewTabWidget;
+class CDMainWindow;
+
+extern CDMainWindow *g_cd_main_window;
 
 /**
  * @brief main window

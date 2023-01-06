@@ -41,6 +41,7 @@ CDMeshConnector::CDMeshConnector() {
 
 cd_uid_t CDMeshConnector::create_node(cd_s_node node) {
 	cd_s_node *_node = (cd_s_node *)malloc(sizeof(cd_s_node));
+	// TODO: handle empty structs
 
 	// id
 	cd_uid_t id = get_new_node_id();
@@ -187,7 +188,7 @@ string CDMeshConnector::cd_mac_to_string(cd_mac_addr_t mac) {
 
 string CDMeshConnector::cd_uuid_to_string(cd_uuid_t uuid) {
 	char *addr = nullptr;
-	asprintf(&addr, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[15], uuid[14], uuid[13], uuid[12], uuid[11], uuid[10], uuid[9], uuid[8], uuid[7], uuid[6], uuid[5], uuid[4], uuid[3], uuid[2], uuid[1], uuid[0]);
+	asprintf(&addr, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
 	string ret = addr;
 	free(addr);
 	return ret;
@@ -196,3 +197,9 @@ string CDMeshConnector::cd_uuid_to_string(cd_uuid_t uuid) {
 cd_s_automation *CDMeshConnector::get_link(cd_link_t id) { return _links[id]; }
 
 cd_s_node *CDMeshConnector::get_node(cd_uid_t id) { return _nodes[id]; }
+
+cd_uid_t CDMeshConnector::get_or_create_node_by_uuid(cd_uuid_t uuid) {
+	for (pair<cd_uid_t, cd_s_node *> node : _nodes)
+		if (memcmp(node.second->uuid, uuid, sizeof(cd_uuid_t)) == 0) return node.first;
+	return create_node({});
+}
