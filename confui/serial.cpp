@@ -131,7 +131,7 @@ void cd_cmd_response_get_node_parse_node(cd_s_cmd_node* node) {
 	memcpy(gui_node->address, node->address, sizeof(cd_mac_addr_t));
 	memcpy(gui_node->uuid, node->uuid, sizeof(cd_uuid_t));
 	gui_node->name_len = node->name_len;
-	if (gui_node->name != nullptr) free((char*) gui_node->name); // TODO: set name to non-const pointer
+	if (gui_node->name != nullptr) free(gui_node->name);
 	char* name = (char*) malloc(node->name_len);
 	memcpy(name, node->remaining_data, node->name_len);
 	gui_node->name = name;

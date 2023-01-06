@@ -31,7 +31,7 @@ typedef struct {
 	cd_mac_addr_t address; /** @brief node bluetooth mac address */
 	cd_uuid_t uuid;		   /** @brief node uuid */
 	size_t name_len;	   /** @brief name length in bytes */
-	const char *name;	   /** @brief user-friendly node name */
+	char *name;	   /** @brief user-friendly node name */
 	bool light_on;		   /** @brief state of light on node */
 	bool provisioned;	   /** @brief whether the node is provisioned into the network */
 } cd_s_node;
