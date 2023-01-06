@@ -203,3 +203,11 @@ cd_uid_t CDMeshConnector::get_or_create_node_by_uuid(cd_uuid_t uuid) {
 		if (memcmp(node.second->uuid, uuid, sizeof(cd_uuid_t)) == 0) return node.first;
 	return create_node({});
 }
+
+cd_link_t CDMeshConnector::get_or_create_link_by_uuid(cd_uuid_t button, cd_uuid_t light) {
+	for (pair<cd_uid_t, cd_s_automation *> link : _links)
+		if (link.second != nullptr && link.second->valid == true &&
+			memcmp(link.second->button->uuid, button, sizeof(cd_uuid_t)) == 0 &&
+			memcmp(link.second->light->uuid, light, sizeof(cd_uuid_t)) == 0) return link.first;
+	return create_link();
+}

@@ -125,9 +125,11 @@ void cd_cmd_response_get_node_parse_node(cd_s_cmd_node* node) {
 	printf("yes i am node with name '%.*s'\n", node->name_len, node->remaining_data);
 	printf("my light is %s and i am%s provisioned\n", node->light_on ? "on" : "off", node->provisioned ? "" : " not");
 
+	// get node handle
 	cd_uid_t node_id = g_cd_mesh_connector->get_or_create_node_by_uuid(node->uuid);
 	cd_s_node* gui_node = g_cd_mesh_connector->get_node(node_id);
 
+	// fill current node
 	memcpy(gui_node->address, node->address, sizeof(cd_mac_addr_t));
 	memcpy(gui_node->uuid, node->uuid, sizeof(cd_uuid_t));
 	gui_node->name_len = node->name_len;
@@ -137,6 +139,24 @@ void cd_cmd_response_get_node_parse_node(cd_s_cmd_node* node) {
 	gui_node->name = name;
 	gui_node->light_on = !!node->light_on;
 	gui_node->provisioned = !!node->provisioned;
+
+	cd_uuid_t* light_publish_addresses = (cd_uuid_t*) (&node->remaining_data[0] + node->name_len);
+	for (unsigned i = 0; i < node->link_count; i++) {
+		// find or create light node
+		cd_uid_t light_id = g_cd_mesh_connector->get_or_create_node_by_uuid(light_publish_addresses[i]);
+		cd_s_node* gui_light = g_cd_mesh_connector->get_node(light_id);
+		memcpy(gui_light->uuid, light_publish_addresses[i], sizeof(cd_uuid_t)); // fill at least uuid (if node is not yet known)
+
+		// find or create automation handle
+		cd_link_t link_id = g_cd_mesh_connector->get_or_create_link_by_uuid(gui_light->uuid, light_publish_addresses[i]);
+		cd_s_automation* gui_link = g_cd_mesh_connector->get_link(link_id);
+
+		// fill automation
+		gui_link->button = gui_node;
+		gui_link->light = gui_light;
+		gui_link->type = CD_AUTOMATION_TYPE_TOGGLE; //TODO: read from incoming data in future
+		gui_link->valid = true;
+	}
 
 	g_cd_main_window->update();
 }

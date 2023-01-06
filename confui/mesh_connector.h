@@ -104,6 +104,7 @@ public:
 	/** @brief get node pointer by node id */
 	virtual cd_s_node *get_node(cd_uid_t id);
 	virtual cd_uid_t get_or_create_node_by_uuid(cd_uuid_t uuid);
+	virtual cd_link_t get_or_create_link_by_uuid(cd_uuid_t button, cd_uuid_t light);
 
 	// network modification functions
 	/** @brief create empty automation */
