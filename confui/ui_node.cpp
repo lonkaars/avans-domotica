@@ -1,4 +1,5 @@
 #include "ui_node.h"
+#include "../shared/pclient.h"
 
 CDNodeWidget::~CDNodeWidget() {}
 CDNodeWidget::CDNodeWidget(QWidget *parent) : QWidget(parent) {
@@ -43,6 +44,10 @@ void CDNodeWidget::update() {
 	switch_on_off->setChecked(_node->light_on);
 
 	button_add_remove->setText(_node->provisioned ? "Remove from network" : "Join network");
+
+	cd_s_bin* msg = cd_cmd_gen_get_node(false, this->_node->uuid);
+	cd_pclient_send(msg);
+	free(msg);
 }
 
 void CDNodeWidget::toggle_provision() {

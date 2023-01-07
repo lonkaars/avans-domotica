@@ -23,7 +23,8 @@ cd_s_bin* cd_cmd_gen_get_node(bool all, cd_uuid_t uuid) {
 	msg->opcode = CD_CMD_GET_NODE;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->all = all;
-	memcpy(&msg->uuid, &uuid, sizeof(cd_uuid_t));
+	if (uuid != NULL) memcpy(msg->uuid, uuid, sizeof(cd_uuid_t));
+	else memset(msg->uuid, 0, sizeof(cd_uuid_t));
 
 	return bin;
 }
@@ -34,7 +35,7 @@ cd_s_bin* cd_cmd_gen_post_led(bool on, cd_uuid_t uuid) {
 	msg->opcode = CD_CMD_POST_LED;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->on = on;
-	memcpy(&msg->uuid, &uuid, sizeof(cd_uuid_t));
+	memcpy(msg->uuid, uuid, sizeof(cd_uuid_t));
 
 	return bin;
 }
@@ -71,7 +72,7 @@ cd_s_bin* cd_cmd_gen_post_net_add(cd_uuid_t uuid) {
 	msg->opcode = CD_CMD_POST_NET;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->join = true;
-	memcpy(&msg->uuid, &uuid, sizeof(cd_uuid_t));
+	memcpy(msg->uuid, uuid, sizeof(cd_uuid_t));
 
 	return bin;
 }
@@ -82,7 +83,7 @@ cd_s_bin* cd_cmd_gen_post_net_rm(cd_uuid_t uuid) {
 	msg->opcode = CD_CMD_POST_NET;
 	msg->id = cd_bin_hton16(cd_protocol_fresh_message_id());
 	msg->join = false;
-	memcpy(&msg->uuid, &uuid, sizeof(cd_uuid_t));
+	memcpy(msg->uuid, uuid, sizeof(cd_uuid_t));
 
 	return bin;
 }
@@ -120,8 +121,8 @@ cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t 
 	size_t remaining_size = sizeof(char) * name_len + links_size;
 	cd_s_cmd_node* node = malloc(sizeof(cd_s_cmd_node) + remaining_size);
 	
-	memcpy(&node->uuid, &base.uuid, sizeof(cd_uuid_t));
-	memcpy(&node->address, &base.address, sizeof(cd_mac_addr_t));
+	memcpy(node->uuid, base.uuid, sizeof(cd_uuid_t));
+	memcpy(node->address, base.address, sizeof(cd_mac_addr_t));
 	node->name_len = name_len;
 	node->light_on = base.light_on;
 	node->provisioned = base.provisioned;

@@ -7,6 +7,7 @@
 #include "ui_tab_automations.h"
 #include "ui_tab_node_overview.h"
 #include "serial.h"
+#include "../shared/pclient.h"
 #include "main.h"
 
 CDMeshConnector *g_cd_mesh_connector = nullptr;
@@ -73,6 +74,10 @@ void CDMainWindow::update() {
 		QAction* menu_port = menu_options_serialport->addAction(QString::fromStdString(port));
 		connect(menu_port, &QAction::triggered, this, [this, port](){ menu_set_serial_port(port); });
 	}
+
+	cd_s_bin* msg = cd_cmd_gen_get_node(true, NULL);
+	cd_pclient_send(msg);
+	free(msg);
 }
 
 void CDMainWindow::menu_refresh() { update(); }
