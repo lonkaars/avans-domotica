@@ -195,6 +195,9 @@ void cd_cmd_response(cd_s_bin* data) {
 	switch (cast->response_type) {
 		case CD_CMD_PING: return cd_cmd_response_ping(data);
 		case CD_CMD_GET_NODE: return cd_cmd_response_get_node(data);
+		case CD_CMD_POST_LED: return; // TODO
+		case CD_CMD_POST_LINK: return; // TODO
+		case CD_CMD_POST_NET: return; // TODO
 		default: return;
 	}
 }
