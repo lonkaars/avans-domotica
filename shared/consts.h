@@ -8,4 +8,3 @@
 #define CD_ERROR_BUFFER_SIZE 16
 /** @brief size of the serial communication buffer (in messages, not bytes) */
 #define CD_SERCOMM_BUFFER_SIZE 16
-

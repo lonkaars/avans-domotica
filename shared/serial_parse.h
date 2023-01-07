@@ -2,8 +2,8 @@
 
 /** @file serial_parse.h */
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "protocol.h"
 
@@ -23,4 +23,3 @@ bool cd_serial_parse(uint8_t byte);
 #ifdef __cplusplus
 }
 #endif
-

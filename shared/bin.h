@@ -10,6 +10,7 @@
  */
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "memory.h"
 
@@ -22,11 +23,12 @@ extern uint8_t g_cd_endianness;
 /** @brief cast `in.data` to `type out` */
 #define CD_CAST_BIN(type, in, out) type *out = (type *)&in->data;
 #define CD_CREATE_MSG_BIN(type, normal, bin) CD_CREATE_MSG_SIZE_BIN(type, sizeof(type), normal, bin)
-/** @brief  */
-#define CD_CREATE_MSG_SIZE_BIN(type, size, normal, bin)                                            \
-	cd_s_bin *bin = CD_MALLOC(sizeof(cd_s_bin) + size);                                               \
-	bin->bytes	  = size;                                                                          \
+/** @brief create cd_s_bin struct with space for struct and cast data field of cd_s_bin to struct pointer */
+#define CD_CREATE_MSG_SIZE_BIN(type, size, normal, bin)                                                                                                                            \
+	cd_s_bin *bin = CD_MALLOC(sizeof(cd_s_bin) + size);                                                                                                                            \
+	bin->bytes	  = size;                                                                                                                                                          \
 	type *normal  = (type *)&bin->data;
+// TODO: document above macro but better
 
 /** @brief hold binary data with fixed size */
 typedef struct {
@@ -58,14 +60,14 @@ uint16_t cd_bin_ntoh16(uint16_t n16);
  *
  * @param n  pointer to number
  * @param s  size of number in bytes
- * 
+ *
  * @return 32-bit integer regardless of `s`
  *
  * this function is exclusively used by the CD_DYN_MEMBER_SIZEOF macro in
  * shared/protocol.c
  */
-uint32_t cd_bin_ntohd(uint8_t* n, size_t s);
-uint32_t cd_bin_htond(uint8_t* h, size_t s);
+uint32_t cd_bin_ntohd(uint8_t *n, size_t s);
+uint32_t cd_bin_htond(uint8_t *h, size_t s);
 
 /** @brief replace 32-bit value from host endian to network (big-endian) */
 void cd_bin_repl_hton32(uint32_t *h32);
@@ -79,4 +81,3 @@ void cd_bin_repl_ntoh16(uint16_t *n16);
 #ifdef __cplusplus
 }
 #endif
-

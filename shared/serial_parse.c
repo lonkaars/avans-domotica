@@ -1,5 +1,5 @@
-#include <string.h>
 #include <memory.h>
+#include <string.h>
 
 #include "consts.h"
 #include "serial_parse.h"
@@ -45,10 +45,10 @@ bool cd_serial_parse(uint8_t byte) {
 }
 
 void cd_cmd_handle(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_length) {
-	cd_s_bin *copy				= cd_bin_s_alloc(data_length, data);
+	cd_s_bin *copy = cd_bin_s_alloc(data_length, data);
 
 	if (data[0] >= CD_CMD_COUNT) return;
-	cd_cmd_handler_t* handler = CD_CMD_HANDLERS[data[0]];
+	cd_cmd_handler_t *handler = CD_CMD_HANDLERS[data[0]];
 
 	if (handler == NULL) return;
 	(*handler)(copy);
@@ -59,4 +59,3 @@ void cd_cmd_handle(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_length
 #ifdef __cplusplus
 }
 #endif
-

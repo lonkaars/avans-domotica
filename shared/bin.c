@@ -55,8 +55,7 @@ cd_s_bin *cd_bin_from_uint32_t(uint32_t data) {
 
 uint32_t cd_bin_hton32(uint32_t h32) {
 	if (g_cd_endianness == CD_ENDIAN_BIG) return h32;
-	return ((h32 & _BYTE_0) << _SHIFT_3B) | ((h32 & _BYTE_1) << _SHIFT_1B) |
-		   ((h32 & _BYTE_2) >> _SHIFT_1B) | ((h32 & _BYTE_3) >> _SHIFT_3B);
+	return ((h32 & _BYTE_0) << _SHIFT_3B) | ((h32 & _BYTE_1) << _SHIFT_1B) | ((h32 & _BYTE_2) >> _SHIFT_1B) | ((h32 & _BYTE_3) >> _SHIFT_3B);
 }
 #pragma GCC diagnostic pop
 
@@ -67,12 +66,12 @@ uint16_t cd_bin_hton16(uint16_t h16) {
 
 uint32_t cd_bin_ntoh32(uint32_t n32) { return cd_bin_hton32(n32); }
 uint16_t cd_bin_ntoh16(uint16_t n16) { return cd_bin_hton16(n16); }
-uint32_t cd_bin_ntohd(uint8_t* n, size_t s) { return cd_bin_htond(n, s); }
+uint32_t cd_bin_ntohd(uint8_t *n, size_t s) { return cd_bin_htond(n, s); }
 
-uint32_t cd_bin_htond(uint8_t* h, size_t s) {
+uint32_t cd_bin_htond(uint8_t *h, size_t s) {
 	if (s == sizeof(uint8_t)) return *h;
-	else if (s == sizeof(uint16_t)) return cd_bin_hton16(*(uint16_t*) h);
-	else if (s == sizeof(uint32_t)) return cd_bin_hton32(*(uint32_t*) h);
+	else if (s == sizeof(uint16_t)) return cd_bin_hton16(*(uint16_t *)h);
+	else if (s == sizeof(uint32_t)) return cd_bin_hton32(*(uint32_t *)h);
 	else return 0;
 }
 
