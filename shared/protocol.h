@@ -170,12 +170,12 @@ static size_t (* const CD_CMD_HANDLERS_SIZEOF[CD_CMD_COUNT])(cd_s_bin*) = {
 
 /** @brief stores message handlers in array with opcode as index */
 static cd_cmd_handler_t* const CD_CMD_HANDLERS[CD_CMD_COUNT] = {
-	[CD_CMD_PING] = &cd_cmd_ping, // implemented
-	[CD_CMD_GET_NODE] = &cd_cmd_get_node, // implemented
+	[CD_CMD_PING] = &cd_cmd_ping,
+	[CD_CMD_GET_NODE] = &cd_cmd_get_node,
 	[CD_CMD_POST_LED] = &cd_cmd_post_led,
-	[CD_CMD_POST_LINK] = &cd_cmd_post_link, // implemented
+	[CD_CMD_POST_LINK] = &cd_cmd_post_link,
 	[CD_CMD_POST_NET] = &cd_cmd_post_net,
-	[CD_CMD_RESPONSE] = &cd_cmd_response, // WIP
+	[CD_CMD_RESPONSE] = &cd_cmd_response,
 };
 
 #ifdef __cplusplus

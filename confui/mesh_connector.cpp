@@ -160,9 +160,11 @@ void CDMeshConnector::remove_link(cd_link_t link_handle, bool publish) {
 	if (_links.count(link_handle) == 0) return; // invalid handle
 	if (_links[link_handle] == nullptr) return; // already removed link
 
-	cd_s_bin* msg = cd_cmd_gen_post_link_rm(_links[link_handle]->button->uuid, _links[link_handle]->light->uuid);
-	cd_pclient_send(msg);
-	free(msg);
+	if (publish) {
+		cd_s_bin* msg = cd_cmd_gen_post_link_rm(_links[link_handle]->button->uuid, _links[link_handle]->light->uuid);
+		cd_pclient_send(msg);
+		free(msg);
+	}
 
 	free(_links[link_handle]);
 	_links[link_handle] = nullptr;
@@ -177,19 +179,30 @@ void CDMeshConnector::remove_node(cd_uid_t node_handle) {
 
 void CDMeshConnector::update_node(cd_s_node *node_ptr, bool publish) {
 	printf("turning %.*s %s\n", (int)node_ptr->name_len, node_ptr->name, node_ptr->light_on ? "on" : "off");
-	return;
+
+	if (!publish) return;
+
+	cd_s_bin* msg = cd_cmd_gen_post_led(node_ptr->light_on, node_ptr->uuid);
+	cd_pclient_send(msg);
+	free(msg);
 }
 
 void CDMeshConnector::network_join_node(cd_s_node *node_ptr) {
-	node_ptr->provisioned = true;
+	node_ptr->provisioned = true; //TODO: await success
 	printf("join %.*s into network\n", (int)node_ptr->name_len, node_ptr->name);
-	return;
+
+	cd_s_bin* msg = cd_cmd_gen_post_net_add(node_ptr->uuid);
+	cd_pclient_send(msg);
+	free(msg);
 }
 
 void CDMeshConnector::network_remove_node(cd_s_node *node_ptr) {
-	node_ptr->provisioned = false;
+	node_ptr->provisioned = false; //TODO: await success
 	printf("remove %.*s from network\n", (int)node_ptr->name_len, node_ptr->name);
-	return;
+
+	cd_s_bin* msg = cd_cmd_gen_post_net_rm(node_ptr->uuid);
+	cd_pclient_send(msg);
+	free(msg);
 }
 
 string CDMeshConnector::cd_mac_to_string(cd_mac_addr_t mac) {
