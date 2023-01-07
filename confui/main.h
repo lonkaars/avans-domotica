@@ -2,6 +2,5 @@
 
 #include <QApplication>
 
-extern QApplication* g_cd_app;
+extern QApplication *g_cd_app;
 int main(int argc, char *argv[]);
-

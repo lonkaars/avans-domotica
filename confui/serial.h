@@ -39,4 +39,3 @@ private:
 
 /** @brief global pointer to serial connector, initialized in CDMainWindow */
 extern CDSerialConnector *g_cd_serial;
-

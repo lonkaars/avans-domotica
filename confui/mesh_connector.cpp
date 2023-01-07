@@ -116,7 +116,7 @@ void CDMeshConnector::update_link(cd_s_automation *automation, bool publish) {
 	if (!publish) return;
 	if (!automation->valid) return;
 
-	cd_s_bin* msg = cd_cmd_gen_post_link_add(automation->button->uuid, automation->light->uuid, automation->type);
+	cd_s_bin *msg = cd_cmd_gen_post_link_add(automation->button->uuid, automation->light->uuid, automation->type);
 	cd_pclient_send(msg);
 	free(msg);
 }
@@ -161,7 +161,7 @@ void CDMeshConnector::remove_link(cd_link_t link_handle, bool publish) {
 	if (_links[link_handle] == nullptr) return; // already removed link
 
 	if (publish) {
-		cd_s_bin* msg = cd_cmd_gen_post_link_rm(_links[link_handle]->button->uuid, _links[link_handle]->light->uuid);
+		cd_s_bin *msg = cd_cmd_gen_post_link_rm(_links[link_handle]->button->uuid, _links[link_handle]->light->uuid);
 		cd_pclient_send(msg);
 		free(msg);
 	}
@@ -182,25 +182,25 @@ void CDMeshConnector::update_node(cd_s_node *node_ptr, bool publish) {
 
 	if (!publish) return;
 
-	cd_s_bin* msg = cd_cmd_gen_post_led(node_ptr->light_on, node_ptr->uuid);
+	cd_s_bin *msg = cd_cmd_gen_post_led(node_ptr->light_on, node_ptr->uuid);
 	cd_pclient_send(msg);
 	free(msg);
 }
 
 void CDMeshConnector::network_join_node(cd_s_node *node_ptr) {
-	node_ptr->provisioned = true; //TODO: await success
+	node_ptr->provisioned = true; // TODO: await success
 	printf("join %.*s into network\n", (int)node_ptr->name_len, node_ptr->name);
 
-	cd_s_bin* msg = cd_cmd_gen_post_net_add(node_ptr->uuid);
+	cd_s_bin *msg = cd_cmd_gen_post_net_add(node_ptr->uuid);
 	cd_pclient_send(msg);
 	free(msg);
 }
 
 void CDMeshConnector::network_remove_node(cd_s_node *node_ptr) {
-	node_ptr->provisioned = false; //TODO: await success
+	node_ptr->provisioned = false; // TODO: await success
 	printf("remove %.*s from network\n", (int)node_ptr->name_len, node_ptr->name);
 
-	cd_s_bin* msg = cd_cmd_gen_post_net_rm(node_ptr->uuid);
+	cd_s_bin *msg = cd_cmd_gen_post_net_rm(node_ptr->uuid);
 	cd_pclient_send(msg);
 	free(msg);
 }
@@ -215,7 +215,8 @@ string CDMeshConnector::cd_mac_to_string(cd_mac_addr_t mac) {
 
 string CDMeshConnector::cd_uuid_to_string(cd_uuid_t uuid) {
 	char *addr = nullptr;
-	asprintf(&addr, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
+	asprintf(&addr, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8],
+			 uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
 	string ret = addr;
 	free(addr);
 	return ret;
@@ -233,8 +234,8 @@ cd_uid_t CDMeshConnector::get_or_create_node_by_uuid(cd_uuid_t uuid) {
 
 cd_link_t CDMeshConnector::get_or_create_link_by_uuid(cd_uuid_t button, cd_uuid_t light) {
 	for (pair<cd_uid_t, cd_s_automation *> link : _links)
-		if (link.second != nullptr && link.second->valid == true &&
-			memcmp(link.second->button->uuid, button, sizeof(cd_uuid_t)) == 0 &&
-			memcmp(link.second->light->uuid, light, sizeof(cd_uuid_t)) == 0) return link.first;
+		if (link.second != nullptr && link.second->valid == true && memcmp(link.second->button->uuid, button, sizeof(cd_uuid_t)) == 0 &&
+			memcmp(link.second->light->uuid, light, sizeof(cd_uuid_t)) == 0)
+			return link.first;
 	return create_link();
 }

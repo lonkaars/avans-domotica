@@ -3,16 +3,16 @@
 #include <QTabWidget>
 #include <iostream>
 
-#include "mainwindow.h"
-#include "ui_tab_automations.h"
-#include "ui_tab_node_overview.h"
-#include "serial.h"
 #include "../shared/pclient.h"
 #include "main.h"
+#include "mainwindow.h"
+#include "serial.h"
+#include "ui_tab_automations.h"
+#include "ui_tab_node_overview.h"
 
 CDMeshConnector *g_cd_mesh_connector = nullptr;
-CDSerialConnector *g_cd_serial = nullptr;
-QApplication* g_cd_app = nullptr;
+CDSerialConnector *g_cd_serial		 = nullptr;
+QApplication *g_cd_app				 = nullptr;
 
 CDMainWindow::~CDMainWindow() {
 	delete g_cd_mesh_connector;
@@ -20,9 +20,9 @@ CDMainWindow::~CDMainWindow() {
 }
 
 CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
-	g_cd_mesh_connector	 = new CDMeshConnector();
-	this->mesh_connector = g_cd_mesh_connector;
-	g_cd_serial = new CDSerialConnector();
+	g_cd_mesh_connector	   = new CDMeshConnector();
+	this->mesh_connector   = g_cd_mesh_connector;
+	g_cd_serial			   = new CDSerialConnector();
 	this->serial_connector = g_cd_serial;
 
 	menu_bar = new QMenuBar(this);
@@ -36,8 +36,7 @@ CDMainWindow::CDMainWindow(QWidget *parent) : QMainWindow(parent) {
 	tab_bar_widget->addTab(this->automations_tab, "automations");
 
 	// manually connect to serial port
-	if (g_cd_app->arguments().length() > 1  && g_cd_app->arguments().at(1).length() > 0)
-		g_cd_serial->connect(g_cd_app->arguments().at(1).toStdString());
+	if (g_cd_app->arguments().length() > 1 && g_cd_app->arguments().at(1).length() > 0) g_cd_serial->connect(g_cd_app->arguments().at(1).toStdString());
 
 	setMenuBar(menu_bar);
 	setCentralWidget(tab_bar_widget);
@@ -61,7 +60,7 @@ void CDMainWindow::update() {
 	connect(menu_options_add_automation, &QAction::triggered, this, &CDMainWindow::menu_add_automation);
 
 	QString serial_port_menu_label = "serial port";
-	string port_name = g_cd_serial->get_port();
+	string port_name			   = g_cd_serial->get_port();
 	if (port_name.size() > 0) {
 		serial_port_menu_label.append(" (");
 		serial_port_menu_label.append(QString::fromStdString(port_name));
@@ -71,11 +70,11 @@ void CDMainWindow::update() {
 
 	vector<string> ports = CDSerialConnector::get_ports();
 	for (string port : ports) {
-		QAction* menu_port = menu_options_serialport->addAction(QString::fromStdString(port));
-		connect(menu_port, &QAction::triggered, this, [this, port](){ menu_set_serial_port(port); });
+		QAction *menu_port = menu_options_serialport->addAction(QString::fromStdString(port));
+		connect(menu_port, &QAction::triggered, this, [this, port]() { menu_set_serial_port(port); });
 	}
 
-	cd_s_bin* msg = cd_cmd_gen_get_node(true, NULL);
+	cd_s_bin *msg = cd_cmd_gen_get_node(true, NULL);
 	cd_pclient_send(msg);
 	free(msg);
 }

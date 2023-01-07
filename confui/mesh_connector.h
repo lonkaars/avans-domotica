@@ -29,7 +29,7 @@ typedef struct {
 	cd_mac_addr_t address; /** @brief node bluetooth mac address */
 	cd_uuid_t uuid;		   /** @brief node uuid */
 	size_t name_len;	   /** @brief name length in bytes */
-	char *name;	   /** @brief user-friendly node name */
+	char *name;			   /** @brief user-friendly node name */
 	bool light_on;		   /** @brief state of light on node */
 	bool provisioned;	   /** @brief whether the node is provisioned into the network */
 } cd_s_node;
@@ -163,7 +163,6 @@ public:
 	static string cd_mac_to_string(cd_mac_addr_t mac);
 	/** @brief convert `cd_uuid_t` to `std::string` for printing/GUI */
 	static string cd_uuid_to_string(cd_uuid_t uuid);
-
 };
 
 /** @brief global pointer to mesh connector, initialized in CDMainWindow */

@@ -29,7 +29,7 @@ private:
 	CDNodeOverviewTabWidget *node_overview_tab = nullptr;
 
 public:
-	CDMeshConnector *mesh_connector = nullptr;
+	CDMeshConnector *mesh_connector		= nullptr;
 	CDSerialConnector *serial_connector = nullptr;
 
 	CDMainWindow(QWidget *parent = nullptr);
