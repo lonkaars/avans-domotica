@@ -164,6 +164,21 @@ void cd_cmd_response_ping(cd_s_bin* data) {
 	std::cout << "ping response with id " << cast->response_id << " received!" << std::endl;
 }
 
+void cd_cmd_response_post_led(cd_s_bin* data) {
+	CD_CAST_BIN(cd_s_cmd_response, data, cast);
+	if (cast->error) printf("POST_LED response with error for msg id 0x%04x", cast->response_id);
+}
+
+void cd_cmd_response_post_link(cd_s_bin* data) {
+	CD_CAST_BIN(cd_s_cmd_response, data, cast);
+	if (cast->error) printf("POST_LINK response with error for msg id 0x%04x", cast->response_id);
+}
+
+void cd_cmd_response_post_net(cd_s_bin* data) {
+	CD_CAST_BIN(cd_s_cmd_response, data, cast);
+	if (cast->error) printf("POST_NET response with error for msg id 0x%04x", cast->response_id);
+}
+
 void cd_cmd_response(cd_s_bin* data) {
 	CD_CAST_BIN(cd_s_cmd_response, data, cast);
 	
@@ -173,9 +188,9 @@ void cd_cmd_response(cd_s_bin* data) {
 	switch (cast->response_type) {
 		case CD_CMD_PING: return cd_cmd_response_ping(data);
 		case CD_CMD_GET_NODE: return cd_cmd_response_get_node(data);
-		case CD_CMD_POST_LED: return; // TODO
-		case CD_CMD_POST_LINK: return; // TODO
-		case CD_CMD_POST_NET: return; // TODO
+		case CD_CMD_POST_LED: return cd_cmd_response_post_led(data);
+		case CD_CMD_POST_LINK: return cd_cmd_post_link(data);
+		case CD_CMD_POST_NET: return cd_cmd_response_post_net(data);
 		default: return;
 	}
 }
