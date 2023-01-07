@@ -6,9 +6,13 @@
 #include <QDebug>
 
 #include "mesh_connector.h"
+#include "serial.h"
 
 class CDAutomationsTabWidget;
 class CDNodeOverviewTabWidget;
+class CDMainWindow;
+
+extern CDMainWindow *g_cd_main_window;
 
 /**
  * @brief main window
@@ -26,6 +30,7 @@ private:
 
 public:
 	CDMeshConnector *mesh_connector = nullptr;
+	CDSerialConnector *serial_connector = nullptr;
 
 	CDMainWindow(QWidget *parent = nullptr);
 	~CDMainWindow();
@@ -35,4 +40,6 @@ public:
 	virtual void menu_refresh();
 	/** @brief menu bar add automation action handler */
 	virtual void menu_add_automation();
+	/** @brief menu bar set serial port action handler */
+	void menu_set_serial_port(string new_port);
 };

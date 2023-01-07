@@ -7,12 +7,6 @@ endif
 
 include confui.mk
 
-OBJECTS += $(patsubst %.c,%.o, $(wildcard ../shared/*.c))
-confui: $(OBJECTS)
-
-../shared/%.o: ../shared/%.c
-	$(CC) -c $(CFLAGS) -w $< -o $@
-
 FMT_FILES := $(DIST)
 FMT_FILES := $(filter-out .%,$(FMT_FILES)) # filter hidden files
 FMT_FILES := $(filter-out /%,$(FMT_FILES)) # filter files outside working directory
@@ -24,3 +18,6 @@ FMT_FILES := $(filter-out %.pro,$(FMT_FILES)) # filter *.pro
 format:
 	clang-format -i $(FMT_FILES)
 	clang-tidy --fix-errors $(FMT_FILES)
+
+compile_commands:
+	compiledb make -Bn

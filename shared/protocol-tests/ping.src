@@ -1,0 +1,4 @@
+00: ff ; start byte
+01: 00 ; ping opcode
+02: f8 ; message id (used as ping identifier)
+03: 8f ; ^

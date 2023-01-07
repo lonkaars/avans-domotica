@@ -74,11 +74,11 @@ void CDAutomationWidget::apply() {
 	if (!conf_valid()) return;
 
 	_automation->button = g_cd_mesh_connector->get_node(dropdown_button->findData(dropdown_button->currentIndex()));
-	_automation->type	= (enum cd_e_automation_type)dropdown_action->findData(dropdown_action->currentIndex());
+	_automation->type	= (cd_e_automation_type) dropdown_action->findData(dropdown_action->currentIndex());
 	_automation->light	= g_cd_mesh_connector->get_node(dropdown_light->findData(dropdown_light->currentIndex()));
 	_automation->valid	= true;
 
-	g_cd_mesh_connector->update_link(_automation);
+	g_cd_mesh_connector->update_link(_automation, true);
 }
 
 void CDAutomationWidget::remove() {

@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "../shared/protocol.h"
+
 using std::array;
 using std::map;
 using std::size_t;
@@ -15,22 +17,19 @@ using std::vector;
 typedef uint32_t cd_uid_t;
 /** @brief link/automation id type */
 typedef uint32_t cd_link_t;
-/** @brief node mac address type */
-typedef uint8_t cd_mac_addr_t[6];
 
-/** @brief automation types/actions */
-enum cd_e_automation_type {
-	CD_AUTOMATION_TYPE_TOGGLE,	 /** @brief button toggles light */
-	CD_AUTOMATION_TYPE_TURN_ON,	 /** @brief button always turns on light (regardless of previous state) */
-	CD_AUTOMATION_TYPE_TURN_OFF, /** @brief button always turns off light (regardless of previous state) */
-};
+typedef cd_e_cmd_link_type cd_e_automation_type;
+#define CD_AUTOMATION_TYPE_TOGGLE CD_CMD_LINK_TYPE_TOGGLE
+#define CD_AUTOMATION_TYPE_TURN_ON CD_CMD_LINK_TYPE_TURN_ON
+#define CD_AUTOMATION_TYPE_TURN_OFF CD_CMD_LINK_TYPE_TURN_OFF
 
 /** @brief GUI node representation */
 typedef struct {
 	cd_uid_t id;		   /** @brief GUI-specific id (used as handle) */
 	cd_mac_addr_t address; /** @brief node bluetooth mac address */
+	cd_uuid_t uuid;		   /** @brief node uuid */
 	size_t name_len;	   /** @brief name length in bytes */
-	const char *name;	   /** @brief user-friendly node name */
+	char *name;	   /** @brief user-friendly node name */
 	bool light_on;		   /** @brief state of light on node */
 	bool provisioned;	   /** @brief whether the node is provisioned into the network */
 } cd_s_node;
@@ -102,6 +101,8 @@ public:
 	virtual cd_s_automation *get_link(cd_link_t id);
 	/** @brief get node pointer by node id */
 	virtual cd_s_node *get_node(cd_uid_t id);
+	virtual cd_uid_t get_or_create_node_by_uuid(cd_uuid_t uuid);
+	virtual cd_link_t get_or_create_link_by_uuid(cd_uuid_t button, cd_uuid_t light);
 
 	// network modification functions
 	/** @brief create empty automation */
@@ -114,7 +115,7 @@ public:
 	 * @param light  node id for node whose light will be used for this automation.
 	 * @param action  action/automation type (toggle, on, off).
 	 */
-	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, enum cd_e_automation_type action);
+	virtual cd_link_t create_link(cd_uid_t button, cd_uid_t light, cd_e_automation_type action);
 	/**
 	 * @brief overwrite link id with new automation and update on network.
 	 *
@@ -123,14 +124,16 @@ public:
 	 * properties.
 	 *
 	 * @param automation  pointer to automation struct (with new/modified values)
+	 * @param publish  `true` to send POST_LINK command
 	 */
-	virtual void update_link(cd_s_automation *automation);
+	virtual void update_link(cd_s_automation *automation, bool publish = false);
 	/**
 	 * @brief remove automation and update on network.
 	 *
 	 * @param link_handle  automation id
+	 * @param publish  `true` to send POST_LINK command
 	 */
-	virtual void remove_link(cd_link_t link_handle);
+	virtual void remove_link(cd_link_t link_handle, bool publish = false);
 
 	/**
 	 * @brief overwrite node id with new node and update on network.
@@ -139,8 +142,9 @@ public:
 	 * allocated using malloc()). used to update existing node properties.
 	 *
 	 * @param node_ptr  pointer to node struct (with new/modified state)
+	 * @param publish  `true` to send POST_LED command
 	 */
-	virtual void update_node(cd_s_node *node_ptr);
+	virtual void update_node(cd_s_node *node_ptr, bool publish = false);
 	/**
 	 * @brief provision node into network
 	 *
@@ -157,6 +161,9 @@ public:
 	// conversion functions
 	/** @brief convert `cd_mac_addr_t` to `std::string` for printing/GUI */
 	static string cd_mac_to_string(cd_mac_addr_t mac);
+	/** @brief convert `cd_uuid_t` to `std::string` for printing/GUI */
+	static string cd_uuid_to_string(cd_uuid_t uuid);
+
 };
 
 /** @brief global pointer to mesh connector, initialized in CDMainWindow */
