@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "memory.h"
+
 #include "bin.h"
 
 #ifdef __cplusplus
@@ -23,7 +25,7 @@ extern "C" {
 #pragma GCC diagnostic ignored "-Wshift-count-overflow"
 cd_s_bin *cd_bin_from_uint8_t(uint8_t data) {
 	size_t size	  = 1;
-	cd_s_bin *ret = malloc(sizeof(cd_s_bin) + sizeof(uint8_t) * size);
+	cd_s_bin *ret = CD_MALLOC(sizeof(cd_s_bin) + sizeof(uint8_t) * size);
 	ret->bytes	  = size;
 	ret->data[0]  = data;
 	return ret;
@@ -31,7 +33,7 @@ cd_s_bin *cd_bin_from_uint8_t(uint8_t data) {
 
 cd_s_bin *cd_bin_from_uint16_t(uint16_t data) {
 	size_t size	  = 2;
-	cd_s_bin *ret = malloc(sizeof(cd_s_bin) + sizeof(uint8_t) * size);
+	cd_s_bin *ret = CD_MALLOC(sizeof(cd_s_bin) + sizeof(uint8_t) * size);
 	data		  = cd_bin_hton16(data);
 	ret->bytes	  = size;
 	ret->data[0]  = (data & _BYTE_1) >> _SHIFT_1B;
@@ -41,7 +43,7 @@ cd_s_bin *cd_bin_from_uint16_t(uint16_t data) {
 
 cd_s_bin *cd_bin_from_uint32_t(uint32_t data) {
 	size_t size	  = 4;
-	cd_s_bin *ret = malloc(sizeof(cd_s_bin) + sizeof(uint8_t) * size);
+	cd_s_bin *ret = CD_MALLOC(sizeof(cd_s_bin) + sizeof(uint8_t) * size);
 	data		  = cd_bin_hton32(data);
 	ret->bytes	  = size;
 	ret->data[0]  = (data & _BYTE_3) >> _SHIFT_3B;
@@ -75,7 +77,7 @@ uint32_t cd_bin_htond(uint8_t* h, size_t s) {
 }
 
 cd_s_bin *cd_bin_s_alloc(uint16_t bytes, uint8_t *data) {
-	cd_s_bin *temp = malloc(sizeof(cd_s_bin) + sizeof(uint8_t) * bytes);
+	cd_s_bin *temp = CD_MALLOC(sizeof(cd_s_bin) + sizeof(uint8_t) * bytes);
 	temp->bytes	   = bytes;
 	memcpy(&temp->data, data, bytes);
 	return temp;
@@ -86,8 +88,8 @@ cd_s_bin *cd_bin_s_cat(cd_s_bin *a, cd_s_bin *b) {
 	memcpy(data, a->data, a->bytes);
 	memcpy(data + a->bytes, b->data, b->bytes);
 	cd_s_bin *c = cd_bin_s_alloc(a->bytes + b->bytes, data);
-	free(a);
-	free(b);
+	CD_FREE(a);
+	CD_FREE(b);
 	return c;
 }
 

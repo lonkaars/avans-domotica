@@ -15,7 +15,7 @@ size_t cd_cmd_sizeof(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_leng
 	cd_s_bin *copy = cd_bin_s_alloc(data_length, data);
 	size_t length = (*CD_CMD_HANDLERS_SIZEOF[opcode])(copy);
 
-	free(copy);
+	CD_FREE(copy);
 
 	return length;
 }

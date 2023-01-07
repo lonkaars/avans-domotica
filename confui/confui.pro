@@ -36,3 +36,6 @@ CONFIG += force_debug_info
 QMAKE_CXXFLAGS += -Wno-missing-field-initializers
 QMAKE_CFLAGS += -std=c11
 QMAKE_CFLAGS += -Wno-c99-designator
+
+DEFINES += CD_MALLOC=malloc
+DEFINES += CD_FREE=free

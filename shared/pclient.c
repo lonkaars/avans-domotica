@@ -1,4 +1,4 @@
-#include <memory.h>
+#include <string.h>
 
 #include "protocol.h"
 #include "pclient.h"
@@ -119,7 +119,7 @@ cd_s_cmd_node* cd_cmd_node_alloc(const char* name, cd_s_cmd_node base, uint16_t 
 	size_t name_len = strlen(name);
 	size_t links_size = sizeof(cd_uuid_t) * link_count;
 	size_t remaining_size = sizeof(char) * name_len + links_size;
-	cd_s_cmd_node* node = malloc(sizeof(cd_s_cmd_node) + remaining_size);
+	cd_s_cmd_node* node = CD_MALLOC(sizeof(cd_s_cmd_node) + remaining_size);
 	
 	memcpy(node->uuid, base.uuid, sizeof(cd_uuid_t));
 	memcpy(node->address, base.address, sizeof(cd_mac_addr_t));
@@ -144,7 +144,7 @@ cd_s_cmd_response_get_node* cd_cmd_get_node_res_from_node_arr(uint16_t size, cd_
 		remaining_size += sizeof(cd_s_cmd_node) + cd_bin_ntoh16(arr[i]->remaining_size);
 	}
 
-	cd_s_cmd_response_get_node* response = malloc(sizeof(cd_s_cmd_response_get_node) + remaining_size);
+	cd_s_cmd_response_get_node* response = CD_MALLOC(sizeof(cd_s_cmd_response_get_node) + remaining_size);
 	response->node_count = cd_bin_hton16(size);
 	response->remaining_size = cd_bin_hton16(remaining_size);
 

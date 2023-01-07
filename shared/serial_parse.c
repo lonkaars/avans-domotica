@@ -1,4 +1,5 @@
 #include <string.h>
+#include <memory.h>
 
 #include "consts.h"
 #include "serial_parse.h"
@@ -52,7 +53,7 @@ void cd_cmd_handle(uint8_t data[CD_SERIAL_READ_BUFFER_SIZE], uint8_t data_length
 	if (handler == NULL) return;
 	(*handler)(copy);
 
-	free(copy);
+	CD_FREE(copy);
 }
 
 #ifdef __cplusplus

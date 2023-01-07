@@ -10,7 +10,8 @@
  */
 
 #include <stdint.h>
-#include <malloc.h>
+
+#include "memory.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +24,7 @@ extern uint8_t g_cd_endianness;
 #define CD_CREATE_MSG_BIN(type, normal, bin) CD_CREATE_MSG_SIZE_BIN(type, sizeof(type), normal, bin)
 /** @brief  */
 #define CD_CREATE_MSG_SIZE_BIN(type, size, normal, bin)                                            \
-	cd_s_bin *bin = malloc(sizeof(cd_s_bin) + size);                                               \
+	cd_s_bin *bin = CD_MALLOC(sizeof(cd_s_bin) + size);                                               \
 	bin->bytes	  = size;                                                                          \
 	type *normal  = (type *)&bin->data;
 
