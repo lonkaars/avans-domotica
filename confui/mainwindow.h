@@ -42,4 +42,6 @@ public:
 	virtual void menu_add_automation();
 	/** @brief menu bar set serial port action handler */
 	void menu_set_serial_port(string new_port);
+	/** @brief send get_node command to sync network state */
+	virtual void update_net();
 };

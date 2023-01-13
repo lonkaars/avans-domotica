@@ -73,13 +73,18 @@ void CDMainWindow::update() {
 		QAction *menu_port = menu_options_serialport->addAction(QString::fromStdString(port));
 		connect(menu_port, &QAction::triggered, this, [this, port]() { menu_set_serial_port(port); });
 	}
+}
 
+void CDMainWindow::update_net() {
 	cd_s_bin *msg = cd_cmd_gen_get_node(true, NULL);
 	cd_pclient_send(msg);
 	free(msg);
 }
 
-void CDMainWindow::menu_refresh() { update(); }
+void CDMainWindow::menu_refresh() {
+	update_net();
+	update();
+}
 
 void CDMainWindow::menu_add_automation() {
 	g_cd_mesh_connector->create_link();

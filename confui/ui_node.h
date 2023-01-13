@@ -34,4 +34,6 @@ public:
 	virtual void toggle_provision();
 	/** @brief turn led on/off */
 	virtual void update_led(bool on);
+	/** @brief send get_node command to update self */
+	virtual void update_net();
 };

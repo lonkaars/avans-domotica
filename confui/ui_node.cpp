@@ -44,7 +44,9 @@ void CDNodeWidget::update() {
 	switch_on_off->setChecked(_node->light_on);
 
 	button_add_remove->setText(_node->provisioned ? "Remove from network" : "Join network");
+}
 
+void CDNodeWidget::update_net() {
 	cd_s_bin *msg = cd_cmd_gen_get_node(false, this->_node->uuid);
 	cd_pclient_send(msg);
 	free(msg);
