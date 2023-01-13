@@ -206,17 +206,18 @@ void CDMeshConnector::network_remove_node(cd_s_node *node_ptr) {
 }
 
 string CDMeshConnector::cd_mac_to_string(cd_mac_addr_t mac) {
-	char *addr = nullptr;
-	asprintf(&addr, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+	size_t str_s = sizeof("00:00:00:00:00:00");
+	char *addr = (char*) malloc(str_s);
+	snprintf(addr, str_s, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 	string ret = addr;
 	free(addr);
 	return ret;
 }
 
 string CDMeshConnector::cd_uuid_to_string(cd_uuid_t uuid) {
-	char *addr = nullptr;
-	asprintf(&addr, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8],
-			 uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
+	size_t str_s = sizeof("00000000-0000-0000-0000-000000000000");
+	char *addr = (char*) malloc(str_s);
+	snprintf(addr, str_s, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x", uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6], uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]);
 	string ret = addr;
 	free(addr);
 	return ret;
