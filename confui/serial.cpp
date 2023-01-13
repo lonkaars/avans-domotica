@@ -105,9 +105,13 @@ void cd_cmd_response_get_node_parse_node(cd_s_cmd_node *node) {
 	memcpy(gui_node->uuid, node->uuid, sizeof(cd_uuid_t));
 	gui_node->name_len = node->name_len;
 	if (gui_node->name != nullptr) free(gui_node->name);
-	char *name = (char *)malloc(node->name_len);
-	memcpy(name, node->remaining_data, node->name_len);
-	gui_node->name		  = name;
+	gui_node->name = nullptr;
+	gui_node->name_len = 0;
+	if (node->name_len > 0) {
+		char *name = (char *)malloc(node->name_len);
+		memcpy(name, node->remaining_data, node->name_len);
+		gui_node->name = name;
+	}
 	gui_node->light_on	  = !!node->light_on;
 	gui_node->provisioned = !!node->provisioned;
 
@@ -141,14 +145,14 @@ void cd_cmd_response_get_node(cd_s_bin *data) {
 	std::cout << "get nodes response with id " << response_cast->response_id << " received!" << std::endl;
 	printf("counting %d node%s\n", nodes->node_count, nodes->node_count == 1 ? "" : "s");
 
-	cd_s_cmd_node *cursor = &nodes->nodes[0];
+	uint8_t *cursor = (uint8_t*) &nodes->nodes[0];
 	for (unsigned int i = 0; i < nodes->node_count; i++) {
-		cd_bin_repl_ntoh16(&cursor->remaining_size);
-		cd_bin_repl_ntoh16(&cursor->link_count);
-		cd_bin_repl_ntoh32(&cursor->button_pub);
+		cd_bin_repl_ntoh16(&((cd_s_cmd_node*)cursor)->remaining_size);
+		cd_bin_repl_ntoh16(&((cd_s_cmd_node*)cursor)->link_count);
+		cd_bin_repl_ntoh32(&((cd_s_cmd_node*)cursor)->button_pub);
 
-		cd_cmd_response_get_node_parse_node(cursor);
-		cursor += sizeof(cd_s_cmd_node) + cd_bin_ntoh16(cursor->remaining_size);
+		cd_cmd_response_get_node_parse_node((cd_s_cmd_node*) cursor);
+		cursor += sizeof(cd_s_cmd_node) + ((cd_s_cmd_node*)cursor)->remaining_size;
 	}
 }
 
