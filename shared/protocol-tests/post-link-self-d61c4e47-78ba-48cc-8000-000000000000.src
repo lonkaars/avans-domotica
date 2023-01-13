@@ -1,5 +1,5 @@
 00: ff ; start byte
-01: 01 ; post link opcode
+01: 03 ; post link opcode
 02: 00 ; message id
 03: 00 ; ^
 04: d6 ; button uuid (d61c4e47-78ba-48cc-8000-000000000000)
