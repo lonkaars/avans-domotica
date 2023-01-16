@@ -41,11 +41,7 @@ void CDAutomationWidget::update() {
 	dropdown_button->clear();
 	dropdown_light->clear();
 	for (pair<cd_uid_t, cd_s_node *> node : nodes) {
-		QString label = "";
-		label.append(QString::fromLocal8Bit(node.second->name, node.second->name_len));
-		label.append(" (");
-		label.append(QString::fromStdString(CDMeshConnector::cd_mac_to_string(node.second->address)));
-		label.append(")");
+		QString label = QString::fromStdString(CDMeshConnector::cd_uuid_to_string(node.second->uuid));
 
 		dropdown_button->addItem(label, node.second->id);
 		dropdown_light->addItem(label, node.second->id);
@@ -53,8 +49,8 @@ void CDAutomationWidget::update() {
 
 	dropdown_action->clear();
 	dropdown_action->addItem("Toggles", CD_AUTOMATION_TYPE_TOGGLE);
-	dropdown_action->addItem("Switches on", CD_AUTOMATION_TYPE_TURN_ON);
-	dropdown_action->addItem("Switches off", CD_AUTOMATION_TYPE_TURN_OFF);
+	// dropdown_action->addItem("Switches on", CD_AUTOMATION_TYPE_TURN_ON);
+	// dropdown_action->addItem("Switches off", CD_AUTOMATION_TYPE_TURN_OFF);
 
 	if (_automation == nullptr) return;
 

@@ -30,13 +30,8 @@ void CDNodeWidget::set_node(cd_uid_t id) {
 void CDNodeWidget::update() {
 	if (_node == nullptr) return;
 
-	QString node_name = QString::fromLocal8Bit(_node->name, _node->name_len);
-	label_node_name->setText(node_name);
-
-	QString node_address = QString::fromStdString(CDMeshConnector::cd_mac_to_string(_node->address));
-	node_address.prepend("(");
-	node_address.append(")");
-	label_node_address->setText(node_address);
+	QString node_label = QString::fromStdString(CDMeshConnector::cd_uuid_to_string(_node->uuid));
+	label_node_address->setText(node_label);
 
 	switch_on_off->setText("on");
 	switch_on_off->setVisible(_node->provisioned);
