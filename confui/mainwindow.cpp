@@ -83,7 +83,6 @@ void CDMainWindow::update_net() {
 
 void CDMainWindow::menu_refresh() {
 	update_net();
-	update();
 }
 
 void CDMainWindow::menu_add_automation() {
