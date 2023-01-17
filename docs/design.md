@@ -101,7 +101,7 @@ The provisioner uses the PB-ADV instead of the PB-GATT provisioning protocol. Th
 
 ## Semaphore
 
-There are two semaphores created in the provisioner software. The first one is created for an unprovisioned beacon signal from the provisionee. Also, the second semaphore is used for adding a node to the network. All these semaphores are to make sure there is only one signal at a time for processing on the background.
+There are two semaphores created in the provisioner software. The first one is created for an unprovisioned beacon signal from the provisionee. Also, the second semaphore is used for adding a node to the network. All these semaphores are to make sure there is only one signal at a time for processing on the background. 
 
 # Used software and library versions
 
