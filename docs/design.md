@@ -85,3 +85,27 @@ For now, there are two semaphores created in the provisioner software. The first
 <figcaption>Software and library functions</figcaption>
 </figure>
 
+
+
+
+
+
+# Data transfer between GUI and mesh network
+
+## Asynchronous data handling
+Because the data will be received asynchronously, certain decisions will have to be made about how to deal with this. In this case the GUI or client sends out requests/tasks to the border router. The border node then responds after x time. In both cases this triggers a callback function on the receiving end, so that the data can be handled accordingly. 
+
+## Communication standards
+There are two options available, each has its own set of benefits listed in the table below.
+
+<figure>
+| UART                  | Bluetooth  |
+| --------------------- | ---------- |
+| Less interference     | Wireless   |
+| Simpler               | Complexer  |
+| Available on all pc's | (opposite) | 
+<figcaption>Benefits of UART vs Bluetooth</figcaption>
+</figure>
+Seeing that there are more pro's to using UART then Bluetooth, it makes the most sense to use UART.
+
+## Custom protocol
