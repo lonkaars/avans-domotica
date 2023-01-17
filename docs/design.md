@@ -97,11 +97,11 @@ Every node has a total of three elements which consist of one button and two lig
 
 ## Provisioning
 
-The provisioner uses the PB-ADV instead of the PB-GATT provisioning protocol. This might change in the future depending on the beacon information and if there is enough time to switch from PB-ADV to PB-GATT.
+The provisioner uses the PB-ADV instead of the PB-GATT provisioning protocol. This is because the PB-ADV is the standard protocol. Also, the PB-GATT provisioning method cost to much time to make it work.
 
 ## Semaphore
 
-For now, there are two semaphores created in the provisioner software. The first one is created for an unprovisioned beacon signal from the provisionee. Also, the second semaphore is used for adding a node to the network. All these semaphores are to make sure there is only one signal at a time.
+There are two semaphores created in the provisioner software. The first one is created for an unprovisioned beacon signal from the provisionee. Also, the second semaphore is used for adding a node to the network. All these semaphores are to make sure there is only one signal at a time for processing on the background.
 
 # Used software and library versions
 
