@@ -23,6 +23,47 @@ details are:
   features to edit the configuration and node state, but all action handling is
   happening on the nodes.
 
+
+# Framework
+
+The following two are the possible frameworks for this project to use:
+
+## segger:
+
+For this there was very little to non research before starting this project.
+
+## Zephyr:
+
+This can be used with either a makefile system and the correct libraries or with the highly integrated visualstudio code extension. Because of this integration making a custom makefile is too time intensive for this project and the visualstudio code extension works great already.
+
+Further more zephyr and nordic both keep supporting their software with frequent updates and there are plenty of examples made with this.
+
+Thus the desicion has been made to use this option.
+
+
+
+# Data transfer between GUI and mesh network
+
+## Asynchronous data handling
+
+Because the data will be received asynchronously, certain decisions will have to be made about how to deal with this. In this case the GUI or client sends out requests/tasks to the border router. The border node then responds after x time. In both cases this triggers a callback function on the receiving end, so that the data can be handled accordingly, see the image below.
+
+![img](img/fig-AsyncCommunication.svg)
+
+## Communication standards
+
+There are two options available, each has its own set of benefits listed in the table below.
+
+<figure>
+| UART                  | Bluetooth  |
+| --------------------- | ---------- |
+| Less interference     | Wireless   |
+| Simpler               | Complexer  |
+| Available on all pc's | (opposite) | 
+<figcaption>Benefits of UART vs Bluetooth</figcaption>
+</figure>
+Seeing that there are more pro's to using UART then Bluetooth, it makes the most sense to use UART.
+
 # Custom serial protocol
 
 The border router node communicates with the QT application using a USART
@@ -115,4 +156,3 @@ There are two semaphores created in the provisioner software. The first one is c
 |nRF SDK|2.1.2|
 <figcaption>Software and library functions</figcaption>
 </figure>
-
