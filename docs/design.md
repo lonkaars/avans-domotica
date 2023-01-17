@@ -48,7 +48,7 @@ Thus the desicion has been made to use this option.
 
 Because the data will be received asynchronously, certain decisions will have to be made about how to deal with this. In this case the GUI or client sends out requests/tasks to the border router. The border node then responds after x time. In both cases this triggers a callback function on the receiving end, so that the data can be handled accordingly, see the image below.
 
-![img](img/fig-AsyncCommunication.svg)
+![Asynchronous communication sequence diagram](img/fig-AsyncCommunication.svg)
 
 ## Communication standards
 
