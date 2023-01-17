@@ -37,8 +37,12 @@ binary messages with comments are provided in the source folder
 
 When messages are sent out by either side, they are prefixed with a single
 `0xff` byte to identify the start of a message. If a message contains a literal
-`0xff` byte, it will be escaped by the send function by sending the `0xff` byte
-twice.
+`0xff` byte, it will be escaped by sending the `0xff` byte twice. When the
+parser is done receiving a message, it goes into "idle mode". In this mode, all
+data is ignored (including double `0xff` bytes), until a single `0xff` byte
+followed by any other byte is received, which will cause the parser to parse
+incoming data normally again. This approach of a "idle" and "normal" mode was
+chosen to make the parser more resilient to serial noise.
 
 All data that is sent starts with an opcode to represent the message type, and
 a message id to uniquely identify each message for the purpose of replying to a
@@ -65,6 +69,11 @@ Other important details:
 - 16-bit and 32-bit numbers are sent with network (big) endianness.
 - Messages are buffered until complete, so this protocol should be used over
   unbuffered serial connections only.
+
+A complete list of commands and the additional data they send is located in the
+`shared/protocol.h` source file, and is well documented using Doxygen comments.
+The protocol implementation is written in portable C, and is used by both the
+client and server side to send and receive data.
 
 # Asynchronous QT Serial port
 
