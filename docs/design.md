@@ -1,6 +1,6 @@
 # General system architecture
 
-![System architecture](img/fig-architecture.svg)
+![System architecture (level 1)](img/fig-architecture-lv1.svg)
 
 Above is a diagram that shows the component layout of the end product. Notable
 details are:
@@ -10,19 +10,18 @@ details are:
   
   Bluetooth mesh was chosen because it provides an abstraction layer between
   the node behaviour and low-level bluetooth protocol routines.
-- The use of a J-Link debugger for connecting the border router node to a
-  desktop computer running the configuration utility.
-  
-  The use of the J-Link debugger was chosen because it requires no additional
-  USB controller setup on the node side to communicate.
-  
-  Because the network should continue functioning even without the
+- Because the network should continue functioning even without the
   configuration utility connected to the border router, all network
   configuration (which buttons control which lights) is stored on the border
   router. The configuration utility is only a 'viewer' for the network with
   features to edit the configuration and node state, but all action handling is
   happening on the nodes.
 
+## Detailed system architecture
+
+Below is a slightly more detailed version of the system architecture:
+
+![System architecture (level 2)](img/fig-architecture-lv2.svg)
 
 # Framework
 
@@ -116,15 +115,80 @@ A complete list of commands and the additional data they send is located in the
 The protocol implementation is written in portable C, and is used by both the
 client and server side to send and receive data.
 
-# Asynchronous QT Serial port
+# QT GUI
+
+## UI/UX layout
+
+The current layout implemented in the QT GUI was chosen based on the following
+criteria during a brainstorming session:
+
+- The complete network state should be visible at a glance
+- Less information based on a specific context is good
+- More abstraction from the actual network functionality is good
+
+The ideas that were considered during the brainstorming sessions were:
+
+1. A two column layout, with each list containing nodes. The right list is
+   contextual, and shows the light(s) that the node selected in the left column
+   is currently controlling.
+   
+   This idea was scrapped because it scales poorly in networks with a high
+   number of nodes, and because it hides a lot of information due to a context
+   specific list.
+2. A node editor layout, like the shader editor found in blender (see figure
+   below). Node buttons/lights can be connected with wires or lines, and nodes
+   can be grouped visually into clusters.
+   
+   ![Node editor in Blender](img/blender_node_editor.png)
+   
+   This idea was scrapped due to significant implementation complexity.
+3. A layout with two tabs, (1) for managing node state directly and
+   provisioning, and (2) for managing button and light publish/subscribe
+   addresses for linking nodes together.
+   
+   While this design would not show the complete network state at a glance, it
+   would be easier to implement than option 2, and scale better than option 1.
+
+After continuing the brainstorming session, focusing on the third design idea,
+we came up with the following list of design specifications:
+
+- A global tabbed layout with tabs for (A) managing *individual* nodes, and (B)
+  managing actions *between* nodes.
+- Actions between nodes are abstracted to the user as "automations", which
+  simplifies the process of asigning publish/subscribe addresses down to
+  "button of device A does X to light on device B".
+- Nodes are displayed in the node list, even if they are not provisioned into
+  the network, mirroring the way a bluetooth pairing menu might look.
+- The act of provisioning a node into or out of the network is abstracted as
+  "pairing" and "unpairing", mirroring the way regular bluetooth devices work.
+- Only relevant controls for nodes are shown (e.g. light toggle is hidden when
+  node is not provisioned, because controlling the light would be impossible).
+
+A prototype version of this layout was then made using Figma:
+
+![QT UI prototype in Figma (node tab)](img/figma_ui_node_overview.png)
+![QT UI prototype in Figma (automations tab)](img/figma_ui_automations.png)
+![QT UI prototype in Figma (menu bar)](img/figma_ui_menu_bar.png)
+
+The end result is the current UI, shown in the following figure. The only
+feature from the Figma prototype that was not implemented in the QT version, is
+the toggle switch UI element as the only toggling UI element available in the
+default QT widget selection is a checkbox, which serves the same purpose in
+this case.
+
+![QT UI (node tab)](img/qt_ui_node_overview.png)
+![QT UI (automations tab)](img/qt_ui_automations.png)
+![QT UI (menu bar)](img/qt_ui_menu_bar.png)
+
+## Asynchronous serial port
 
 The serial data communication is done in an asynchronous manner, which allows the program to efficiently handle data that is arriving on a serial port.
 
-## Benefits
+### Benefits
 
 Using an asynchronous approach allows the program to efficiently handle incoming data from the serial port, while still allowing the UI to remain responsive. This also prevents the program from having to continuously poll the serial port to check for new data. Without an asynchronous approach, this could freeze the UI and consume a lot of CPU resources. By using an asynchronous approach, the application can handle incoming data as soon as it arrives, without blocking the UI or consuming excessive CPU resources.
 
-## Data processing
+### Data processing
 
 When new data arrives at the serial port, it sends out a "ready read" signal. This signal tells the Qt event loop to call the asynchronous serial data read function, which processes the data at the next available opportunity. This ensures that the data is handled efficiently and asynchronously, without blocking the UI or consuming excessive CPU resources.
 
